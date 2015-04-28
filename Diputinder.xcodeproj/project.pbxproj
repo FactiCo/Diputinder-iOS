@@ -14,6 +14,13 @@
 		F370BDEE1AF03368008974D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F370BDED1AF03368008974D6 /* Images.xcassets */; };
 		F370BDF11AF03368008974D6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F370BDEF1AF03368008974D6 /* LaunchScreen.xib */; };
 		F370BDFD1AF03369008974D6 /* DiputinderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BDFC1AF03369008974D6 /* DiputinderTests.m */; };
+		F370BE0D1AF033B5008974D6 /* DraggableViewBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BE071AF033B5008974D6 /* DraggableViewBackground.m */; };
+		F370BE0E1AF033B5008974D6 /* Diego.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F370BE081AF033B5008974D6 /* Diego.jpg */; };
+		F370BE0F1AF033B5008974D6 /* DraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BE0A1AF033B5008974D6 /* DraggableView.m */; };
+		F370BE101AF033B5008974D6 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BE0C1AF033B5008974D6 /* OverlayView.m */; };
+		F370BE121AF033F2008974D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F370BE111AF033F2008974D6 /* Foundation.framework */; };
+		F370BE141AF03408008974D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F370BE131AF03408008974D6 /* CoreGraphics.framework */; };
+		F370BE161AF03410008974D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F370BE151AF03410008974D6 /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +47,16 @@
 		F370BDF61AF03369008974D6 /* DiputinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiputinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F370BDFB1AF03369008974D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F370BDFC1AF03369008974D6 /* DiputinderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiputinderTests.m; sourceTree = "<group>"; };
+		F370BE061AF033B5008974D6 /* DraggableViewBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableViewBackground.h; sourceTree = "<group>"; };
+		F370BE071AF033B5008974D6 /* DraggableViewBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableViewBackground.m; sourceTree = "<group>"; };
+		F370BE081AF033B5008974D6 /* Diego.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Diego.jpg; sourceTree = "<group>"; };
+		F370BE091AF033B5008974D6 /* DraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableView.h; sourceTree = "<group>"; };
+		F370BE0A1AF033B5008974D6 /* DraggableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableView.m; sourceTree = "<group>"; };
+		F370BE0B1AF033B5008974D6 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
+		F370BE0C1AF033B5008974D6 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
+		F370BE111AF033F2008974D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F370BE131AF03408008974D6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F370BE151AF03410008974D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +64,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F370BE161AF03410008974D6 /* UIKit.framework in Frameworks */,
+				F370BE141AF03408008974D6 /* CoreGraphics.framework in Frameworks */,
+				F370BE121AF033F2008974D6 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +83,9 @@
 		F370BDD41AF03368008974D6 = {
 			isa = PBXGroup;
 			children = (
+				F370BE151AF03410008974D6 /* UIKit.framework */,
+				F370BE131AF03408008974D6 /* CoreGraphics.framework */,
+				F370BE111AF033F2008974D6 /* Foundation.framework */,
 				F370BDDF1AF03368008974D6 /* Diputinder */,
 				F370BDF91AF03369008974D6 /* DiputinderTests */,
 				F370BDDE1AF03368008974D6 /* Products */,
@@ -85,6 +108,13 @@
 				F370BDE51AF03368008974D6 /* AppDelegate.m */,
 				F370BDE71AF03368008974D6 /* ViewController.h */,
 				F370BDE81AF03368008974D6 /* ViewController.m */,
+				F370BE061AF033B5008974D6 /* DraggableViewBackground.h */,
+				F370BE071AF033B5008974D6 /* DraggableViewBackground.m */,
+				F370BE081AF033B5008974D6 /* Diego.jpg */,
+				F370BE091AF033B5008974D6 /* DraggableView.h */,
+				F370BE0A1AF033B5008974D6 /* DraggableView.m */,
+				F370BE0B1AF033B5008974D6 /* OverlayView.h */,
+				F370BE0C1AF033B5008974D6 /* OverlayView.m */,
 				F370BDEA1AF03368008974D6 /* Main.storyboard */,
 				F370BDED1AF03368008974D6 /* Images.xcassets */,
 				F370BDEF1AF03368008974D6 /* LaunchScreen.xib */,
@@ -199,6 +229,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F370BE0E1AF033B5008974D6 /* Diego.jpg in Resources */,
 				F370BDEC1AF03368008974D6 /* Main.storyboard in Resources */,
 				F370BDF11AF03368008974D6 /* LaunchScreen.xib in Resources */,
 				F370BDEE1AF03368008974D6 /* Images.xcassets in Resources */,
@@ -219,9 +250,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F370BE0D1AF033B5008974D6 /* DraggableViewBackground.m in Sources */,
+				F370BE101AF033B5008974D6 /* OverlayView.m in Sources */,
 				F370BDE91AF03368008974D6 /* ViewController.m in Sources */,
 				F370BDE61AF03368008974D6 /* AppDelegate.m in Sources */,
 				F370BDE31AF03368008974D6 /* main.m in Sources */,
+				F370BE0F1AF033B5008974D6 /* DraggableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
