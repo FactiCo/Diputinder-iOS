@@ -64,13 +64,13 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     self.backgroundColor=[UIColor yellowColor];
     
     vista=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    vista.backgroundColor=[UIColor blueColor];
+    vista.backgroundColor=[UIColor clearColor];
     
    
-    [vista addSubview:menuButton];
-    [vista addSubview:messageButton];
-    [vista addSubview:xButton];
-    [vista addSubview:checkButton];
+    [self addSubview:menuButton];
+    [self addSubview:messageButton];
+    [self addSubview:xButton];
+    [self addSubview:checkButton];
      [self addSubview:vista];
     
 }
@@ -103,7 +103,15 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [draggableView addSubview:img];
     draggableView.delegate = self;
     draggableView.backgroundColor=[UIColor redColor];
+    UITapGestureRecognizer *singleFingerTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(handleSingleTap:)];
+    [draggableView addGestureRecognizer:singleFingerTap];
     return draggableView;
+}
+- (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
+    NSLog(@"tap");
+    //Do stuff here...
 }
 -(void)getData{
 
