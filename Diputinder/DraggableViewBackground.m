@@ -112,7 +112,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     
-    NSString *url =[NSString stringWithFormat:@"https://candidatotransparente.mx/scripts/datos/Gobernadores.json"];
+    NSString *url =[NSString stringWithFormat:@"https://candidatotransparente.mx/scripts/datos/Diputados.json"];
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
         
