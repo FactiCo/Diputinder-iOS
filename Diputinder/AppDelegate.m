@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <AFHTTPRequestOperationManager.h>
+#import "ViewController.h"
 #define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
 @interface AppDelegate ()
@@ -37,6 +38,10 @@
     
     [self getAddress];
   //  [self reverseGeokcode:locationManager.location];
+    ViewController *vc=[[ViewController alloc]init];
+   _navBar=[[UINavigationController alloc]initWithRootViewController:vc];
+    self.window.rootViewController=_navBar;
+    
     return YES;
 }
 -(void)getAddress{

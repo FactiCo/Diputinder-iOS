@@ -7,6 +7,8 @@
 //
 #import <AFHTTPRequestOperationManager.h>
 #import "DraggableViewBackground.h"
+#import "AppDelegate.h"
+#import "DetailViewController.h"
 
 @implementation DraggableViewBackground{
     NSInteger cardsLoadedIndex; //%%% the index of the card you have loaded into the loadedCards array last
@@ -20,6 +22,9 @@
     NSMutableArray * exampleCardLabels;
     UILabel *name;
     UIScrollView *vista;
+    
+    UIActivityIndicatorView *loading;
+    AppDelegate *delegate;
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
@@ -48,6 +53,11 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 //%%% sets up the extra buttons on the screen
 -(void)setupView
 {
+    delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
+    loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 50, 50)];
+    loading.backgroundColor=[UIColor blackColor];
+    [self addSubview:loading];
+    
 #warning customize all of this.  These are just place holders to make it look pretty
     self.backgroundColor = [UIColor colorWithRed:.92 green:.93 blue:.95 alpha:1]; //the gray background colors
     menuButton = [[UIButton alloc]initWithFrame:CGRectMake(17, 34, 22, 15)];
@@ -92,9 +102,15 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     if ([[candidatos objectAtIndex:index]objectForKey:@"twitter"] !=NULL) {
         NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",[[candidatos objectAtIndex:index]objectForKey:@"twitter"]];
           img.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:st]]];
-    }else
-    img.image=[UIImage imageNamed:@"Diego.jpg"];
-    
+    }else{
+      
+        if ([[[candidatos objectAtIndex:index]objectForKey:@"gnero"] isEqualToString:@"M"]) {
+              img.image=[UIImage imageNamed:@"h.jpg"];
+        }
+        else
+            img.image=[UIImage imageNamed:@"m.jpg"];
+        
+    }
     name =[[UILabel alloc]initWithFrame:CGRectMake(0, draggableView.frame.size.height-50, draggableView.frame.size.width, 50 )];
     name.textAlignment=NSTextAlignmentCenter;
     name.text=@"nombre del dipudato";
@@ -111,7 +127,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 }
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
     NSLog(@"tap");
-    //Do stuff here...
+    DetailViewController *detail=[[DetailViewController alloc]init];
+    [delegate.navBar pushViewController:detail animated:YES];
 }
 -(void)getData{
 
@@ -123,9 +140,15 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     NSString *url =[NSString stringWithFormat:@"https://candidatotransparente.mx/scripts/datos/Diputados.json"];
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
-        
+        loading.hidden=TRUE;
         for (NSDictionary *item in responseObject) {
-            [candidatos addObject:item];
+            
+            if ([[item objectForKey:@"entidadFederativa"]isEqualToString:delegate.localidad])
+                {
+                 [candidatos addObject:item];
+                    NSLog(@"se agrego a %@",delegate.localidad);
+                }
+           
         }
         if ([candidatos count]) {
             exampleCardLabels=candidatos;
@@ -135,6 +158,9 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         else{
             // No Success
             //   NSLog(@"no hay ");
+            UIAlertView * alert=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"No encontramos candidatos en tu zona" delegate:self cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
+            [alert show];
+            
         }
         
         
