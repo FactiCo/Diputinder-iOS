@@ -15,7 +15,9 @@
 @implementation DetailViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    //[super viewDidLoad];
+    UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"" message:@"Mensaje" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Aceptar", nil];
+    [a show];
     self.view.backgroundColor=[UIColor redColor];
     // Do any additional setup after loading the view.
 }
