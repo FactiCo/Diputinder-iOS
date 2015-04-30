@@ -13,11 +13,19 @@
 @end
 
 @implementation DetailViewController
+{
 
+    UIScrollView *scroll;
+
+}
 - (void)viewDidLoad {
     //[super viewDidLoad];
-    UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"" message:@"Mensaje" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Aceptar", nil];
-    [a show];
+    scroll=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    scroll.backgroundColor=[UIColor whiteColor];
+    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.width+50)];
+    img.image=_persona;
+    [scroll addSubview:img];
+    [self.view addSubview:scroll];
     self.view.backgroundColor=[UIColor redColor];
     // Do any additional setup after loading the view.
 }

@@ -65,21 +65,22 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 //%%% sets up the extra buttons on the screen
 -(void)setupView
 {
+   
+    self.navigationController.navigationBar.topItem.title=@"Diputinder";
     delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
-    loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/2, 50, 50)];
-    loading.backgroundColor=[UIColor blackColor];
-    [self.view addSubview:loading];
-    
+ 
 #warning customize all of this.  These are just place holders to make it look pretty
     self.view.backgroundColor = [UIColor colorWithRed:.92 green:.93 blue:.95 alpha:1]; //the gray background colors
     menuButton = [[UIButton alloc]initWithFrame:CGRectMake(17, 34, 22, 15)];
     [menuButton setImage:[UIImage imageNamed:@"menuButton"] forState:UIControlStateNormal];
     messageButton = [[UIButton alloc]initWithFrame:CGRectMake(284, 34, 18, 18)];
     [messageButton setImage:[UIImage imageNamed:@"messageButton"] forState:UIControlStateNormal];
-    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, 485, 59, 59)];
+   
+    
+    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, self.view.frame.size.height-100, 59, 59)];
     [xButton setImage:[UIImage imageNamed:@"xButton"] forState:UIControlStateNormal];
     [xButton addTarget:self action:@selector(swipeLeft) forControlEvents:UIControlEventTouchUpInside];
-    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 485, 59, 59)];
+    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, self.view.frame.size.height-100, 59, 59)];
     [checkButton setImage:[UIImage imageNamed:@"checkButton"] forState:UIControlStateNormal];
     [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
     
@@ -94,6 +95,11 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [self.view addSubview:xButton];
     [self.view addSubview:checkButton];
     [self.view addSubview:vista];
+    loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height/2-25, 50, 50)];
+    loading.backgroundColor=[UIColor blackColor];
+    [loading startAnimating];
+    [vista addSubview:loading];
+    
     
 }
 
@@ -103,10 +109,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 // to get rid of it (eg: if you are building cards from data from the internet)
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index
 {
-    if (index==70)
-    {
-        NSLog(@"");
-    }
+   
     DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake((self.view.frame.size.width - CARD_WIDTH)/2, (self.view.frame.size.height - CARD_HEIGHT)/2, CARD_WIDTH, CARD_HEIGHT)];
     draggableView.information.text = @"test";//[exampleCardLabels objectAtIndex:index]; //%%% placeholder for card-specific information
     
@@ -130,15 +133,16 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [draggableView addSubview:name];
     [draggableView addSubview:img];
     draggableView.delegate = self;
-    draggableView.backgroundColor=[UIColor redColor];
+    draggableView.backgroundColor=[UIColor whiteColor];
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(handleSingleTap:)];
+    singleFingerTap.accessibilityLabel=[NSString stringWithFormat:@"%li",(long)index];
     [draggableView addGestureRecognizer:singleFingerTap];
     return draggableView;
 }
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
-    NSLog(@"tap");
+    NSLog(@"%i",(int)recognizer.accessibilityLabel);
     DetailViewController *detail=[[DetailViewController alloc]init];
     [self.navigationController pushViewController:detail animated:YES];
 }

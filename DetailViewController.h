@@ -9,5 +9,6 @@
 #import "ViewController.h"
 
 @interface DetailViewController : ViewController
-
+@property (nonatomic,strong) UIImage *persona;
+@property (nonatomic,strong) NSMutableDictionary *data;
 @end
