@@ -27,6 +27,7 @@
 		F370BE1C1AF17D32008974D6 /* m.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F370BE1B1AF17D32008974D6 /* m.jpg */; };
 		F370BE1E1AF17D42008974D6 /* h.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F370BE1D1AF17D42008974D6 /* h.jpg */; };
 		F3F5F12D1AF18B580046F8B6 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */; };
+		F3F5F12F1AF54C680046F8B6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		F370BE1D1AF17D42008974D6 /* h.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = h.jpg; sourceTree = "<group>"; };
 		F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3F5F12F1AF54C680046F8B6 /* AudioToolbox.framework in Frameworks */,
 				F370BE1A1AF14CC7008974D6 /* AddressBook.framework in Frameworks */,
 				F370BE181AF14636008974D6 /* CoreLocation.framework in Frameworks */,
 				F370BE161AF03410008974D6 /* UIKit.framework in Frameworks */,
@@ -101,6 +104,7 @@
 		4B26C7D6F8826ABA9C2AB2CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */,
 				F370BE191AF14CC7008974D6 /* AddressBook.framework */,
 				F370BE171AF14636008974D6 /* CoreLocation.framework */,
 				42792AD6C768141D302AE857 /* libPods-Diputinder.a */,

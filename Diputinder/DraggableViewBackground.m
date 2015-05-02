@@ -9,6 +9,7 @@
 #import "DraggableViewBackground.h"
 #import "AppDelegate.h"
 #import "DetailViewController.h"
+#import <AudioToolbox/AudioServices.h>
 
 @implementation DraggableViewBackground{
     NSInteger cardsLoadedIndex; //%%% the index of the card you have loaded into the loadedCards array last
@@ -277,6 +278,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     }
     
     if ([[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"patrimonial"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL) {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona no te corresponde por que no tiene su 3de3" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
         [a show];
     }
