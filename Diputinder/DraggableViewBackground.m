@@ -25,6 +25,7 @@
     
     UIActivityIndicatorView *loading;
     AppDelegate *delegate;
+    
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
@@ -56,6 +57,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
     loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 50, 50)];
     loading.backgroundColor=[UIColor blackColor];
+    [loading startAnimating];
     [self addSubview:loading];
     
 #warning customize all of this.  These are just place holders to make it look pretty
@@ -64,10 +66,10 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [menuButton setImage:[UIImage imageNamed:@"menuButton"] forState:UIControlStateNormal];
     messageButton = [[UIButton alloc]initWithFrame:CGRectMake(284, 34, 18, 18)];
     [messageButton setImage:[UIImage imageNamed:@"messageButton"] forState:UIControlStateNormal];
-    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, 485, 59, 59)];
+    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, self.frame.size.height-100, 59, 59)];
     [xButton setImage:[UIImage imageNamed:@"xButton"] forState:UIControlStateNormal];
     [xButton addTarget:self action:@selector(swipeLeft) forControlEvents:UIControlEventTouchUpInside];
-    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 485, 59, 59)];
+    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, self.frame.size.height-100, 59, 59)];
     [checkButton setImage:[UIImage imageNamed:@"checkButton"] forState:UIControlStateNormal];
     [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
  
@@ -79,8 +81,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
    
     [self addSubview:menuButton];
     [self addSubview:messageButton];
-    [self addSubview:xButton];
-    [self addSubview:checkButton];
+    [vista addSubview:xButton];
+    [vista addSubview:checkButton];
      [self addSubview:vista];
     
 }
@@ -118,17 +120,21 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [draggableView addSubview:name];
     [draggableView addSubview:img];
     draggableView.delegate = self;
+    draggableView.tag=index;
     draggableView.backgroundColor=[UIColor redColor];
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(handleSingleTap:)];
+     singleFingerTap.accessibilityLabel=[NSString stringWithFormat:@"%li",(long)index];
     [draggableView addGestureRecognizer:singleFingerTap];
     return draggableView;
 }
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
-    NSLog(@"tap");
+    NSLog(@"%i",[recognizer.accessibilityLabel integerValue]);
     DetailViewController *detail=[[DetailViewController alloc]init];
+    detail.data=[candidatos objectAtIndex:[recognizer.accessibilityLabel integerValue]];
     [delegate.navBar pushViewController:detail animated:YES];
+
 }
 -(void)getData{
 
@@ -234,6 +240,16 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
+    
+    if ([[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"patrimonial"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL) {
+        UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona no te corresponde por que no tiene su 3de3" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
+        [a show];
+    }
+    else{
+        UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona si te ama" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
+        [a show];
+        
+    }
 
 }
 
@@ -246,6 +262,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         dragView.overlayView.alpha = 1;
     }];
     [dragView rightClickAction];
+  
 }
 
 //%%% when you hit the left button, this is called and substitutes the swipe
@@ -267,5 +284,35 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     // Drawing code
 }
 */
+/***************************************/
+/*  Codigo para cache de imagenes      */
+/***************************************/
+-(UIImage *)buscarCache:(NSString *)url {
+    UIImage *img=[delegate.imgCache objectForKey:url];
+    return img;
+}
 
+
+
+-(UIImage *)descargarImg:(NSString *)url {
+    UIImage *tmp;
+    if ([[url substringWithRange:NSMakeRange(url.length-3, 3)] isEqualToString:@"png"] || [[url substringWithRange:NSMakeRange(url.length-3, 3)] isEqualToString:@"jpg"] || [[url substringWithRange:NSMakeRange(url.length-3, 3)] isEqualToString:@"gif"] ||
+        [[url substringWithRange:NSMakeRange(url.length-3, 3)] isEqualToString:@"peg"]) {
+        if([[url substringWithRange:NSMakeRange(0, 4)] isEqualToString:@"http"]){
+            
+            tmp =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString: url]]];
+            while (tmp==nil) {
+                [self descargarImg:url];
+            }
+        }
+        else{
+            tmp=[UIImage imageNamed:@"FactiCo_blanco.jpg"];
+        }
+    }
+    else{
+        tmp=[UIImage imageNamed:@"FactiCo_blanco.jpg"];
+    }
+    
+    return tmp;
+}
 @end

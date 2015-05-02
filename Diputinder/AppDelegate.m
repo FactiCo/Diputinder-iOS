@@ -20,7 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+    _imgCache=[[NSMutableDictionary alloc]init];
     // Permisos para localizar al usuario
     locationManager = [[CLLocationManager alloc]init]; // initializing locationManager
     locationManager.delegate = self; // we set the delegate of locationManager to self.

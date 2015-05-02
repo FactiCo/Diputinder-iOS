@@ -14,6 +14,7 @@
 
     CLLocationManager *locationManager;
 }
+@property (strong, nonatomic) NSMutableDictionary *imgCache;
 @property (strong, nonatomic) NSString *localidad;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UINavigationController *navBar;

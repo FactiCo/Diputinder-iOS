@@ -44,17 +44,12 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 @synthesize allCards;//%%% all the cards
 - (void)viewDidLoad {
     [super viewDidLoad];
-   /* DraggableViewBackground *draggableBackground = [[DraggableViewBackground alloc]initWithFrame:self.view.frame];
-    [self.view addSubview:draggableBackground];*/
+    DraggableViewBackground *draggableBackground = [[DraggableViewBackground alloc]initWithFrame:self.view.frame];
+    [self.view addSubview:draggableBackground];
     // Do any additional setup after loading the view, typically from a nib.
     
    // [super layoutSubviews];
-    [self setupView];
-    //exampleCardLabels = [[NSArray alloc]initWithObjects:@"Diego",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
-    loadedCards = [[NSMutableArray alloc] init];
-    allCards = [[NSMutableArray alloc] init];
-    cardsLoadedIndex = 0;
-    [self getData];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -142,8 +137,9 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     return draggableView;
 }
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
-    NSLog(@"%i",(int)recognizer.accessibilityLabel);
+    NSLog(@"%i",[recognizer.accessibilityLabel integerValue]);
     DetailViewController *detail=[[DetailViewController alloc]init];
+    detail.data=[candidatos objectAtIndex:[recognizer.accessibilityLabel integerValue]];
     [self.navigationController pushViewController:detail animated:YES];
 }
 -(void)getData{
@@ -240,6 +236,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 // This should be customized with your own action
 -(void)cardSwipedRight:(UIView *)card
 {
+    
+    // le diste si 
     //do whatever you want with the card that was swiped
     //    DraggableView *c = (DraggableView *)card;
     
