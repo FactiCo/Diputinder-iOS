@@ -55,7 +55,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 -(void)setupView
 {
     delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
-    loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 50, 50)];
+    loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-25, self.frame.size.height/2-25, 50, 50)];
     loading.backgroundColor=[UIColor blackColor];
     [loading startAnimating];
     [self addSubview:loading];
@@ -101,9 +101,44 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     draggableView.information.text = @"test";//[exampleCardLabels objectAtIndex:index]; //%%% placeholder for card-specific information
 
     UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, draggableView.frame.size.width, draggableView.frame.size.height-50)];
-    if ([[candidatos objectAtIndex:index]objectForKey:@"twitter"] !=NULL) {
-        NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",[[candidatos objectAtIndex:index]objectForKey:@"twitter"]];
-          img.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:st]]];
+    if ([[candidatos objectAtIndex:index]objectForKey:@"twitter"] !=NULL ) {
+        
+        if([[[candidatos objectAtIndex:index]objectForKey:@"twitter"] isEqualToString:@"No se identificó"] ||[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] isEqualToString:@"No tiene twitter"])
+        {
+        // son tan pendejos que le ponen no tiene tuiter
+            if ([[[candidatos objectAtIndex:index]objectForKey:@"gnero"] isEqualToString:@"M"]) {
+                img.image=[UIImage imageNamed:@"h.jpg"];
+            }
+            else
+                img.image=[UIImage imageNamed:@"m.jpg"];
+        }
+        else{
+            if([[[candidatos objectAtIndex:index]objectForKey:@"apellidoPaterno"]isEqualToString:@"Doring"]|| [[[candidatos objectAtIndex:index]objectForKey:@"nombres"]isEqualToString:@"Dora Elia"])
+            {
+                NSLog( @"encontre a este puto ");
+            }
+        NSString *tw=[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] stringByReplacingOccurrencesOfString: @"\n" withString: @""];
+        NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tw];
+        
+        // buscamos la img en cache y si no pues la descargamos
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            UIImage *imgAux=[self buscarCache:st];
+            if (imgAux==nil) {
+                UIImage *tmp= [self descargarImg:st];
+                [delegate.imgCache setObject: tmp forKey: st];
+                
+            }
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+                
+                img.image=[self buscarCache:st];
+            }];
+            
+            
+        });}
+        
+        
+        
     }else{
       
         if ([[[candidatos objectAtIndex:index]objectForKey:@"gnero"] isEqualToString:@"M"]) {
@@ -296,22 +331,18 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 
 -(UIImage *)descargarImg:(NSString *)url {
     UIImage *tmp;
-    if ([[url substringWithRange:NSMakeRange(url.length-3, 3)] isEqualToString:@"png"] || [[url substringWithRange:NSMakeRange(url.length-3, 3)] isEqualToString:@"jpg"] || [[url substringWithRange:NSMakeRange(url.length-3, 3)] isEqualToString:@"gif"] ||
-        [[url substringWithRange:NSMakeRange(url.length-3, 3)] isEqualToString:@"peg"]) {
+    NSLog(@"%@",url);
         if([[url substringWithRange:NSMakeRange(0, 4)] isEqualToString:@"http"]){
             
             tmp =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString: url]]];
             while (tmp==nil) {
-                [self descargarImg:url];
+                tmp=[UIImage imageNamed:@"h.jpg"];
+
             }
         }
         else{
-            tmp=[UIImage imageNamed:@"FactiCo_blanco.jpg"];
+            tmp=[UIImage imageNamed:@"h.jpg"];
         }
-    }
-    else{
-        tmp=[UIImage imageNamed:@"FactiCo_blanco.jpg"];
-    }
     
     return tmp;
 }
