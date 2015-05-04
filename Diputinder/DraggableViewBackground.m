@@ -149,10 +149,16 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             img.image=[UIImage imageNamed:@"m.jpg"];
         
     }
-    name =[[UILabel alloc]initWithFrame:CGRectMake(0, draggableView.frame.size.height-50, draggableView.frame.size.width, 50 )];
+    name =[[UILabel alloc]initWithFrame:CGRectMake(0, draggableView.frame.size.height-50, draggableView.frame.size.width-50, 50 )];
+    name.backgroundColor=[UIColor whiteColor];
+    
     name.textAlignment=NSTextAlignmentCenter;
     name.text=@"nombre del dipudato";
     name.text=[NSString stringWithFormat:@"%@ %@",[[candidatos objectAtIndex:index]objectForKey:@"nombres"],[[candidatos objectAtIndex:index]objectForKey:@"apellidoPaterno"]];
+    UIImageView *partido=[[UIImageView alloc]initWithFrame:CGRectMake(draggableView.frame.size.width-50,  draggableView.frame.size.height-50, 50, 50)];
+    partido.image=[UIImage imageNamed:@"Diego.jpg"];
+    
+    [draggableView addSubview:partido];
     [draggableView addSubview:name];
     [draggableView addSubview:img];
     draggableView.delegate = self;
