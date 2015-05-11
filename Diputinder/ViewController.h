@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UIAlertViewDelegate>
+-(void)cardSwipedLeft:(UIView *)card;
+-(void)cardSwipedRight:(UIView *)card;
 
+//@property (retain,nonatomic)NSArray* exampleCardLabels; //%%% the labels the cards
+@property (retain,nonatomic)NSMutableArray* allCards; //%%% the labels the cards
 
 
 @end

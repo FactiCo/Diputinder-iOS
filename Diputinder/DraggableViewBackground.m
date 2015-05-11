@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "DetailViewController.h"
 #import <AudioToolbox/AudioServices.h>
-
+#import  <Social/Social.h>
 @implementation DraggableViewBackground{
     NSInteger cardsLoadedIndex; //%%% the index of the card you have loaded into the loadedCards array last
     NSMutableArray *loadedCards; //%%% the array of card loaded (change max_buffer_size to increase or decrease the number of cards this holds)
@@ -367,5 +367,15 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         }
     
     return tmp;
+}
+
+-(IBAction)btnTwitterSharing_Clicked:(id)sender {
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    {
+        SLComposeViewController *tweetSheetOBJ = [SLComposeViewController
+                                                  composeViewControllerForServiceType:SLServiceTypeTwitter];
+        [tweetSheetOBJ setInitialText:@"Learn iOS programming at weblineindia.com!"];
+       // [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
+    }
 }
 @end
