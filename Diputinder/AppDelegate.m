@@ -40,6 +40,7 @@
   //  [self reverseGeokcode:locationManager.location];
     ViewController *vc=[[ViewController alloc]init];
    _navBar=[[UINavigationController alloc]initWithRootViewController:vc];
+    
     self.window.rootViewController=_navBar;
     
     return YES;

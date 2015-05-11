@@ -112,6 +112,23 @@
     puesto.text=[_data objectForKey:@"puesto"];
     [scroll addSubview:puesto];
     
+    
+    UILabel *partido=[[UILabel alloc] initWithFrame:CGRectMake(15, puesto.frame.size.height+ puesto.frame.origin.y, self.view.frame.size.width-30, 50)];
+    
+    partido.backgroundColor=[UIColor redColor];
+    partido.text=[_data objectForKey:@"partido"];
+    [scroll addSubview:partido];
+    
+    if([_data objectForKey:@"partidosEnAlianza"]!=NULL)
+    {
+    
+        UILabel *alianza=[[UILabel alloc] initWithFrame:CGRectMake(15, partido.frame.size.height+ partido.frame.origin.y, self.view.frame.size.width-30, 50)];
+        
+        alianza.backgroundColor=[UIColor redColor];
+        alianza.text=[_data objectForKey:@"partidosEnAlianza"];
+        [scroll addSubview:alianza];
+    }
+   
      [self.view addSubview:scroll];
     self.view.backgroundColor=[UIColor redColor];
     // Do any additional setup after loading the view.

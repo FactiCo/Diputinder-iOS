@@ -67,24 +67,26 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [menuButton setImage:[UIImage imageNamed:@"menuButton"] forState:UIControlStateNormal];
     messageButton = [[UIButton alloc]initWithFrame:CGRectMake(284, 34, 18, 18)];
     [messageButton setImage:[UIImage imageNamed:@"messageButton"] forState:UIControlStateNormal];
-    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, self.frame.size.height-100, 59, 59)];
-    [xButton setImage:[UIImage imageNamed:@"xButton"] forState:UIControlStateNormal];
+   
+    
+    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, self.frame.size.height-150, 80 , 80)];
+    [xButton setImage:[UIImage imageNamed:@"nobutton.png"] forState:UIControlStateNormal];
     [xButton addTarget:self action:@selector(swipeLeft) forControlEvents:UIControlEventTouchUpInside];
-    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, self.frame.size.height-100, 59, 59)];
-    [checkButton setImage:[UIImage imageNamed:@"checkButton"] forState:UIControlStateNormal];
+    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, self.frame.size.height-150, 80, 80)];
+    [checkButton setImage:[UIImage imageNamed:@"yesbutton.png"] forState:UIControlStateNormal];
     [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
  
-    self.backgroundColor=[UIColor yellowColor];
+    self.backgroundColor=[UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
     
     vista=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     vista.backgroundColor=[UIColor clearColor];
     
    
-    [self addSubview:menuButton];
-    [self addSubview:messageButton];
+   // [self addSubview:menuButton];
+   // [self addSubview:messageButton];
     [vista addSubview:xButton];
     [vista addSubview:checkButton];
-     [self addSubview:vista];
+    [self addSubview:vista];
     
 }
 
@@ -98,9 +100,16 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     {
         NSLog(@"");
     }
-    DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake((self.frame.size.width - CARD_WIDTH)/2, (self.frame.size.height - CARD_HEIGHT)/2, CARD_WIDTH, CARD_HEIGHT)];
+ //   DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake((self.frame.size.width - CARD_WIDTH)/2, (self.frame.size.height - CARD_HEIGHT)/2, CARD_WIDTH, CARD_HEIGHT)];
+  
+       DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake(10, 10, self.frame.size.width-20 , self.frame.size.width+80)];
     draggableView.information.text = @"test";//[exampleCardLabels objectAtIndex:index]; //%%% placeholder for card-specific information
-
+//modificamos el frame de los botones
+    xButton.frame=CGRectMake((draggableView.frame.size.width/2)-100, draggableView.frame.size.height+20, xButton.frame.size.width, xButton.frame.size.height);
+      checkButton.frame=CGRectMake((draggableView.frame.size.width/2)+40, draggableView.frame.size.height+20, checkButton.frame.size.width, checkButton.frame.size.height);
+  
+    
+    
     UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, draggableView.frame.size.width, draggableView.frame.size.height-50)];
     if ([[candidatos objectAtIndex:index]objectForKey:@"twitter"] !=NULL ) {
         
@@ -150,25 +159,30 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         
     }
     name =[[UILabel alloc]initWithFrame:CGRectMake(0, draggableView.frame.size.height-50, draggableView.frame.size.width-50, 50 )];
-    name.backgroundColor=[UIColor whiteColor];
-    
+    name.backgroundColor=[UIColor clearColor];
+    name.textColor=[UIColor whiteColor];
     name.textAlignment=NSTextAlignmentCenter;
     name.text=@"nombre del dipudato";
     name.text=[NSString stringWithFormat:@"%@ %@",[[candidatos objectAtIndex:index]objectForKey:@"nombres"],[[candidatos objectAtIndex:index]objectForKey:@"apellidoPaterno"]];
     UIImageView *partido=[[UIImageView alloc]initWithFrame:CGRectMake(draggableView.frame.size.width-50,  draggableView.frame.size.height-50, 50, 50)];
-    partido.image=[UIImage imageNamed:@"Diego.jpg"];
+   
+    partido.image=[UIImage imageNamed: [NSString stringWithFormat:@"%@.png",[[candidatos objectAtIndex:index]objectForKey:@"partido"]]];
     
     [draggableView addSubview:partido];
     [draggableView addSubview:name];
     [draggableView addSubview:img];
     draggableView.delegate = self;
     draggableView.tag=index;
-    draggableView.backgroundColor=[UIColor redColor];
+   
+    //verde 48,204, 113
+    //modaro 116, 94,197
+    draggableView.backgroundColor= [UIColor colorWithRed:116/255.0 green:94/255.0 blue:197/255.0 alpha:1];
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(handleSingleTap:)];
      singleFingerTap.accessibilityLabel=[NSString stringWithFormat:@"%li",(long)index];
     [draggableView addGestureRecognizer:singleFingerTap];
+    
     return draggableView;
 }
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
