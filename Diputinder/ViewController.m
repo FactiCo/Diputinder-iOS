@@ -56,7 +56,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:48/255.0 green:204/255.0 blue:113/255.0 alpha:1]];
    // [super layoutSubviews];
-    UIImage *image2 = [UIImage imageNamed:@"ligue.png"];
+   // UIImage *image2 = [UIImage imageNamed:@"ligue.png"];
     //[self.navigationController.navigationBar setBackgroundImage:image2 forBarMetrics:UIBarMetricsDefault];
     
     UIImageView *image=[[UIImageView alloc]initWithFrame:CGRectMake(0,0,25,20)] ;
@@ -73,7 +73,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     button.imageView.backgroundColor=[UIColor clearColor];
     button.tintColor=[UIColor whiteColor];
     //[button setImage:[UIImage imageNamed:@"button_menu_navigationbar.png"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(presentMenuButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
     
     
     [button setFrame:CGRectMake(0, 0, 37,34)];
@@ -155,6 +155,10 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
     
     UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, draggableView.frame.size.width, draggableView.frame.size.height-50)];
+    img.image=[UIImage imageNamed:@"noimage.jpg"];
+    UIActivityIndicatorView *a=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(img.frame.size.width/2-25, img.frame.size.height/2-25, 50, 50)];
+    [a startAnimating];
+    [img addSubview: a];
     if ([[candidatos objectAtIndex:index]objectForKey:@"twitter"] !=NULL ) {
       
         if([[[candidatos objectAtIndex:index]objectForKey:@"twitter"] isEqualToString:@"No se identificó"] ||[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] isEqualToString:@"No tiene twitter"])
@@ -168,16 +172,23 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
                 img.image=[UIImage imageNamed:@"m.jpg"];
         }
         else{
-            if([[[candidatos objectAtIndex:index]objectForKey:@"apellidoPaterno"]isEqualToString:@"Doring"]|| [[[candidatos objectAtIndex:index]objectForKey:@"nombres"]isEqualToString:@"Dora Elia"])
+            if([[[candidatos objectAtIndex:index]objectForKey:@"twitter"]isEqualToString:@"DRGamaliel"]&& ([[[candidatos objectAtIndex:index]objectForKey:@"nombres"]isEqualToString:@"Gamaliel"] && [[[candidatos objectAtIndex:index]objectForKey:@"apellidoPaterno"]isEqualToString:@"Gutiérrez"]))
             {
                 NSLog( @"encontre a este **** ");
             }
+            else{
             tuiter=[[candidatos objectAtIndex:index]objectForKey:@"twitter"];
             NSString *tw=[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] stringByReplacingOccurrencesOfString: @"\n" withString: @""];
             NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tw];
-            
+                if ([st isEqualToString:@"https://twitter.com/DrGamaliel/profile_image?size=original"]) {
+                    
+                }
+                else{
             // buscamos la img en cache y si no pues la descargamos
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    
+                    dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
+                    dispatch_async(imageQueue, ^{
+                        
                 
                 UIImage *imgAux=[self buscarCache:st];
                 if (imgAux==nil) {
@@ -185,18 +196,28 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
                     [delegate.imgCache setObject: tmp forKey: st];
                     
                 }
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+                
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            // Update the UI
                     
                     img.image=[self buscarCache:st];
-                }];
+                    [a stopAnimating];
+               
+                        });
                 
                 
-            });}
+            });
+            }
+            }
+        }
+        
+        
+        
         
         
         
     }else{
-        tuiter=@"no";
+      [a stopAnimating];
         if ([[[candidatos objectAtIndex:index]objectForKey:@"gnero"] isEqualToString:@"M"]) {
             img.image=[UIImage imageNamed:@"h.jpg"];
         }
@@ -317,7 +338,11 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 {
     //do whatever you want with the card that was swiped
     //    DraggableView *c = (DraggableView *)card;
-    
+    if (cardsLoadedIndex ==[allCards count]) {
+        cardsLoadedIndex=0;
+        [allCards removeAllObjects];
+        [self loadCards];
+    }
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
@@ -335,7 +360,9 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
     //do whatever you want with the card that was swiped
     //    DraggableView *c = (DraggableView *)card;
-    
+    if (cardsLoadedIndex <=1) {
+        [self loadCards];
+    }
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
@@ -343,6 +370,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self.view insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
+  
+    
     if ([[candidatos objectAtIndex:card.tag]objectForKey:@"twitter"]!=NULL) {
             tuiter=[NSString stringWithFormat:@"@%@",[[candidatos objectAtIndex:card.tag]objectForKey:@"twitter"]];
     }
@@ -411,13 +440,18 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     if([[url substringWithRange:NSMakeRange(0, 4)] isEqualToString:@"http"]){
         
         tmp =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString: url]]];
+        if (tmp !=nil)
+            return tmp;
         while (tmp==nil) {
-            tmp=[UIImage imageNamed:@"h.jpg"];
-            
+         //   tmp=[UIImage imageNamed:@"h.jpg"];
+            [self descargarImg:url];
+            NSLog(@"intenta descargar de nuevo");
         }
     }
+    
     else{
-        tmp=[UIImage imageNamed:@"h.jpg"];
+        // no es una url valida
+        tmp=[UIImage imageNamed:@"noimage.jpg"];
     }
     
     return tmp;
@@ -447,9 +481,14 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     {
         SLComposeViewController *tweetSheetOBJ = [SLComposeViewController
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
-        NSString *tw=[NSString stringWithFormat:@"Hey %@ Manda tu 3 de 3", tuiter];
+        NSString *tw=[NSString stringWithFormat:@"Hey %@ Manda tu 3 de 3 @liguepolítico", tuiter];
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
     }
+}
+-(IBAction)info:(id)sender{
+    UIAlertView *info=[[UIAlertView alloc]initWithTitle:@"¿Qué es el 3 de 3?" message:@"Explicación" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
+    [info show];
+
 }
 @end
