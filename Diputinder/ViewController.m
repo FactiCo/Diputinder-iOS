@@ -29,6 +29,8 @@
     UIButton* checkButton;
     UIButton* xButton;
     NSMutableArray *candidatos;
+     NSMutableArray *conFoto;
+     NSMutableArray *sinFoto;
     NSMutableArray * exampleCardLabels;
     UILabel *name;
     UIScrollView *vista;
@@ -58,6 +60,16 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
    // [super layoutSubviews];
    // UIImage *image2 = [UIImage imageNamed:@"ligue.png"];
     //[self.navigationController.navigationBar setBackgroundImage:image2 forBarMetrics:UIBarMetricsDefault];
+    
+    
+    UIButton* tryAgain = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [tryAgain addTarget:self
+                action:@selector(reload:)
+      forControlEvents:UIControlEventTouchUpInside];
+    [tryAgain setTitle:@"Volver a intentar" forState:UIControlStateNormal];
+    tryAgain.frame = CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/2, 160.0, 40.0);
+    [self.view addSubview:tryAgain];
+    
     
     UIImageView *image=[[UIImageView alloc]initWithFrame:CGRectMake(0,0,25,20)] ;
     
@@ -263,6 +275,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
     exampleCardLabels=[[NSMutableArray alloc]init];
     candidatos=[[NSMutableArray alloc]init];
+    conFoto=[[NSMutableArray alloc]init];
+    sinFoto=[[NSMutableArray alloc]init];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     
@@ -274,11 +288,21 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             
             if ([[item objectForKey:@"entidadFederativa"]isEqualToString:delegate.localidad])
             {
-                [candidatos addObject:item];
+                
+                if ([item objectForKey:@"twitter"]!=NULL) {
+                     [conFoto addObject:item];
+                }
+                else{
+                 [sinFoto addObject:item];
+                }
+              
+              //  [candidatos addObject:item];
                 NSLog(@"se agrego a %@",delegate.localidad);
             }
             
         }
+        [candidatos addObjectsFromArray:conFoto];
+        [candidatos addObjectsFromArray:sinFoto];
         if ([candidatos count]) {
             exampleCardLabels=candidatos;
             //   NSLog(@"si hay ");
@@ -490,5 +514,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     UIAlertView *info=[[UIAlertView alloc]initWithTitle:@"¿Qué es el 3 de 3?" message:@"Explicación" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
     [info show];
 
+}
+-(IBAction)reload:(id)sender{
+    [self viewDidLoad];
 }
 @end
