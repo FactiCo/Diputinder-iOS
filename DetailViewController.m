@@ -21,11 +21,40 @@
 
 }
 - (void)viewDidLoad {
+      self.navigationItem.title=@"Información";
     //[super viewDidLoad];
+    self.view.backgroundColor=[UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
       delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
     scroll=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    scroll.backgroundColor=[UIColor whiteColor];
-    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.width+50)];
+    scroll.backgroundColor=[UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
+    UIView *pleca=[[UIView alloc]initWithFrame:CGRectMake(70, 50, self.view.frame.size.width-70, 100)];
+    pleca.backgroundColor= [UIColor colorWithRed:116/255.0 green:94/255.0 blue:197/255.0 alpha:1];
+    
+    [scroll addSubview:pleca];
+    
+    
+    UILabel *name=[[UILabel alloc] initWithFrame:CGRectMake(70, 0, pleca.frame.size.width-70, 50)];
+    name.numberOfLines=3;
+    [name setFont:[UIFont systemFontOfSize:18]];
+    name.textColor=[UIColor whiteColor];
+    name.backgroundColor=[UIColor clearColor];
+    name.text=[NSString stringWithFormat:@"%@ %@ %@",[_data objectForKey:@"nombres"],[_data objectForKey:@"apellidoPaterno"],[_data objectForKey:@"apellidoMaterno"]];
+    [name sizeToFit];
+    [pleca addSubview:name];
+    
+    UILabel *info=[[UILabel alloc] initWithFrame:CGRectMake(70, 50, pleca.frame.size.width-70, 50)];
+    info.numberOfLines=3;
+    [info setFont:[UIFont systemFontOfSize:18]];
+    info.textColor=[UIColor whiteColor];
+    info.backgroundColor=[UIColor clearColor];
+    info.text=[NSString stringWithFormat:@"%@ / %@ - Distrito %@",[_data objectForKey:@"puesto"],[_data objectForKey:@"entidadFederativa"],[_data objectForKey:@"distritoElectoral"]];
+    [info sizeToFit];
+    [pleca addSubview:info];
+    
+    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(30, 50,100,  105)];
+    [img.layer setCornerRadius:img.frame.size.width / 2];
+    img.layer.cornerRadius = img.frame.size.width / 2;
+    img.layer.masksToBounds = YES;
     if ([_data objectForKey:@"twitter"] !=NULL) {
     NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",[_data objectForKey:@"twitter"]];
 
@@ -98,25 +127,19 @@
     
     
     // datos debajo de la foto
-    UILabel *name=[[UILabel alloc] initWithFrame:CGRectMake(15, img.frame.origin.y+img.frame.size.height+10, self.view.frame.size.width-30, 150)];
-    name.numberOfLines=3;
-    [name setFont:[UIFont systemFontOfSize:20]];
-    name.backgroundColor=[UIColor clearColor];
-    name.text=[NSString stringWithFormat:@"%@ %@ %@",[_data objectForKey:@"nombres"],[_data objectForKey:@"apellidoPaterno"],[_data objectForKey:@"apellidoMaterno"]];
-     [name sizeToFit];
-    [scroll addSubview:name];
+
     
-    UILabel *puesto=[[UILabel alloc] initWithFrame:CGRectMake(15, name.frame.size.height+ name.frame.origin.y, self.view.frame.size.width-30, 50)];
+    UILabel *puesto=[[UILabel alloc] initWithFrame:CGRectMake(15, img.frame.size.height+ img.frame.origin.y, self.view.frame.size.width-30, 50)];
     
-    puesto.backgroundColor=[UIColor redColor];
-    puesto.text=[_data objectForKey:@"puesto"];
+    puesto.backgroundColor=[UIColor clearColor];
+    puesto.text=@"";//[_data objectForKey:@"puesto"];
     [scroll addSubview:puesto];
     
     
     UILabel *partido=[[UILabel alloc] initWithFrame:CGRectMake(15, puesto.frame.size.height+ puesto.frame.origin.y, self.view.frame.size.width-30, 50)];
     
-    partido.backgroundColor=[UIColor redColor];
-    partido.text=[_data objectForKey:@"partido"];
+    partido.backgroundColor=[UIColor clearColor];
+    partido.text=@"Alianza";//[_data objectForKey:@"partido"];
     [scroll addSubview:partido];
     
     if([_data objectForKey:@"partidosEnAlianza"]!=NULL)
@@ -126,11 +149,23 @@
         
         alianza.backgroundColor=[UIColor redColor];
         alianza.text=[_data objectForKey:@"partidosEnAlianza"];
-        [scroll addSubview:alianza];
+        //[scroll addSubview:alianza];
+        UIImageView *imgPartidoAlianza=[[UIImageView alloc]initWithFrame:CGRectMake(90, partido.frame.size.height+partido.frame.origin.y+20,80,  80)];
+        NSString *aux2=[NSString stringWithFormat:@"%@.png",[_data objectForKey:@"partidosEnAlianza"]];
+        imgPartidoAlianza.image=[UIImage imageNamed:aux2];
+        [scroll addSubview:imgPartidoAlianza];
+        [self.view addSubview:scroll];
+        self.view.backgroundColor=[UIColor redColor];
     }
    
+    
+     UIImageView *imgPartido=[[UIImageView alloc]initWithFrame:CGRectMake(90, 120,40,  40)];
+    NSString *aux=[NSString stringWithFormat:@"%@.png",[_data objectForKey:@"partido"]];
+    imgPartido.image=[UIImage imageNamed:aux];
+    [scroll addSubview:imgPartido];
      [self.view addSubview:scroll];
-    self.view.backgroundColor=[UIColor redColor];
+    
+
     // Do any additional setup after loading the view.
 }
 

@@ -68,7 +68,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
       forControlEvents:UIControlEventTouchUpInside];
     [tryAgain setTitle:@"Volver a intentar" forState:UIControlStateNormal];
     tryAgain.frame = CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/2, 160.0, 40.0);
-    [self.view addSubview:tryAgain];
+    [vista addSubview:tryAgain];
     
     
     UIImageView *image=[[UIImageView alloc]initWithFrame:CGRectMake(0,0,25,20)] ;
