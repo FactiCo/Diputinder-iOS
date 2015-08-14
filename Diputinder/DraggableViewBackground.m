@@ -90,7 +90,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
 }
 
-#warning include own card customization here!
+
 //%%% creates a card and returns it.  This should be customized to fit your needs.
 // use "index" to indicate where the information should be pulled.  If this doesn't apply to you, feel free
 // to get rid of it (eg: if you are building cards from data from the internet)
@@ -205,10 +205,10 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         loading.hidden=TRUE;
         for (NSDictionary *item in responseObject) {
             
-            if ([[item objectForKey:@"entidadFederativa"]isEqualToString:delegate.localidad])
+            if ([[item objectForKey:@"entidadFederativa"]isEqualToString:delegate.country])
                 {
                  [candidatos addObject:item];
-                    NSLog(@"se agrego a %@",delegate.localidad);
+                    NSLog(@"se agrego a %@",delegate.country);
                 }
            
         }

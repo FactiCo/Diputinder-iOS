@@ -7,8 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface ViewController : UIViewController <UIAlertViewDelegate>
+
+@interface ViewController : UIViewController <UIAlertViewDelegate,CLLocationManagerDelegate>
+{
+    
+    CLLocationManager *locationManager;
+}
+
 -(void)cardSwipedLeft:(UIView *)card;
 -(void)cardSwipedRight:(UIView *)card;
 

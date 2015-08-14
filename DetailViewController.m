@@ -38,7 +38,7 @@
     [name setFont:[UIFont systemFontOfSize:18]];
     name.textColor=[UIColor whiteColor];
     name.backgroundColor=[UIColor clearColor];
-    name.text=[NSString stringWithFormat:@"%@ %@ %@",[_data objectForKey:@"nombres"],[_data objectForKey:@"apellidoPaterno"],[_data objectForKey:@"apellidoMaterno"]];
+    name.text=[NSString stringWithFormat:@"%@ %@ %@",[[_data objectForKey:@"candidate"]objectForKey:@"nombres"],[[_data objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[_data objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
     [name sizeToFit];
     [pleca addSubview:name];
     
@@ -47,7 +47,7 @@
     [info setFont:[UIFont systemFontOfSize:18]];
     info.textColor=[UIColor whiteColor];
     info.backgroundColor=[UIColor clearColor];
-    info.text=[NSString stringWithFormat:@"%@ / %@ - Distrito %@",[_data objectForKey:@"puesto"],[_data objectForKey:@"entidadFederativa"],[_data objectForKey:@"distritoElectoral"]];
+    info.text=[NSString stringWithFormat:@"%@ \n %@",[_data objectForKey:@"position"],_territory];
     [info sizeToFit];
     [pleca addSubview:info];
     
@@ -55,8 +55,8 @@
     [img.layer setCornerRadius:img.frame.size.width / 2];
     img.layer.cornerRadius = img.frame.size.width / 2;
     img.layer.masksToBounds = YES;
-    if ([_data objectForKey:@"twitter"] !=NULL) {
-    NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",[_data objectForKey:@"twitter"]];
+    if ([[_data objectForKey:@"candidate"]objectForKey:@"twitter"] !=NULL) {
+    NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",[[_data objectForKey:@"candidate"]objectForKey:@"twitter"]];
 
     img.image=[delegate.imgCache objectForKey:st];
     }
@@ -71,57 +71,6 @@
     
     }
     
-    /*******/
-    
- 
-    if ([_data objectForKey:@"twitter"] !=NULL ) {
-        
-        if([[_data objectForKey:@"twitter"] isEqualToString:@"No se identificó"] ||[[_data objectForKey:@"twitter"] isEqualToString:@"No tiene twitter"])
-        {
-            // son tan pendejos que le ponen no tiene tuiter
-            if ([[_data objectForKey:@"gnero"] isEqualToString:@"M"]) {
-                img.image=[UIImage imageNamed:@"h.jpg"];
-            }
-            else
-                img.image=[UIImage imageNamed:@"m.jpg"];
-        }
-        else{
-            if([[_data objectForKey:@"apellidoPaterno"]isEqualToString:@"Doring"]|| [[_data objectForKey:@"nombres"]isEqualToString:@"Dora Elia"])
-            {
-                NSLog( @"encontre a este puto ");
-            }
-            NSString *tw=[[_data objectForKey:@"twitter"] stringByReplacingOccurrencesOfString: @"\n" withString: @""];
-            NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tw];
-            
-            // buscamos la img en cache y si no pues la descargamos
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                
-                UIImage *imgAux2=[self buscarCache:st];
-                if (imgAux2==nil) {
-                    UIImage *tmp= [self descargarImg:st];
-                    [delegate.imgCache setObject: tmp forKey: st];
-                    
-                }
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-                    
-                    img.image=[self buscarCache:st];
-                }];
-                
-                
-            });}
-        
-        
-        
-    }else{
-        
-        if ([[_data objectForKey:@"gnero"] isEqualToString:@"M"]) {
-            img.image=[UIImage imageNamed:@"h.jpg"];
-        }
-        else
-            img.image=[UIImage imageNamed:@"m.jpg"];
-        
-    }
-    /*********/
     [scroll addSubview:img];
    
     
@@ -139,7 +88,8 @@
     UILabel *partido=[[UILabel alloc] initWithFrame:CGRectMake(15, puesto.frame.size.height+ puesto.frame.origin.y, self.view.frame.size.width-30, 50)];
     
     partido.backgroundColor=[UIColor clearColor];
-    partido.text=@"Alianza";//[_data objectForKey:@"partido"];
+    partido.text=@"Partido";//[_data objectForKey:@"partido"];
+    [partido sizeToFit];
     [scroll addSubview:partido];
     
     if([_data objectForKey:@"partidosEnAlianza"]!=NULL)
@@ -159,9 +109,28 @@
     }
    
     
-     UIImageView *imgPartido=[[UIImageView alloc]initWithFrame:CGRectMake(90, 120,40,  40)];
-    NSString *aux=[NSString stringWithFormat:@"%@.png",[_data objectForKey:@"partido"]];
-    imgPartido.image=[UIImage imageNamed:aux];
+    UIImageView *imgPartido=[[UIImageView alloc]initWithFrame:CGRectMake(90, partido.frame.size.height+ partido.frame.origin.y,40,  40)];
+    
+    dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
+    dispatch_async(imageQueue, ^{
+        
+        UIImage *imgAux=[self buscarCache:[[[_data objectForKey:@"party"]objectAtIndex:0] objectForKey:@"image"]];
+        if (imgAux==nil) {
+            UIImage *tmp= [self descargarImg:[[[_data objectForKey:@"party"]objectAtIndex:0] objectForKey:@"image"]];
+            [delegate.imgCache setObject: tmp forKey:[[[_data objectForKey:@"party"]objectAtIndex:0] objectForKey:@"image"]];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Update the UI
+            
+            imgPartido.image=[self buscarCache:[[[_data objectForKey:@"party"]objectAtIndex:0] objectForKey:@"image"]];
+            
+        });
+        
+        
+    });
+    
+ 
     [scroll addSubview:imgPartido];
      [self.view addSubview:scroll];
     

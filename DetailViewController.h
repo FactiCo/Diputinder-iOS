@@ -10,5 +10,6 @@
 
 @interface DetailViewController : ViewController
 @property (nonatomic,strong) UIImage *persona;
+@property (nonatomic,strong) NSString *territory;
 @property (nonatomic,strong) NSMutableDictionary *data;
 @end

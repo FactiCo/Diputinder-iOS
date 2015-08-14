@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Carlos Castellanos. All rights reserved.
 //
 
+#define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 #import "ViewController.h"
+
 #import "DraggableViewBackground.h"
 
 #import <AFHTTPRequestOperationManager.h>
@@ -29,11 +31,12 @@
     UIButton* checkButton;
     UIButton* xButton;
     NSMutableArray *candidatos;
-     NSMutableArray *conFoto;
-     NSMutableArray *sinFoto;
+    NSMutableArray *conFoto;
+    NSMutableArray *sinFoto;
     NSMutableArray * exampleCardLabels;
     UILabel *name;
     UIScrollView *vista;
+    NSString *territory;
     
     UIActivityIndicatorView *loading;
     AppDelegate *delegate;
@@ -51,21 +54,37 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 @synthesize allCards;//%%% all the cards
 - (void)viewDidLoad {
     [super viewDidLoad];
-      [[[self navigationController] navigationBar] setBarStyle:UIBarStyleBlackTranslucent];
-  //  DraggableViewBackground *draggableBackground = [[DraggableViewBackground alloc]initWithFrame:self.view.frame];
-   //2 [self.view addSubview:draggableBackground];
+    
+    
+    locationManager = [[CLLocationManager alloc]init]; // initializing locationManager
+    locationManager.delegate = self; // we set the delegate of locationManager to self.
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest; // setting the accuracy
+    
+    [locationManager startUpdatingLocation];
+    
+#ifdef __IPHONE_8_0
+    if(IS_OS_8_OR_LATER) {
+        // Use one or the other, not both. Depending on what you put in info.plist
+        [locationManager requestWhenInUseAuthorization];
+        [locationManager requestAlwaysAuthorization];
+    }
+#endif
+    
+    [[[self navigationController] navigationBar] setBarStyle:UIBarStyleBlackTranslucent];
+    //  DraggableViewBackground *draggableBackground = [[DraggableViewBackground alloc]initWithFrame:self.view.frame];
+    //2 [self.view addSubview:draggableBackground];
     // Do any additional setup after loading the view, typically from a nib.
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:48/255.0 green:204/255.0 blue:113/255.0 alpha:1]];
-   // [super layoutSubviews];
-   // UIImage *image2 = [UIImage imageNamed:@"ligue.png"];
+    // [super layoutSubviews];
+    // UIImage *image2 = [UIImage imageNamed:@"ligue.png"];
     //[self.navigationController.navigationBar setBackgroundImage:image2 forBarMetrics:UIBarMetricsDefault];
     
     
     UIButton* tryAgain = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [tryAgain addTarget:self
-                action:@selector(reload:)
-      forControlEvents:UIControlEventTouchUpInside];
+                 action:@selector(reload:)
+       forControlEvents:UIControlEventTouchUpInside];
     [tryAgain setTitle:@"Volver a intentar" forState:UIControlStateNormal];
     tryAgain.frame = CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/2, 160.0, 40.0);
     [vista addSubview:tryAgain];
@@ -99,12 +118,12 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     loadedCards = [[NSMutableArray alloc] init];
     allCards = [[NSMutableArray alloc] init];
     cardsLoadedIndex = 0;
-    [self getData];
+    [self getAddress];
     //verde 48,204, 113
     //modaro 116, 94,197
     //226,226,226
-
-
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -171,65 +190,41 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     UIActivityIndicatorView *a=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(img.frame.size.width/2-25, img.frame.size.height/2-25, 50, 50)];
     [a startAnimating];
     [img addSubview: a];
-    if ([[candidatos objectAtIndex:index]objectForKey:@"twitter"] !=NULL ) {
-      
-        if([[[candidatos objectAtIndex:index]objectForKey:@"twitter"] isEqualToString:@"No se identificó"] ||[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] isEqualToString:@"No tiene twitter"])
-        {
-              tuiter=@"no";
-            // son tan pendejos que le ponen no tiene tuiter
-            if ([[[candidatos objectAtIndex:index]objectForKey:@"gnero"] isEqualToString:@"M"]) {
-                img.image=[UIImage imageNamed:@"h.jpg"];
+    
+    // Revisa si el usuario tiene twitter
+    if ([[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"] !=NULL ) {
+        
+        tuiter=[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"];
+        NSString *tw=[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] stringByReplacingOccurrencesOfString: @"\n" withString: @""];
+        NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tuiter];
+        
+        // buscamos la img en cache y si no pues la descargamos
+        
+        dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
+        dispatch_async(imageQueue, ^{
+            
+            UIImage *imgAux=[self buscarCache:st];
+            if (imgAux==nil) {
+                UIImage *tmp= [self descargarImg:st];
+                [delegate.imgCache setObject: tmp forKey: st];
+                
             }
-            else
-                img.image=[UIImage imageNamed:@"m.jpg"];
-        }
-        else{
-            if([[[candidatos objectAtIndex:index]objectForKey:@"twitter"]isEqualToString:@"DRGamaliel"]&& ([[[candidatos objectAtIndex:index]objectForKey:@"nombres"]isEqualToString:@"Gamaliel"] && [[[candidatos objectAtIndex:index]objectForKey:@"apellidoPaterno"]isEqualToString:@"Gutiérrez"]))
-            {
-                NSLog( @"encontre a este **** ");
-            }
-            else{
-            tuiter=[[candidatos objectAtIndex:index]objectForKey:@"twitter"];
-            NSString *tw=[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] stringByReplacingOccurrencesOfString: @"\n" withString: @""];
-            NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tw];
-                if ([st isEqualToString:@"https://twitter.com/DrGamaliel/profile_image?size=original"]) {
-                    
-                }
-                else{
-            // buscamos la img en cache y si no pues la descargamos
-                    
-                    dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
-                    dispatch_async(imageQueue, ^{
-                        
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Update the UI
                 
-                UIImage *imgAux=[self buscarCache:st];
-                if (imgAux==nil) {
-                    UIImage *tmp= [self descargarImg:st];
-                    [delegate.imgCache setObject: tmp forKey: st];
-                    
-                }
-                
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            // Update the UI
-                    
-                    img.image=[self buscarCache:st];
-                    [a stopAnimating];
-               
-                        });
-                
+                img.image=[self buscarCache:st];
+                [a stopAnimating];
                 
             });
-            }
-            }
-        }
+            
+            
+        });
         
         
-        
-        
-        
-        
-    }else{
-      [a stopAnimating];
+    }
+    else{
+        [a stopAnimating];
         if ([[[candidatos objectAtIndex:index]objectForKey:@"gnero"] isEqualToString:@"M"]) {
             img.image=[UIImage imageNamed:@"h.jpg"];
         }
@@ -242,10 +237,40 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     name.textColor=[UIColor whiteColor];
     name.textAlignment=NSTextAlignmentCenter;
     name.text=@"nombre del dipudato";
-    name.text=[NSString stringWithFormat:@"%@ %@",[[candidatos objectAtIndex:index]objectForKey:@"nombres"],[[candidatos objectAtIndex:index]objectForKey:@"apellidoPaterno"]];
+    name.text=[NSString stringWithFormat:@"%@ %@ %@",[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"nombres"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
+    
+    
+    
     UIImageView *partido=[[UIImageView alloc]initWithFrame:CGRectMake(draggableView.frame.size.width-50,  draggableView.frame.size.height-50, 50, 50)];
     
-    partido.image=[UIImage imageNamed: [NSString stringWithFormat:@"%@.png",[[candidatos objectAtIndex:index]objectForKey:@"partido"]]];
+    //obtener la imagen con la url del json y ponerla aqui y en cache
+    
+    
+    
+     // buscamos la img en cache y si no pues la descargamos
+    NSLog(@"index = %i",index);
+     dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
+     dispatch_async(imageQueue, ^{
+     
+     UIImage *imgAux=[self buscarCache:[[[[candidatos objectAtIndex:index] objectForKey:@"party"]objectAtIndex:0] objectForKey:@"image"]];
+     if (imgAux==nil) {
+     UIImage *tmp= [self descargarImg:[[[[candidatos objectAtIndex:index] objectForKey:@"party"]objectAtIndex:0] objectForKey:@"image"]];
+     [delegate.imgCache setObject: tmp forKey:[[[[candidatos objectAtIndex:index] objectForKey:@"party"]objectAtIndex:0] objectForKey:@"image"]];
+     }
+     
+     dispatch_async(dispatch_get_main_queue(), ^{
+     // Update the UI
+     
+     partido.image=[self buscarCache:[[[[candidatos objectAtIndex:index] objectForKey:@"party"]objectAtIndex:0] objectForKey:@"image"]];
+     [a stopAnimating];
+     
+     });
+     
+     
+     });
+     
+    
+    //partido.image=[UIImage imageNamed: [NSString stringWithFormat:@"%@.png",[[candidatos objectAtIndex:index]objectForKey:@"partido"]]];
     
     [draggableView addSubview:partido];
     [draggableView addSubview:name];
@@ -268,6 +293,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     NSLog(@"%i",[recognizer.accessibilityLabel integerValue]);
     DetailViewController *detail=[[DetailViewController alloc]init];
     detail.data=[candidatos objectAtIndex:[recognizer.accessibilityLabel integerValue]];
+    detail.territory=territory;
     [delegate.navBar pushViewController:detail animated:YES];
     
 }
@@ -278,27 +304,49 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     conFoto=[[NSMutableArray alloc]init];
     sinFoto=[[NSMutableArray alloc]init];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *url ;
+    if ([delegate.city isKindOfClass:[NSNull class]]) {
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1/states/1.json"];
+    }else
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1/states/1.json"];
     
+    if ([delegate.state isKindOfClass:[NSNull class]]) {
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1.json"];
+    }
     
-    NSString *url =[NSString stringWithFormat:@"https://candidatotransparente.mx/scripts/datos/Diputados.json"];
+    url=@"http://liguepolitico-staging.herokuapp.com/countries/1.json";
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
         loading.hidden=TRUE;
-        for (NSDictionary *item in responseObject) {
-            
-            if ([[item objectForKey:@"entidadFederativa"]isEqualToString:delegate.localidad])
-            {
+        NSMutableArray *positions =[[NSMutableArray alloc]init];
+        territory= [responseObject objectForKey:@"name"];
+        for (NSDictionary *item in [responseObject objectForKey:@"positions"]) {
+            // debo obtener todas las posiciones y luego juntarlas
+            [positions addObject:item];
+            for (int a=0; a<positions.count; a++) {
+                NSLog(@"%@",[[positions objectAtIndex:a]objectForKey:@"title"]);
                 
-                if ([item objectForKey:@"twitter"]!=NULL) {
-                     [conFoto addObject:item];
+                NSMutableArray *candis=[[NSMutableArray alloc]initWithArray:[[positions objectAtIndex:a]objectForKey:@"candidates"]];
+                //recorro todos los candidato de este cargo politico
+                for (int b =0 ; b<candis.count; b++) {
+                    NSMutableDictionary *aux=[NSMutableDictionary dictionaryWithDictionary:[[[positions objectAtIndex:a]objectForKey:@"candidates"] objectAtIndex:b]];
+                    
+                    [aux setObject:[[positions objectAtIndex:a]objectForKey:@"title"] forKey:@"position"];
+                    [candidatos addObject:aux];
                 }
-                else{
-                 [sinFoto addObject:item];
-                }
-              
-              //  [candidatos addObject:item];
-                NSLog(@"se agrego a %@",delegate.localidad);
             }
+            
+            /*if ([[item objectForKey:@"entidadFederativa"]isEqualToString:delegate.country])
+             {
+             
+             if ([item objectForKey:@"twitter"]!=NULL) {
+             [conFoto addObject:item];
+             }
+             else{
+             [sinFoto addObject:item];
+             }
+             
+             }*/
             
         }
         [candidatos addObjectsFromArray:conFoto];
@@ -365,7 +413,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     if (cardsLoadedIndex ==[allCards count]) {
         cardsLoadedIndex=0;
         [allCards removeAllObjects];
-        [self loadCards];
+        //[self loadCards];
     }
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     
@@ -385,7 +433,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     //do whatever you want with the card that was swiped
     //    DraggableView *c = (DraggableView *)card;
     if (cardsLoadedIndex <=1) {
-        [self loadCards];
+      //  [self loadCards];
     }
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     
@@ -394,16 +442,16 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self.view insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
-  
+    
     
     if ([[candidatos objectAtIndex:card.tag]objectForKey:@"twitter"]!=NULL) {
-            tuiter=[NSString stringWithFormat:@"@%@",[[candidatos objectAtIndex:card.tag]objectForKey:@"twitter"]];
+        tuiter=[NSString stringWithFormat:@"@%@",[[candidatos objectAtIndex:card.tag]objectForKey:@"twitter"]];
     }
     else{
-      tuiter=[NSString stringWithFormat:@"#%@%@%@",[[candidatos objectAtIndex:card.tag]objectForKey:@"nombres"],[[candidatos objectAtIndex:card.tag]objectForKey:@"apellidoPaterno"],[[candidatos objectAtIndex:card.tag]objectForKey:@"apellidoMaterno"]];
-    
+        tuiter=[NSString stringWithFormat:@"#%@%@%@",[[candidatos objectAtIndex:card.tag]objectForKey:@"nombres"],[[candidatos objectAtIndex:card.tag]objectForKey:@"apellidoPaterno"],[[candidatos objectAtIndex:card.tag]objectForKey:@"apellidoMaterno"]];
+        
     }
-
+    
     if ([[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"patrimonial"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL) {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona no te corresponde por que no tiene su 3 de 3 ¿Quiere solicitarselo?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
@@ -467,7 +515,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         if (tmp !=nil)
             return tmp;
         while (tmp==nil) {
-         //   tmp=[UIImage imageNamed:@"h.jpg"];
+            //   tmp=[UIImage imageNamed:@"h.jpg"];
             [self descargarImg:url];
             NSLog(@"intenta descargar de nuevo");
         }
@@ -513,9 +561,34 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 -(IBAction)info:(id)sender{
     UIAlertView *info=[[UIAlertView alloc]initWithTitle:@"¿Qué es el 3 de 3?" message:@"Explicación" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
     [info show];
-
+    
 }
 -(IBAction)reload:(id)sender{
     [self viewDidLoad];
+}
+
+-(void)getAddress{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    
+    //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    NSString *url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    
+    
+    [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
+        NSLog(@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]);
+        NSLog(@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]);
+        
+        delegate.country=  [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]];
+        delegate.state= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]];
+        delegate.city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"cityx"]objectForKey:@"id"]];;
+        [self getData];
+        
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error %@", error);
+        
+        
+    }];
+    
 }
 @end

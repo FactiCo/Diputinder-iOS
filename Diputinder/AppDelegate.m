@@ -36,7 +36,7 @@
     }
 #endif
     
-    [self getAddress];
+   // [self getAddress];
   //  [self reverseGeokcode:locationManager.location];
     ViewController *vc=[[ViewController alloc]init];
    _navBar=[[UINavigationController alloc]initWithRootViewController:vc];
@@ -49,35 +49,18 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     
-    NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+       NSString *url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
-        
-        for (NSDictionary *item in [responseObject objectForKey:@"results"]) {
-           // administrative_area_level_1
-            NSArray *aux=[item objectForKey:@"address_components"];
-            for (int i=0; i<[aux count]; i++) {
-                NSArray *leves=[[aux objectAtIndex:i]objectForKey:@"types"];
-                for (NSString *a in leves) {
-             //   NSLog(@"%@",a);
-                    if ([a isEqualToString:@"administrative_area_level_1"]) {
-                          NSLog(@"%@",[[aux objectAtIndex:i]objectForKey:@"long_name"]);
-                        _localidad=[[aux objectAtIndex:i]objectForKey:@"long_name"];
-                    }
-                }
-        
-                
-            }
-         
-            break;
-        }
-       // if ([candidatos count]) {
-        //   }
-      //  else{
-            // No Success
-            //   NSLog(@"no hay ");
-        //}
-        
+        NSLog(@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]);
+        NSLog(@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]);
+       
+        _country=  [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]];
+        _state= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]];
+        _city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"cityx"]objectForKey:@"id"]];;
+       
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error %@", error);
