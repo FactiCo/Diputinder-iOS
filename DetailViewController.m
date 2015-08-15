@@ -85,11 +85,12 @@
     [scroll addSubview:puesto];
     
     
-    UILabel *partido=[[UILabel alloc] initWithFrame:CGRectMake(15, puesto.frame.size.height+ puesto.frame.origin.y, self.view.frame.size.width-30, 50)];
-    
+    UILabel *partido=[[UILabel alloc] initWithFrame:CGRectMake(15, pleca.frame.size.height+ pleca.frame.origin.y+10, self.view.frame.size.width-30, 50)];
+    partido.textAlignment=NSTextAlignmentCenter;
     partido.backgroundColor=[UIColor clearColor];
     partido.text=@"Partido";//[_data objectForKey:@"partido"];
     [partido sizeToFit];
+    partido.frame=CGRectMake(15, partido.frame.origin.y, self.view.frame.size.width-30, partido.frame.size.height);
     [scroll addSubview:partido];
     
     if([_data objectForKey:@"partidosEnAlianza"]!=NULL)
@@ -109,7 +110,7 @@
     }
    
     
-    UIImageView *imgPartido=[[UIImageView alloc]initWithFrame:CGRectMake(90, partido.frame.size.height+ partido.frame.origin.y,40,  40)];
+    UIImageView *imgPartido=[[UIImageView alloc]initWithFrame:CGRectMake(90, partido.frame.size.height+ partido.frame.origin.y+10,40,  40)];
     
     dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
     dispatch_async(imageQueue, ^{
@@ -130,7 +131,27 @@
         
     });
     
+    int top=imgPartido.frame.size.height+ imgPartido.frame.origin.y+10;
  
+    //poner dinamicamente  los indicadores
+    for (int i=0; i<[[_data objectForKey:@"indicators"] count]; i++) {
+        UIImageView *doc=[[UIImageView alloc]initWithFrame:CGRectMake(15, top , 50, 50) ];
+        if ([[[[_data objectForKey:@"indicators"]objectAtIndex:i]objectForKey:@"document"] isEqualToString:@""])
+        doc.image=[UIImage imageNamed:@"nobutton.png"];
+        else
+              doc.image=[UIImage imageNamed:@"yesbutton.png"];
+         UILabel *indicator=[[UILabel alloc]initWithFrame:CGRectMake(70, top, self.view.frame.size.width-100, 50)];
+        indicator.text=[[[_data objectForKey:@"indicators"]objectAtIndex:i]objectForKey:@"name"];
+        //[indicator sizeToFit];
+       // indicator.frame=CGRectMake(indicator.frame.origin.x,  top+12, self.view.frame.size.width-100, indicator.frame.size.height);
+               [scroll addSubview:indicator];
+        indicator.textColor=[UIColor whiteColor];
+        indicator.backgroundColor=[UIColor darkGrayColor];
+        top=top+60;
+        [scroll addSubview:doc];
+        
+    }
+    
     [scroll addSubview:imgPartido];
      [self.view addSubview:scroll];
     

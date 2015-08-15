@@ -41,6 +41,7 @@
 		F3EE123C1B01614100CDEC6A /* ligue.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EE123B1B01614100CDEC6A /* ligue.png */; };
 		F3EE123E1B01656100CDEC6A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EE123D1B01656100CDEC6A /* Social.framework */; };
 		F3EE12911B024A7A00CDEC6A /* noimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F3EE12901B024A7A00CDEC6A /* noimage.jpg */; };
+		F3EEF94F1B7EACAB00C662A9 /* document.ico in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF94E1B7EACAB00C662A9 /* document.ico */; };
 		F3F5F12D1AF18B580046F8B6 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */; };
 		F3F5F12F1AF54C680046F8B6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
@@ -101,6 +102,7 @@
 		F3EE123B1B01614100CDEC6A /* ligue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ligue.png; sourceTree = "<group>"; };
 		F3EE123D1B01656100CDEC6A /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		F3EE12901B024A7A00CDEC6A /* noimage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = noimage.jpg; sourceTree = "<group>"; };
+		F3EEF94E1B7EACAB00C662A9 /* document.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = document.ico; sourceTree = "<group>"; };
 		F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				F3EE12901B024A7A00CDEC6A /* noimage.jpg */,
+				F3EEF94E1B7EACAB00C662A9 /* document.ico */,
 				F3EE12381B01599D00CDEC6A /* partidos */,
 				F3EE12201B01562C00CDEC6A /* nobutton.png */,
 				F370BDE41AF03368008974D6 /* AppDelegate.h */,
@@ -347,6 +350,7 @@
 				F370BDF11AF03368008974D6 /* LaunchScreen.xib in Resources */,
 				F3EE12311B01598700CDEC6A /* PRI.png in Resources */,
 				F3EE122C1B01598000CDEC6A /* MORENA.png in Resources */,
+				F3EEF94F1B7EACAB00C662A9 /* document.ico in Resources */,
 				F3EE12231B01563400CDEC6A /* yesbutton.png in Resources */,
 				F370BDEE1AF03368008974D6 /* Images.xcassets in Resources */,
 				F3EE12331B01598B00CDEC6A /* PT.png in Resources */,
@@ -535,6 +539,7 @@
 			baseConfigurationReference = 01C1D456A44CC095F53115D2 /* Pods-Diputinder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Diputinder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -547,6 +552,7 @@
 			baseConfigurationReference = 6C164BD8319FB2A4C2BB5983 /* Pods-Diputinder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Diputinder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
