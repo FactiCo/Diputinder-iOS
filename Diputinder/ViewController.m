@@ -43,17 +43,25 @@
     
     int current;
     NSString *tuiter;
+    BOOL goodPerson;
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
 static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any given time, must be greater than 1
-static const float CARD_HEIGHT = 386; //%%% height of the draggable card
-static const float CARD_WIDTH = 290; //%%% width of the draggable card
-
 //@synthesize exampleCardLabels; //%%% all the labels I'm using as example data at the moment
 @synthesize allCards;//%%% all the cards
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    
+  
+    for (NSString* family in [UIFont familyNames])
+    {
+        NSLog(@"%@", family);
+        
+        for (NSString* named in [UIFont fontNamesForFamilyName: family])
+        {
+            NSLog(@"  %@", named);
+        }
+    }
     
     
     locationManager = [[CLLocationManager alloc]init]; // initializing locationManager
@@ -79,7 +87,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     // [super layoutSubviews];
     // UIImage *image2 = [UIImage imageNamed:@"ligue.png"];
     //[self.navigationController.navigationBar setBackgroundImage:image2 forBarMetrics:UIBarMetricsDefault];
-    
+    self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
     
     UIButton* tryAgain = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [tryAgain addTarget:self
@@ -139,7 +147,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [loading startAnimating];
     [self.view addSubview:loading];
     
-#warning customize all of this.  These are just place holders to make it look pretty
+
     self.view.backgroundColor = [UIColor colorWithRed:.92 green:.93 blue:.95 alpha:1]; //the gray background colors
     menuButton = [[UIButton alloc]initWithFrame:CGRectMake(17, 34, 22, 15)];
     [menuButton setImage:[UIImage imageNamed:@"menuButton"] forState:UIControlStateNormal];
@@ -168,7 +176,6 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
 }
 
-#warning include own card customization here!
 //%%% creates a card and returns it.  This should be customized to fit your needs.
 // use "index" to indicate where the information should be pulled.  If this doesn't apply to you, feel free
 // to get rid of it (eg: if you are building cards from data from the internet)
@@ -240,6 +247,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     name.text=[NSString stringWithFormat:@"%@ %@ %@",[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"nombres"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
     
     
+    [name setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:18]];
+ 
     
     UIImageView *partido=[[UIImageView alloc]initWithFrame:CGRectMake(draggableView.frame.size.width-50,  draggableView.frame.size.height-50, 50, 50)];
     
@@ -308,13 +317,13 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     if ([delegate.city isKindOfClass:[NSNull class]]) {
         url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1/states/1.json"];
     }else
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1/states/1.json"];
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1/states/1/cities/1.json"];
     
     if ([delegate.state isKindOfClass:[NSNull class]]) {
         url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1.json"];
     }
     
-    url=@"http://liguepolitico-staging.herokuapp.com/countries/1.json";
+    url=@"http://liguepolitico-staging.herokuapp.com/countries/1/states/1/cities/1.json";
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
         loading.hidden=TRUE;
@@ -323,18 +332,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         for (NSDictionary *item in [responseObject objectForKey:@"positions"]) {
             // debo obtener todas las posiciones y luego juntarlas
             [positions addObject:item];
-            for (int a=0; a<positions.count; a++) {
-                NSLog(@"%@",[[positions objectAtIndex:a]objectForKey:@"title"]);
-                
-                NSMutableArray *candis=[[NSMutableArray alloc]initWithArray:[[positions objectAtIndex:a]objectForKey:@"candidates"]];
-                //recorro todos los candidato de este cargo politico
-                for (int b =0 ; b<candis.count; b++) {
-                    NSMutableDictionary *aux=[NSMutableDictionary dictionaryWithDictionary:[[[positions objectAtIndex:a]objectForKey:@"candidates"] objectAtIndex:b]];
-                    
-                    [aux setObject:[[positions objectAtIndex:a]objectForKey:@"title"] forKey:@"position"];
-                    [candidatos addObject:aux];
-                }
-            }
+       
             
             /*if ([[item objectForKey:@"entidadFederativa"]isEqualToString:delegate.country])
              {
@@ -349,6 +347,21 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
              }*/
             
         }
+        
+        for (int a=0; a<positions.count; a++) {
+            NSLog(@"%@",[[positions objectAtIndex:a]objectForKey:@"title"]);
+            
+            NSMutableArray *candis=[[NSMutableArray alloc]initWithArray:[[positions objectAtIndex:a]objectForKey:@"candidates"]];
+            //recorro todos los candidato de este cargo politico
+            for (int b =0 ; b<candis.count; b++) {
+                NSMutableDictionary *aux=[NSMutableDictionary dictionaryWithDictionary:[[[positions objectAtIndex:a]objectForKey:@"candidates"] objectAtIndex:b]];
+                
+                [aux setObject:[[positions objectAtIndex:a]objectForKey:@"title"] forKey:@"position"];
+                [candidatos addObject:aux];
+            }
+        }
+        
+        
         [candidatos addObjectsFromArray:conFoto];
         [candidatos addObjectsFromArray:sinFoto];
         if ([candidatos count]) {
@@ -403,7 +416,6 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     }
 }
 
-#warning include own action here!
 //%%% action called when the card goes to the left.
 // This should be customized with your own action
 -(void)cardSwipedLeft:(UIView *)card;
@@ -423,8 +435,6 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         [self.view insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
 }
-
-#warning include own action here!
 //%%% action called when the card goes to the right.
 // This should be customized with your own action
 -(void)cardSwipedRight:(UIView *)card
@@ -451,8 +461,28 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         tuiter=[NSString stringWithFormat:@"#%@%@%@",[[candidatos objectAtIndex:card.tag]objectForKey:@"nombres"],[[candidatos objectAtIndex:card.tag]objectForKey:@"apellidoPaterno"],[[candidatos objectAtIndex:card.tag]objectForKey:@"apellidoMaterno"]];
         
     }
+    //  revisar si tiene todos los indicadores
     
-    if ([[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"patrimonial"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL) {
+    for (NSMutableDictionary *indicator in [[candidatos objectAtIndex:card.tag]objectForKey:@"indicators"]) {
+        
+        NSLog(@"%@",[indicator objectForKey:@"document"]);
+        if ([[indicator objectForKey:@"document"] isEqualToString:@""]) {
+            UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona no te corresponde por que no tiene su 3 de 3 ¿Quiere solicitarselo?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
+            [a show];
+            goodPerson = false;
+            
+            break;
+            
+            }
+        }
+    if (goodPerson) {
+        UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona si cumple con su 3 de 3 ¿Quieres mandarle un twett?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
+        [a show];
+
+    }
+    [self detailView:card.tag];
+    
+    /*if ([[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"patrimonial"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL) {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona no te corresponde por que no tiene su 3 de 3 ¿Quiere solicitarselo?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
         [a show];
@@ -461,10 +491,116 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona si cumple con su 3 de 3 ¿Quieres mandarle un twett?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
         [a show];
         
-    }
+    }*/
     
 }
 
+-(void)detailView: (int ) index{
+    UIView *card=[[UIView alloc]initWithFrame:CGRectMake(15, 15, self.view.frame.size.width-30, self.view.frame.size.height-30)];
+    
+    
+    
+ 
+    card.backgroundColor=[UIColor darkGrayColor];
+    
+    UIImageView *img= [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, self.view.frame.size.width/3, self.view.frame.size.width/3)];
+    [img.layer setCornerRadius:img.frame.size.width / 2];
+    img.layer.cornerRadius = img.frame.size.width / 2;
+    img.layer.masksToBounds = YES;
+    if ([[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"] !=NULL ) {
+        
+        tuiter=[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"];
+        NSString *tw=[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] stringByReplacingOccurrencesOfString: @"\n" withString: @""];
+        NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tuiter];
+        
+        // buscamos la img en cache y si no pues la descargamos
+        
+        dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
+        dispatch_async(imageQueue, ^{
+            
+            UIImage *imgAux=[self buscarCache:st];
+            if (imgAux==nil) {
+                UIImage *tmp= [self descargarImg:st];
+                [delegate.imgCache setObject: tmp forKey: st];
+                
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Update the UI
+                
+                img.image=[self buscarCache:st];
+               
+                
+            });
+            
+            
+        });
+        
+        
+    }
+    else{
+      
+        if ([[[candidatos objectAtIndex:index]objectForKey:@"gnero"] isEqualToString:@"M"]) {
+            img.image=[UIImage imageNamed:@"h.jpg"];
+        }
+        else
+            img.image=[UIImage imageNamed:@"m.jpg"];
+        
+    }
+    
+    [card addSubview:img];
+    
+    UILabel *candidate=[[UILabel alloc]initWithFrame:CGRectMake(img.frame.size.height+img.frame.origin.x+10, 20, card.frame.size.width-img.frame.size.width-img.frame.origin.x, 100)];
+    candidate.text=[NSString stringWithFormat:@"%@ %@ %@",[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"nombres"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
+      [candidate setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:20]];
+    candidate.numberOfLines=3;
+    candidate.textColor=[UIColor whiteColor];
+    [candidate sizeToFit];
+    [card addSubview:candidate];
+    [self.view addSubview: card];
+    
+    UILabel *text=[[UILabel alloc]initWithFrame:CGRectMake(15, img.frame.size.height+img.frame.origin.y +15, card.frame.size.width-30, 120)];
+          [text setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:17]];
+    text.numberOfLines=5;
+    text.textColor=[UIColor whiteColor];
+    
+    if (goodPerson) {
+     text.text=@"A este candidato sí le interesas porque ya presentó sus declaraciones.";
+    }
+    else
+        text.text=@"Lo sentimos, a este candidato no le interesas porque no ha presentado sus declaraciones.";
+    
+      [card addSubview:text];
+    [text sizeToFit];
+    
+    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, card.frame.size.height-150, card.frame.size.width, 150)];
+    twitterView.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
+    [card addSubview: twitterView];
+    
+    UILabel *msj=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+          [msj setFont:[UIFont fontWithName:@"GothamRounded-Book" size:14]];
+    msj.numberOfLines=5;
+    if (goodPerson) {
+        msj.text=@"¡Mándale un mensaje de felicitación!";
+    }
+    else
+        msj.text=@"¡Mándale un  mensaje para que presente sus declaraciones!";
+    
+    [msj sizeToFit];
+    [twitterView addSubview:msj];
+    msj.textColor=[UIColor whiteColor];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnTwitterSharing_Clicked:)];
+    tapGesture.numberOfTapsRequired=1;
+    
+    tapGesture.numberOfTouchesRequired=1;
+    // prevents the scroll view from swallowing up the touch event of child buttons
+    tapGesture.cancelsTouchesInView = NO;
+    [twitterView addGestureRecognizer:tapGesture];
+    
+    
+
+}
 //%%% when you hit the right button, this is called and substitutes the swipe
 -(void)swipeRight
 {

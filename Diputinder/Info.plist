@@ -36,5 +36,10 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Gotham-Rounded-Bold.ttf</string>
+		<string>Gotham-Rounded-Book.ttf</string>
+	</array>
 </dict>
 </plist>

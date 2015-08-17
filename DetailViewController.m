@@ -21,37 +21,56 @@
 
 }
 - (void)viewDidLoad {
-      self.navigationItem.title=@"Información";
+ self.navigationController.navigationBar.backItem.title=@"";
+    
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIFont fontWithName:@"GothamRounded-Bold" size:19],NSFontAttributeName,nil];
+    self.navigationController.navigationBar.titleTextAttributes =textAttributes;
+
+    
+    //[[[ self.tabBarController navigationController] navigationBar] setBarStyle:UIBarStyleBlackTranslucent];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    //[self setUpNavbar];
+    self.navigationController.topViewController.navigationItem.title=@"Ligue Político";
+    
+    
     //[super viewDidLoad];
     self.view.backgroundColor=[UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
       delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
     scroll=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     scroll.backgroundColor=[UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
+     self.navigationController.navigationBar.backItem.title=@"";
     UIView *pleca=[[UIView alloc]initWithFrame:CGRectMake(70, 50, self.view.frame.size.width-70, 100)];
     pleca.backgroundColor= [UIColor colorWithRed:116/255.0 green:94/255.0 blue:197/255.0 alpha:1];
     
     [scroll addSubview:pleca];
     
     
-    UILabel *name=[[UILabel alloc] initWithFrame:CGRectMake(70, 0, pleca.frame.size.width-70, 50)];
+    UILabel *name=[[UILabel alloc] initWithFrame:CGRectMake(70, 5, pleca.frame.size.width-70, 50)];
     name.numberOfLines=3;
     [name setFont:[UIFont systemFontOfSize:18]];
     name.textColor=[UIColor whiteColor];
     name.backgroundColor=[UIColor clearColor];
     name.text=[NSString stringWithFormat:@"%@ %@ %@",[[_data objectForKey:@"candidate"]objectForKey:@"nombres"],[[_data objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[_data objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
+  [name setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:18]];
+    
     [name sizeToFit];
+    
     [pleca addSubview:name];
     
     UILabel *info=[[UILabel alloc] initWithFrame:CGRectMake(70, 50, pleca.frame.size.width-70, 50)];
     info.numberOfLines=3;
-    [info setFont:[UIFont systemFontOfSize:18]];
+   [info setFont:[UIFont fontWithName:@"GothamRounded-Book" size:16]];
     info.textColor=[UIColor whiteColor];
     info.backgroundColor=[UIColor clearColor];
-    info.text=[NSString stringWithFormat:@"%@ \n %@",[_data objectForKey:@"position"],_territory];
+    info.text=[NSString stringWithFormat:@"%@ \n%@",[_data objectForKey:@"position"],_territory];
     [info sizeToFit];
     [pleca addSubview:info];
     
-    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(30, 50,100,  105)];
+    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(30, 47,100,  105)];
     [img.layer setCornerRadius:img.frame.size.width / 2];
     img.layer.cornerRadius = img.frame.size.width / 2;
     img.layer.masksToBounds = YES;
@@ -88,6 +107,8 @@
     UILabel *partido=[[UILabel alloc] initWithFrame:CGRectMake(15, pleca.frame.size.height+ pleca.frame.origin.y+10, self.view.frame.size.width-30, 50)];
     partido.textAlignment=NSTextAlignmentCenter;
     partido.backgroundColor=[UIColor clearColor];
+    [partido setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:20]];
+    
     partido.text=@"Partido";//[_data objectForKey:@"partido"];
     [partido sizeToFit];
     partido.frame=CGRectMake(15, partido.frame.origin.y, self.view.frame.size.width-30, partido.frame.size.height);
@@ -110,7 +131,10 @@
     }
    
     
-    UIImageView *imgPartido=[[UIImageView alloc]initWithFrame:CGRectMake(90, partido.frame.size.height+ partido.frame.origin.y+10,40,  40)];
+    UIImageView *imgPartido=[[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-30, partido.frame.size.height+ partido.frame.origin.y+10,60,  60)];
+    [imgPartido.layer setCornerRadius:imgPartido.frame.size.width / 2];
+    imgPartido.layer.cornerRadius = imgPartido.frame.size.width / 2;
+    imgPartido.layer.masksToBounds = YES;
     
     dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
     dispatch_async(imageQueue, ^{
@@ -202,4 +226,7 @@
 }
 */
 
+-(void)viewDidAppear:(BOOL)animated{
+ self.navigationController.navigationBar.backItem.title=@"";
+}
 @end
