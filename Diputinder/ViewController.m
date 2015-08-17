@@ -44,6 +44,7 @@
     int current;
     NSString *tuiter;
     BOOL goodPerson;
+    UIView *card;
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
@@ -496,7 +497,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 }
 
 -(void)detailView: (int ) index{
-    UIView *card=[[UIView alloc]initWithFrame:CGRectMake(15, 15, self.view.frame.size.width-30, self.view.frame.size.height-30)];
+   card=[[UIView alloc]initWithFrame:CGRectMake(15, 15, self.view.frame.size.width-30, self.view.frame.size.height-30)];
     
     
     
@@ -573,12 +574,16 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
       [card addSubview:text];
     [text sizeToFit];
     
-    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, card.frame.size.height-150, card.frame.size.width, 150)];
+    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, card.frame.size.height-150, card.frame.size.width, 110)];
     twitterView.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
     [card addSubview: twitterView];
     
-    UILabel *msj=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
-          [msj setFont:[UIFont fontWithName:@"GothamRounded-Book" size:14]];
+    UIImageView *tuiterImg=[[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
+    tuiterImg.image= [UIImage imageNamed:@"ic_twitter.png"];
+     [twitterView addSubview: tuiterImg];
+    
+    UILabel *msj=[[UILabel alloc]initWithFrame:CGRectMake(tuiterImg.frame.size.height+tuiterImg.frame.origin.x+20, 10, twitterView.frame.size.width-tuiterImg.frame.size.height-tuiterImg.frame.origin.x-10, 100)];
+          [msj setFont:[UIFont fontWithName:@"GothamRounded-Book" size:15]];
     msj.numberOfLines=5;
     if (goodPerson) {
         msj.text=@"¡Mándale un mensaje de felicitación!";
@@ -598,8 +603,25 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     tapGesture.cancelsTouchesInView = NO;
     [twitterView addGestureRecognizer:tapGesture];
     
+    UIButton *btn= [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [btn addTarget:self
+            action:@selector(cerrar)
+  forControlEvents:UIControlEventTouchUpInside];
+    [btn setTitle:@"Cerrar" forState:UIControlStateNormal];
+    btn.frame=CGRectMake(0, card.frame.size.height-40, card.frame.size.width, 40);
+    btn.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
     
+    btn.tintColor=[UIColor whiteColor];
+    //    mas.tintColor=[UIColor blackColor];
+    btn.titleLabel.font=[UIFont fontWithName:@"GothamRounded-Book" size:15];
+     [twitterView addSubview:msj];
+         [card addSubview:btn];
 
+}
+-(void)cerrar{
+
+
+    [card removeFromSuperview];
 }
 //%%% when you hit the right button, this is called and substitutes the swipe
 -(void)swipeRight

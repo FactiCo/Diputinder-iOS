@@ -44,6 +44,7 @@
 		F3EEF94F1B7EACAB00C662A9 /* document.ico in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF94E1B7EACAB00C662A9 /* document.ico */; };
 		F3EEF9601B82853600C662A9 /* Gotham-Rounded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */; };
 		F3EEF9611B82853600C662A9 /* Gotham-Rounded-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */; };
+		F3EEF9631B828EF300C662A9 /* ic_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF9621B828EF300C662A9 /* ic_twitter.png */; };
 		F3F5F12D1AF18B580046F8B6 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */; };
 		F3F5F12F1AF54C680046F8B6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
@@ -107,6 +108,7 @@
 		F3EEF94E1B7EACAB00C662A9 /* document.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = document.ico; sourceTree = "<group>"; };
 		F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Rounded-Bold.ttf"; sourceTree = "<group>"; };
 		F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Rounded-Book.ttf"; sourceTree = "<group>"; };
+		F3EEF9621B828EF300C662A9 /* ic_twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_twitter.png; sourceTree = "<group>"; };
 		F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -164,6 +166,7 @@
 			children = (
 				F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */,
 				F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */,
+				F3EEF9621B828EF300C662A9 /* ic_twitter.png */,
 				F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */,
 				F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */,
 				F370BE151AF03410008974D6 /* UIKit.framework */,
@@ -356,6 +359,7 @@
 				F3EE12911B024A7A00CDEC6A /* noimage.jpg in Resources */,
 				F3EE12211B01562C00CDEC6A /* nobutton.png in Resources */,
 				F370BDF11AF03368008974D6 /* LaunchScreen.xib in Resources */,
+				F3EEF9631B828EF300C662A9 /* ic_twitter.png in Resources */,
 				F3EE12311B01598700CDEC6A /* PRI.png in Resources */,
 				F3EE122C1B01598000CDEC6A /* MORENA.png in Resources */,
 				F3EEF94F1B7EACAB00C662A9 /* document.ico in Resources */,
