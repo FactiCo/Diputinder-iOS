@@ -73,7 +73,10 @@
     UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(30, 47,100,  105)];
     [img.layer setCornerRadius:img.frame.size.width / 2];
     img.layer.cornerRadius = img.frame.size.width / 2;
+    
     img.layer.masksToBounds = YES;
+    img.image=[UIImage imageNamed:@"noimage.jpg"];
+    img.backgroundColor=[UIColor blackColor];
     if ([[_data objectForKey:@"candidate"]objectForKey:@"twitter"] !=NULL) {
     NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",[[_data objectForKey:@"candidate"]objectForKey:@"twitter"]];
 

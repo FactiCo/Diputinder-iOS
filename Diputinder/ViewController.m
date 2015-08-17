@@ -44,7 +44,7 @@
     int current;
     NSString *tuiter;
     BOOL goodPerson;
-    UIView *card;
+    UIView *cardContainer;
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
@@ -53,7 +53,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 @synthesize allCards;//%%% all the cards
 - (void)viewDidLoad {
     
-  
+    goodPerson=true;
     for (NSString* family in [UIFont familyNames])
     {
         NSLog(@"%@", family);
@@ -107,7 +107,21 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     // [self.navigationController.navigationBar.topItem setTitleView:image];
     
     
-    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ligue.png"]];
+    //self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ligue.png"]];
+    
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIFont fontWithName:@"GothamRounded-Bold" size:19],NSFontAttributeName,nil];
+    self.navigationController.navigationBar.titleTextAttributes =textAttributes;
+    
+    
+    //[[[ self.tabBarController navigationController] navigationBar] setBarStyle:UIBarStyleBlackTranslucent];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    //[self setUpNavbar];
+    self.navigationController.topViewController.navigationItem.title=@"Ligue Político";
+    
     UIButton *button =  [UIButton buttonWithType:UIButtonTypeInfoLight];
     button.backgroundColor=[UIColor clearColor];
     button.imageView.backgroundColor=[UIColor clearColor];
@@ -188,8 +202,8 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake(10, 10, self.view.frame.size.width-20 , self.view.frame.size.width+80)];
     draggableView.information.text = @"test";//[exampleCardLabels objectAtIndex:index]; //%%% placeholder for card-specific information
     //modificamos el frame de los botones
-    xButton.frame=CGRectMake((draggableView.frame.size.width/2)-100, draggableView.frame.origin.y+ draggableView.frame.size.height+20, xButton.frame.size.width, xButton.frame.size.height);
-    checkButton.frame=CGRectMake((draggableView.frame.size.width/2)+40, draggableView.frame.origin.y+ draggableView.frame.size.height+20, checkButton.frame.size.width, checkButton.frame.size.height);
+    xButton.frame=CGRectMake((draggableView.frame.size.width/2)-100, draggableView.frame.origin.y+ draggableView.frame.size.height+12, xButton.frame.size.width, xButton.frame.size.height);
+    checkButton.frame=CGRectMake((draggableView.frame.size.width/2)+40, draggableView.frame.origin.y+ draggableView.frame.size.height+12, checkButton.frame.size.width, checkButton.frame.size.height);
     
     
     
@@ -315,17 +329,16 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     sinFoto=[[NSMutableArray alloc]init];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *url ;
-    if ([delegate.city isKindOfClass:[NSNull class]]) {
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1/states/1.json"];
+    if ([delegate.city isKindOfClass:[NSNull class]] || [delegate.city isEqualToString:@"(null)"]) {
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@/states/%@.json",delegate.country,delegate.state];
     }else
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1/states/1/cities/1.json"];
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
     
-    if ([delegate.state isKindOfClass:[NSNull class]]) {
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/1.json"];
+    if ([delegate.state isKindOfClass:[NSNull class]] || [delegate.state isEqualToString:@"(null)"]) {
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@.json",delegate.country];
     }
-    
-    url=@"http://liguepolitico-staging.herokuapp.com/countries/1/states/1/cities/1.json";
-    
+    url =[NSString stringWithFormat:@"http://liguepolitico-staging.herokuapp.com/countries/1/states/1/cities/1.json"];
+ 
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
         loading.hidden=TRUE;
         NSMutableArray *positions =[[NSMutableArray alloc]init];
@@ -497,12 +510,12 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 }
 
 -(void)detailView: (int ) index{
-   card=[[UIView alloc]initWithFrame:CGRectMake(15, 15, self.view.frame.size.width-30, self.view.frame.size.height-30)];
+   cardContainer=[[UIView alloc]initWithFrame:CGRectMake(15, 15, self.view.frame.size.width-30, self.view.frame.size.height-30)];
     
     
     
  
-    card.backgroundColor=[UIColor darkGrayColor];
+    cardContainer.backgroundColor=[UIColor darkGrayColor];
     
     UIImageView *img= [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, self.view.frame.size.width/3, self.view.frame.size.width/3)];
     [img.layer setCornerRadius:img.frame.size.width / 2];
@@ -549,18 +562,18 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         
     }
     
-    [card addSubview:img];
+    [cardContainer addSubview:img];
     
-    UILabel *candidate=[[UILabel alloc]initWithFrame:CGRectMake(img.frame.size.height+img.frame.origin.x+10, 20, card.frame.size.width-img.frame.size.width-img.frame.origin.x, 100)];
+    UILabel *candidate=[[UILabel alloc]initWithFrame:CGRectMake(img.frame.size.height+img.frame.origin.x+10, 20, cardContainer.frame.size.width-img.frame.size.width-img.frame.origin.x-10, 100)];
     candidate.text=[NSString stringWithFormat:@"%@ %@ %@",[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"nombres"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
       [candidate setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:20]];
     candidate.numberOfLines=3;
     candidate.textColor=[UIColor whiteColor];
     [candidate sizeToFit];
-    [card addSubview:candidate];
-    [self.view addSubview: card];
+    [cardContainer addSubview:candidate];
+    [self.view addSubview: cardContainer];
     
-    UILabel *text=[[UILabel alloc]initWithFrame:CGRectMake(15, img.frame.size.height+img.frame.origin.y +15, card.frame.size.width-30, 120)];
+    UILabel *text=[[UILabel alloc]initWithFrame:CGRectMake(15, img.frame.size.height+img.frame.origin.y +15, cardContainer.frame.size.width-30, 120)];
           [text setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:17]];
     text.numberOfLines=5;
     text.textColor=[UIColor whiteColor];
@@ -571,12 +584,12 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     else
         text.text=@"Lo sentimos, a este candidato no le interesas porque no ha presentado sus declaraciones.";
     
-      [card addSubview:text];
+      [cardContainer addSubview:text];
     [text sizeToFit];
     
-    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, card.frame.size.height-150, card.frame.size.width, 110)];
+    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, cardContainer.frame.size.height-150, cardContainer.frame.size.width, 110)];
     twitterView.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
-    [card addSubview: twitterView];
+    [cardContainer addSubview: twitterView];
     
     UIImageView *tuiterImg=[[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
     tuiterImg.image= [UIImage imageNamed:@"ic_twitter.png"];
@@ -608,20 +621,20 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
             action:@selector(cerrar)
   forControlEvents:UIControlEventTouchUpInside];
     [btn setTitle:@"Cerrar" forState:UIControlStateNormal];
-    btn.frame=CGRectMake(0, card.frame.size.height-40, card.frame.size.width, 40);
+    btn.frame=CGRectMake(0, cardContainer.frame.size.height-40, cardContainer.frame.size.width, 40);
     btn.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
     
     btn.tintColor=[UIColor whiteColor];
     //    mas.tintColor=[UIColor blackColor];
     btn.titleLabel.font=[UIFont fontWithName:@"GothamRounded-Book" size:15];
      [twitterView addSubview:msj];
-         [card addSubview:btn];
+         [cardContainer addSubview:btn];
 
 }
 -(void)cerrar{
 
 
-    [card removeFromSuperview];
+    [cardContainer removeFromSuperview];
 }
 //%%% when you hit the right button, this is called and substitutes the swipe
 -(void)swipeRight
@@ -711,9 +724,20 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     {
         SLComposeViewController *tweetSheetOBJ = [SLComposeViewController
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
-        NSString *tw=[NSString stringWithFormat:@"Hey %@ Manda tu 3 de 3 @liguepolítico", tuiter];
+        NSString *tw;
+        if (goodPerson) {
+            tw=[NSString stringWithFormat:@"Hey %@ Gracias por ser responsable @liguepolítico", tuiter];
+        }
+        else
+        tw=[NSString stringWithFormat:@"Hey %@ Manda tu 3 de 3 @liguepolítico", tuiter];
+        
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
+    }
+    else{
+        
+        UIAlertView *info=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Inicia sesión en Twitter desde el menú preferencias " delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
+        [info show];
     }
 }
 -(IBAction)info:(id)sender{
@@ -739,7 +763,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         
         delegate.country=  [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]];
         delegate.state= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]];
-        delegate.city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"cityx"]objectForKey:@"id"]];;
+        delegate.city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"city"]objectForKey:@"id"]];;
         [self getData];
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -747,6 +771,22 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         
         
     }];
+    
+}
+-(void)viewDidAppear:(BOOL)animated{
+
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIFont fontWithName:@"GothamRounded-Bold" size:19],NSFontAttributeName,nil];
+    self.navigationController.navigationBar.titleTextAttributes =textAttributes;
+    
+    
+    //[[[ self.tabBarController navigationController] navigationBar] setBarStyle:UIBarStyleBlackTranslucent];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    //[self setUpNavbar];
+    self.navigationController.topViewController.navigationItem.title=@"Ligue Político";
     
 }
 @end
