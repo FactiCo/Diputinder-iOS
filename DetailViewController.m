@@ -182,8 +182,23 @@
         indicator.textColor=[UIColor whiteColor];
         
         indicator.backgroundColor=[UIColor darkGrayColor];
-        top=top+60;
+        
+        
+        UIButton *search =  [UIButton buttonWithType:UIButtonTypeCustom];
+        search.tintColor=[UIColor whiteColor];
+        if ([[[[_data objectForKey:@"indicators"]objectAtIndex:i]objectForKey:@"document"] isEqualToString:@""])
+           [search setImage:[UIImage imageNamed:@"nobutton.png"] forState:UIControlStateNormal];
+        else
+        [search setImage:[UIImage imageNamed:@"yesbutton.png"] forState:UIControlStateNormal];
+        [search addTarget:self action:@selector(showDocument) forControlEvents:UIControlEventTouchUpInside];
+        
+        [search setFrame:CGRectMake(indicator.frame.size.width+indicator.frame.origin.x-15, top+12, 30 , 30)];
+        search.backgroundColor=[UIColor darkGrayColor];
+        [scroll addSubview:search];
+
+        
         [scroll addSubview:doc];
+        top=top+60;
         
     }
     
@@ -193,7 +208,7 @@
 
     // Do any additional setup after loading the view.
 }
-
+-(void)showDocument{}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
