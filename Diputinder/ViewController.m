@@ -51,8 +51,22 @@
 static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any given time, must be greater than 1
 //@synthesize exampleCardLabels; //%%% all the labels I'm using as example data at the moment
 @synthesize allCards;//%%% all the cards
+
+-(void)refreshData{
+
+    [candidatos removeAllObjects];
+    [self getAddress];
+}
 - (void)viewDidLoad {
+    UIButton *search =  [UIButton buttonWithType:UIButtonTypeCustom];
+    search.tintColor=[UIColor whiteColor];
+    [search setImage:[UIImage imageNamed:@"Refresh_icon.png"] forState:UIControlStateNormal];
+    [search addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventTouchUpInside];
     
+    [search setFrame:CGRectMake(0, 0, 30 , 30)];
+    UIBarButtonItem *buscar = [[UIBarButtonItem alloc]initWithCustomView:search];
+    NSMutableArray *button=[[NSMutableArray alloc]initWithObjects:buscar, nil];
+    self.navigationController.topViewController.navigationItem.rightBarButtonItems = button;
     goodPerson=true;
     for (NSString* family in [UIFont familyNames])
     {
@@ -122,17 +136,17 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     //[self setUpNavbar];
     self.navigationController.topViewController.navigationItem.title=@"Ligue Político";
     
-    UIButton *button =  [UIButton buttonWithType:UIButtonTypeInfoLight];
-    button.backgroundColor=[UIColor clearColor];
-    button.imageView.backgroundColor=[UIColor clearColor];
-    button.tintColor=[UIColor whiteColor];
+    UIButton *button_infon =  [UIButton buttonWithType:UIButtonTypeInfoLight];
+    button_infon.backgroundColor=[UIColor clearColor];
+    button_infon.imageView.backgroundColor=[UIColor clearColor];
+    button_infon.tintColor=[UIColor whiteColor];
     //[button setImage:[UIImage imageNamed:@"button_menu_navigationbar.png"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
+    [button_infon addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
     
     
-    [button setFrame:CGRectMake(0, 0, 37,34)];
+    [button_infon setFrame:CGRectMake(0, 0, 37,34)];
     
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:button_infon];
     self.navigationController.topViewController.navigationItem.leftBarButtonItem = barButton;
     
     
@@ -160,6 +174,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height/2-25, 50, 50)];
     loading.backgroundColor=[UIColor blackColor];
     [loading startAnimating];
+    [loading.layer setCornerRadius:loading.frame.size.width / 2];
+    loading.layer.cornerRadius = loading.frame.size.width / 2;
+    loading.layer.masksToBounds = YES;
+    
     [self.view addSubview:loading];
     
 

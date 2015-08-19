@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		074FE9E01B83D3AB00C30C73 /* Refresh_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 074FE9DF1B83D3AB00C30C73 /* Refresh_icon.png */; };
 		AE806B21B3FCD7E913DBEA06 /* libPods-Diputinder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42792AD6C768141D302AE857 /* libPods-Diputinder.a */; };
 		F370BDE31AF03368008974D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BDE21AF03368008974D6 /* main.m */; };
 		F370BDE61AF03368008974D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BDE51AF03368008974D6 /* AppDelegate.m */; };
@@ -61,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		01C1D456A44CC095F53115D2 /* Pods-Diputinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diputinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Diputinder/Pods-Diputinder.debug.xcconfig"; sourceTree = "<group>"; };
+		074FE9DF1B83D3AB00C30C73 /* Refresh_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Refresh_icon.png; sourceTree = "<group>"; };
 		42792AD6C768141D302AE857 /* libPods-Diputinder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Diputinder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C164BD8319FB2A4C2BB5983 /* Pods-Diputinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diputinder.release.xcconfig"; path = "Pods/Target Support Files/Pods-Diputinder/Pods-Diputinder.release.xcconfig"; sourceTree = "<group>"; };
 		F370BDDD1AF03368008974D6 /* Diputinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Diputinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,6 +169,7 @@
 				F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */,
 				F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */,
 				F3EEF9621B828EF300C662A9 /* ic_twitter.png */,
+				074FE9DF1B83D3AB00C30C73 /* Refresh_icon.png */,
 				F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */,
 				F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */,
 				F370BE151AF03410008974D6 /* UIKit.framework */,
@@ -345,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3EEF9601B82853600C662A9 /* Gotham-Rounded-Bold.ttf in Resources */,
+				074FE9E01B83D3AB00C30C73 /* Refresh_icon.png in Resources */,
 				F3EEF9611B82853600C662A9 /* Gotham-Rounded-Book.ttf in Resources */,
 				F3EE12371B01599200CDEC6A /* PES.png in Resources */,
 				F3EE122D1B01598000CDEC6A /* PANAL.png in Resources */,
