@@ -8,6 +8,7 @@
 
 #import "DetailViewController.h"
 #import "AppDelegate.h"
+#import "DocumentViewController.h"
 
 @interface DetailViewController ()
 
@@ -43,14 +44,14 @@
     scroll=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     scroll.backgroundColor=[UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
      self.navigationController.navigationBar.backItem.title=@"";
-    UIView *pleca=[[UIView alloc]initWithFrame:CGRectMake(70, 50, self.view.frame.size.width-70, 100)];
+    UIView *pleca=[[UIView alloc]initWithFrame:CGRectMake(50, 50, self.view.frame.size.width-50, 100)];
     pleca.backgroundColor= [UIColor colorWithRed:116/255.0 green:94/255.0 blue:197/255.0 alpha:1];
     
     [scroll addSubview:pleca];
     
     
-    UILabel *name=[[UILabel alloc] initWithFrame:CGRectMake(70, 5, pleca.frame.size.width-70, 50)];
-    name.numberOfLines=3;
+    UILabel *name=[[UILabel alloc] initWithFrame:CGRectMake(70, 5, pleca.frame.size.width-60, 50)];
+    name.numberOfLines=4;
     [name setFont:[UIFont systemFontOfSize:18]];
     name.textColor=[UIColor whiteColor];
     name.backgroundColor=[UIColor clearColor];
@@ -61,16 +62,16 @@
     
     [pleca addSubview:name];
     
-    UILabel *info=[[UILabel alloc] initWithFrame:CGRectMake(70, 50, pleca.frame.size.width-70, 50)];
+    UILabel *info=[[UILabel alloc] initWithFrame:CGRectMake(70, name.frame.size.height+name.frame.origin.y+5, pleca.frame.size.width-70, 50)];
     info.numberOfLines=3;
    [info setFont:[UIFont fontWithName:@"GothamRounded-Book" size:16]];
     info.textColor=[UIColor whiteColor];
     info.backgroundColor=[UIColor clearColor];
-    info.text=[NSString stringWithFormat:@"%@ \n%@",[_data objectForKey:@"position"],_territory];
+    info.text=[NSString stringWithFormat:@"%@ \n%@",[_data objectForKey:@"position"],[_data objectForKey:@"territory"]];
     [info sizeToFit];
     [pleca addSubview:info];
     
-    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(30, 47,100,  105)];
+    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(15, 47,100,  105)];
     [img.layer setCornerRadius:img.frame.size.width / 2];
     img.layer.cornerRadius = img.frame.size.width / 2;
     
@@ -177,7 +178,7 @@
          [indicator setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:16]];
         indicator.textAlignment=NSTextAlignmentCenter;
         //[indicator sizeToFit];
-        indicator.frame=CGRectMake(indicator.frame.origin.x,  top+12, self.view.frame.size.width-100, indicator.frame.size.height);
+        indicator.frame=CGRectMake(indicator.frame.origin.x,  top+12, self.view.frame.size.width-80, indicator.frame.size.height);
                [scroll addSubview:indicator];
         indicator.textColor=[UIColor whiteColor];
         
@@ -185,15 +186,21 @@
         
         
         UIButton *search =  [UIButton buttonWithType:UIButtonTypeCustom];
+        search.accessibilityIdentifier=[[[_data objectForKey:@"indicators"]objectAtIndex:i]objectForKey:@"document"];
         search.tintColor=[UIColor whiteColor];
         if ([[[[_data objectForKey:@"indicators"]objectAtIndex:i]objectForKey:@"document"] isEqualToString:@""])
-           [search setImage:[UIImage imageNamed:@"nobutton.png"] forState:UIControlStateNormal];
+        {
+           [search setImage:[UIImage imageNamed:@"ic_btn_no_declaro.png"] forState:UIControlStateNormal];
+           
+        }
         else
-        [search setImage:[UIImage imageNamed:@"yesbutton.png"] forState:UIControlStateNormal];
-        [search addTarget:self action:@selector(showDocument) forControlEvents:UIControlEventTouchUpInside];
+        [search setImage:[UIImage imageNamed:@"ic_btn_declaro.png"] forState:UIControlStateNormal];
+        
+        
+        [search addTarget:self action:@selector(showDocument:) forControlEvents:UIControlEventTouchUpInside];
         
         [search setFrame:CGRectMake(indicator.frame.size.width+indicator.frame.origin.x-15, top+12, 30 , 30)];
-        search.backgroundColor=[UIColor darkGrayColor];
+        search.backgroundColor=[UIColor clearColor];
         [scroll addSubview:search];
 
         
@@ -201,14 +208,23 @@
         top=top+60;
         
     }
-    
+          [scroll setContentSize:CGSizeMake(self.view.frame.size.width,top+60)];
     [scroll addSubview:imgPartido];
      [self.view addSubview:scroll];
     
 
     // Do any additional setup after loading the view.
 }
--(void)showDocument{}
+-(void)showDocument:(id)sender{
+    UIButton *a = (UIButton *) sender;
+    DocumentViewController *doc=[[DocumentViewController alloc]init];
+    if ([a.accessibilityIdentifier isEqualToString:@""]) {
+        
+    }
+    else{
+    doc.path=a.accessibilityIdentifier;
+        [self.navigationController pushViewController:doc animated:NO];}
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -17,6 +17,8 @@
 #import "DetailViewController.h"
 #import <AudioToolbox/AudioServices.h>
 #import  <Social/Social.h>
+
+#import "AboutViewController.h"
 @interface ViewController ()
 
 @end
@@ -214,10 +216,19 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 // to get rid of it (eg: if you are building cards from data from the internet)
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index
 {
+     loading.hidden=TRUE;
     current=index;
     //   DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake((self.frame.size.width - CARD_WIDTH)/2, (self.frame.size.height - CARD_HEIGHT)/2, CARD_WIDTH, CARD_HEIGHT)];
     
-    DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake(10, 10, self.view.frame.size.width-20 , self.view.frame.size.width+80)];
+    DraggableView *draggableView = [[DraggableView alloc]init];
+    NSLog(@"%f", [[UIScreen mainScreen] bounds].size.height);
+    if ( [[UIScreen mainScreen] bounds].size.height <=480) {
+        
+                draggableView.frame= CGRectMake(10, 10, self.view.frame.size.width-20 , self.view.frame.size.width-20);
+    }else{
+    
+         draggableView.frame=CGRectMake(10, 10, self.view.frame.size.width-20 , self.view.frame.size.width+80);
+    }
     draggableView.information.text = @"test";//[exampleCardLabels objectAtIndex:index]; //%%% placeholder for card-specific information
     //modificamos el frame de los botones
     xButton.frame=CGRectMake((draggableView.frame.size.width/2)-100, draggableView.frame.origin.y+ draggableView.frame.size.height+12, xButton.frame.size.width, xButton.frame.size.height);
@@ -232,35 +243,38 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     [img addSubview: a];
     
     // Revisa si el usuario tiene twitter
-    if ([[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"] !=NULL ) {
+    if ([[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"] !=NULL  ) {
         
         tuiter=[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"];
         NSString *tw=[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] stringByReplacingOccurrencesOfString: @"\n" withString: @""];
         NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tuiter];
-        
+
         // buscamos la img en cache y si no pues la descargamos
-        
-        dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
-        dispatch_async(imageQueue, ^{
-            
-            UIImage *imgAux=[self buscarCache:st];
-            if (imgAux==nil) {
-                UIImage *tmp= [self descargarImg:st];
-                [delegate.imgCache setObject: tmp forKey: st];
+        if(tuiter == nil || [tuiter isEqualToString:@""]){
+                    img.image=[UIImage imageNamed:@"noimage.jpg"];
+        }
+        else{
+            dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
+            dispatch_async(imageQueue, ^{
                 
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // Update the UI
+                UIImage *imgAux=[self buscarCache:st];
+                if (imgAux==nil) {
+                    UIImage *tmp= [self descargarImg:st];
+                    [delegate.imgCache setObject: tmp forKey: st];
+                    
+                }
                 
-                img.image=[self buscarCache:st];
-                [a stopAnimating];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // Update the UI
+                    
+                    img.image=[self buscarCache:st];
+                    [a stopAnimating];
+                    
+                });
+                
                 
             });
-            
-            
-        });
-        
+        }
         
     }
     else{
@@ -271,9 +285,12 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         else
             img.image=[UIImage imageNamed:@"m.jpg"];
         
+        tuiter=[NSString stringWithFormat:@"#%@%@%@",[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"nombres"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
+        
     }
     name =[[UILabel alloc]initWithFrame:CGRectMake(0, draggableView.frame.size.height-50, draggableView.frame.size.width-50, 50 )];
     name.backgroundColor=[UIColor clearColor];
+    name.numberOfLines=3;
     name.textColor=[UIColor whiteColor];
     name.textAlignment=NSTextAlignmentCenter;
     name.text=@"nombre del dipudato";
@@ -282,7 +299,8 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     [name setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:18]];
  
-    
+    name.frame=CGRectMake(0, draggableView.frame.size.height- name.frame.size.height, draggableView.frame.size.width-50, name.frame.size.height );
+
     UIImageView *partido=[[UIImageView alloc]initWithFrame:CGRectMake(draggableView.frame.size.width-50,  draggableView.frame.size.height-50, 50, 50)];
     
     //obtener la imagen con la url del json y ponerla aqui y en cache
@@ -389,6 +407,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
                 NSMutableDictionary *aux=[NSMutableDictionary dictionaryWithDictionary:[[[positions objectAtIndex:a]objectForKey:@"candidates"] objectAtIndex:b]];
                 
                 [aux setObject:[[positions objectAtIndex:a]objectForKey:@"title"] forKey:@"position"];
+                   [aux setObject:[[positions objectAtIndex:a]objectForKey:@"territory"] forKey:@"territory"];
                 [candidatos addObject:aux];
             }
         }
@@ -400,12 +419,14 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
             exampleCardLabels=candidatos;
             //   NSLog(@"si hay ");
             [self loadCards];
+             loading.hidden=TRUE;
         }
         else{
             // No Success
             //   NSLog(@"no hay ");
             UIAlertView * alert=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"No encontramos candidatos en tu zona" delegate:self cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
             [alert show];
+             loading.hidden=TRUE;
             
         }
         
@@ -500,7 +521,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         NSLog(@"%@",[indicator objectForKey:@"document"]);
         if ([[indicator objectForKey:@"document"] isEqualToString:@""]) {
             UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona no te corresponde por que no tiene su 3 de 3 ¿Quiere solicitarselo?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
-            [a show];
+           // [a show];
             goodPerson = false;
             
             break;
@@ -509,7 +530,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         }
     if (goodPerson) {
         UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona si cumple con su 3 de 3 ¿Quieres mandarle un twett?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
-        [a show];
+       // [a show];
 
     }
     [self detailView:card.tag];
@@ -542,9 +563,15 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     if ([[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"] !=NULL ) {
         
         tuiter=[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"];
-        NSString *tw=[[[candidatos objectAtIndex:index]objectForKey:@"twitter"] stringByReplacingOccurrencesOfString: @"\n" withString: @""];
-        NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tuiter];
         
+        if ([tuiter isEqualToString:@""] || [tuiter isKindOfClass:[NSNull class]]) {
+              tuiter=[NSString stringWithFormat:@"#%@%@%@",[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"nombres"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
+             img.image=[UIImage imageNamed:@"noimage.jpg"];
+        }
+        else {
+     
+        NSString *st=[NSString stringWithFormat:@"https://twitter.com/%@/profile_image?size=original",tuiter];
+
         // buscamos la img en cache y si no pues la descargamos
         
         dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
@@ -567,6 +594,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
             
             
         });
+        }
         
         
     }
@@ -744,10 +772,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
         NSString *tw;
         if (goodPerson) {
-            tw=[NSString stringWithFormat:@"Hey %@ Gracias por ser responsable @liguepolítico", tuiter];
+            tw=[NSString stringWithFormat:@"Oye %@ Gracias por ser responsable @liguepolítico", tuiter];
         }
         else
-        tw=[NSString stringWithFormat:@"Hey %@ Manda tu 3 de 3 @liguepolítico", tuiter];
+        tw=[NSString stringWithFormat:@"Oye %@ , te encontré  en @LiguePolitico y no has presentado todas tus declaraciones, ¿qué esperas?", tuiter];
         
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
@@ -759,8 +787,8 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     }
 }
 -(IBAction)info:(id)sender{
-    UIAlertView *info=[[UIAlertView alloc]initWithTitle:@"¿Qué es el 3 de 3?" message:@"Explicación" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
-    [info show];
+    AboutViewController *about=[[AboutViewController alloc]init];
+    [self.navigationController pushViewController:about animated:NO];
     
 }
 -(IBAction)reload:(id)sender{

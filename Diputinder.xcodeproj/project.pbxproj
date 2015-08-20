@@ -46,6 +46,10 @@
 		F3EEF9601B82853600C662A9 /* Gotham-Rounded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */; };
 		F3EEF9611B82853600C662A9 /* Gotham-Rounded-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */; };
 		F3EEF9631B828EF300C662A9 /* ic_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF9621B828EF300C662A9 /* ic_twitter.png */; };
+		F3EEF9661B84EDF400C662A9 /* DocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3EEF9651B84EDF400C662A9 /* DocumentViewController.m */; };
+		F3EEF9681B84FAD300C662A9 /* ic_btn_declaro.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF9671B84FAD300C662A9 /* ic_btn_declaro.png */; };
+		F3EEF96A1B84FAE500C662A9 /* ic_btn_no_declaro.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF9691B84FAE500C662A9 /* ic_btn_no_declaro.png */; };
+		F3EEF9701B854DE100C662A9 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3EEF96F1B854DE100C662A9 /* AboutViewController.m */; };
 		F3F5F12D1AF18B580046F8B6 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */; };
 		F3F5F12F1AF54C680046F8B6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
@@ -111,6 +115,12 @@
 		F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Rounded-Bold.ttf"; sourceTree = "<group>"; };
 		F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Rounded-Book.ttf"; sourceTree = "<group>"; };
 		F3EEF9621B828EF300C662A9 /* ic_twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_twitter.png; sourceTree = "<group>"; };
+		F3EEF9641B84EDF400C662A9 /* DocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentViewController.h; sourceTree = "<group>"; };
+		F3EEF9651B84EDF400C662A9 /* DocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentViewController.m; sourceTree = "<group>"; };
+		F3EEF9671B84FAD300C662A9 /* ic_btn_declaro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_btn_declaro.png; sourceTree = "<group>"; };
+		F3EEF9691B84FAE500C662A9 /* ic_btn_no_declaro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_btn_no_declaro.png; sourceTree = "<group>"; };
+		F3EEF96E1B854DE100C662A9 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		F3EEF96F1B854DE100C662A9 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -170,6 +180,8 @@
 				F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */,
 				F3EEF9621B828EF300C662A9 /* ic_twitter.png */,
 				074FE9DF1B83D3AB00C30C73 /* Refresh_icon.png */,
+				F3EEF9671B84FAD300C662A9 /* ic_btn_declaro.png */,
+				F3EEF9691B84FAE500C662A9 /* ic_btn_no_declaro.png */,
 				F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */,
 				F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */,
 				F370BE151AF03410008974D6 /* UIKit.framework */,
@@ -195,6 +207,8 @@
 		F370BDDF1AF03368008974D6 /* Diputinder */ = {
 			isa = PBXGroup;
 			children = (
+				F3EEF96E1B854DE100C662A9 /* AboutViewController.h */,
+				F3EEF96F1B854DE100C662A9 /* AboutViewController.m */,
 				F3EE12901B024A7A00CDEC6A /* noimage.jpg */,
 				F3EEF94E1B7EACAB00C662A9 /* document.ico */,
 				F3EE12381B01599D00CDEC6A /* partidos */,
@@ -217,6 +231,8 @@
 				F370BDED1AF03368008974D6 /* Images.xcassets */,
 				F370BDEF1AF03368008974D6 /* LaunchScreen.xib */,
 				F370BDE01AF03368008974D6 /* Supporting Files */,
+				F3EEF9641B84EDF400C662A9 /* DocumentViewController.h */,
+				F3EEF9651B84EDF400C662A9 /* DocumentViewController.m */,
 			);
 			path = Diputinder;
 			sourceTree = "<group>";
@@ -360,8 +376,10 @@
 				F370BDEC1AF03368008974D6 /* Main.storyboard in Resources */,
 				F3EE122A1B01598000CDEC6A /* PAN.png in Resources */,
 				F3EE12361B01599200CDEC6A /* PH.png in Resources */,
+				F3EEF9681B84FAD300C662A9 /* ic_btn_declaro.png in Resources */,
 				F3EE12911B024A7A00CDEC6A /* noimage.jpg in Resources */,
 				F3EE12211B01562C00CDEC6A /* nobutton.png in Resources */,
+				F3EEF96A1B84FAE500C662A9 /* ic_btn_no_declaro.png in Resources */,
 				F370BDF11AF03368008974D6 /* LaunchScreen.xib in Resources */,
 				F3EEF9631B828EF300C662A9 /* ic_twitter.png in Resources */,
 				F3EE12311B01598700CDEC6A /* PRI.png in Resources */,
@@ -422,7 +440,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3EEF9701B854DE100C662A9 /* AboutViewController.m in Sources */,
 				F370BE0D1AF033B5008974D6 /* DraggableViewBackground.m in Sources */,
+				F3EEF9661B84EDF400C662A9 /* DocumentViewController.m in Sources */,
 				F370BE101AF033B5008974D6 /* OverlayView.m in Sources */,
 				F370BDE91AF03368008974D6 /* ViewController.m in Sources */,
 				F370BDE61AF03368008974D6 /* AppDelegate.m in Sources */,
