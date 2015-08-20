@@ -13,7 +13,7 @@ UIView *loading;
 UIActivityIndicatorView *spinner;
 }
 - (void)viewDidLoad {
-    [super viewDidLoad];
+
     
     
     loading=[[UIView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height/2 -50, 50, 50)];
@@ -72,10 +72,19 @@ UIActivityIndicatorView *spinner;
 {
     return NO;
 }
--(void)viewDidAppear:(BOOL)animated {
-   
+
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    self.navigationController.navigationBar.backItem.title=@"";
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIFont fontWithName:@"GothamRounded-Bold" size:19],NSFontAttributeName,nil];
+    self.navigationController.navigationBar.titleTextAttributes =textAttributes;
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     self.navigationController.topViewController.navigationItem.title=@"Documento";
+    
 }
-
-
 @end

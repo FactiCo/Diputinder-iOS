@@ -270,5 +270,16 @@
 
 -(void)viewDidAppear:(BOOL)animated{
  self.navigationController.navigationBar.backItem.title=@"";
+
+    
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIFont fontWithName:@"GothamRounded-Bold" size:19],NSFontAttributeName,nil];
+    self.navigationController.navigationBar.titleTextAttributes =textAttributes;
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    self.navigationController.topViewController.navigationItem.title=@"Ligue Político";
+    
 }
 @end

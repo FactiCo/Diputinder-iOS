@@ -21,8 +21,8 @@
     _scroll=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:_scroll];
     
-    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-75, 20, 150, 60)];
-    img.image=[UIImage imageNamed:@"logo.png"];
+    UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-50, 20, 100, 100)];
+    img.image=[UIImage imageNamed:@"iosiconliguepolitico.png"];
     [_scroll addSubview: img];
     
     self.view.backgroundColor=[UIColor colorWithRed:249/255.0 green:248/255.0 blue:247/255.0 alpha:1];
@@ -33,7 +33,7 @@
    // [text setFont:[UIFont fontWithName:@"OpenSans-Bold" size:16]];
     
     NSString *t=@"<p>Primer medio móvil en América Latina diseñado para geolocalizar información. Abierto. Útil. Independiente. Aquí es noticia.</p><p>Equipo:</p><p>&nbsp;</p><p>Diego Mendiburu</p><p> <a href='http://twitter.com/dmendiburu'>@dmendiburu</a></p><p>Director General</p><p>&nbsp;</p><p>Jordy Mel&eacute;ndez </p><p><a href='http://twitter.com/jordy_my'>@jordy_my</a></p><p>Director Editorial y de Alianzas Estrat&eacute;gicas</p><p>&nbsp;</p><p>Carlos Castellanos&nbsp;</p><p> <a href='http://twitter.com/rockarloz'>@rockarloz</a></p><p>Director Tecnol&oacute;gico</p><p>&nbsp;</p><p>Edgar Zavala </p><p><a href='http://twitter.com/zace3d'>@zace3d</a></p><p>Desarrollador Android</p><p>&nbsp;</p><p>Nattan Guzm&aacute;n </p><p><a href='http://twitter.com/galloninja'> @galloninja</a></p><p>Dise&ntilde;o</p><p>&nbsp;</p><p>Erick Caballero </p><p><a href='http://twitter.com/ErickPotro'> @ErickPotro</a></p><p>Dise&ntilde;o</p><p>&nbsp;</p><p>Juan Carlos S&aacute;nchez </p><p><a href='http://twitter.com/gojcs'> @gojcs</a></p><p>Desarrollador </p><p>&nbsp;</p>";
-    
+    text.text=t;
    
     text.scrollEnabled=FALSE;
   //  text.attributedText =attrib;
@@ -62,7 +62,17 @@
     self.navigationController.navigationBar.backItem.title=@"";
     
     
-    self.navigationController.topViewController.navigationItem.title=@"ACERCA";
+
+    
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIFont fontWithName:@"GothamRounded-Bold" size:19],NSFontAttributeName,nil];
+    self.navigationController.navigationBar.titleTextAttributes =textAttributes;
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    self.navigationController.topViewController.navigationItem.title=@"Acerca de";
+    
 }
 /*
  #pragma mark - Navigation

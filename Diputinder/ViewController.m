@@ -39,7 +39,7 @@
     UILabel *name;
     UIScrollView *vista;
     NSString *territory;
-    
+    BOOL working;
     UIActivityIndicatorView *loading;
     AppDelegate *delegate;
     
@@ -47,6 +47,7 @@
     NSString *tuiter;
     BOOL goodPerson;
     UIView *cardContainer;
+    UILabel *nocards;
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
@@ -55,11 +56,32 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 @synthesize allCards;//%%% all the cards
 
 -(void)refreshData{
-
+    if (working) {
+        
+    }
+    else{
+        working=TRUE;
+        for (DraggableView *subview in [self.view subviews]) {
+           if ([subview isKindOfClass:[DraggableView class]])
+                [subview removeFromSuperview];
+            
+        }
     [candidatos removeAllObjects];
-    [self getAddress];
+    
+        
+        [self getAddress];
+        
+        
+    }
 }
 - (void)viewDidLoad {
+    working= FALSE;
+    nocards=[[UILabel alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 100)];
+    nocards.text=@"Por el momento no hay mas candidatos que ver.";
+    nocards.numberOfLines=2;
+    nocards.textColor=[UIColor whiteColor];
+    nocards.textAlignment=NSTextAlignmentCenter;
+    [self.view addSubview:nocards];
     UIButton *search =  [UIButton buttonWithType:UIButtonTypeCustom];
     search.tintColor=[UIColor whiteColor];
     [search setImage:[UIImage imageNamed:@"Refresh_icon.png"] forState:UIControlStateNormal];
@@ -70,17 +92,6 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     NSMutableArray *button=[[NSMutableArray alloc]initWithObjects:buscar, nil];
     self.navigationController.topViewController.navigationItem.rightBarButtonItems = button;
     goodPerson=true;
-    for (NSString* family in [UIFont familyNames])
-    {
-        NSLog(@"%@", family);
-        
-        for (NSString* named in [UIFont fontNamesForFamilyName: family])
-        {
-            NSLog(@"  %@", named);
-        }
-    }
-    
-    
     locationManager = [[CLLocationManager alloc]init]; // initializing locationManager
     locationManager.delegate = self; // we set the delegate of locationManager to self.
     locationManager.desiredAccuracy = kCLLocationAccuracyBest; // setting the accuracy
@@ -96,14 +107,9 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 #endif
     
     [[[self navigationController] navigationBar] setBarStyle:UIBarStyleBlackTranslucent];
-    //  DraggableViewBackground *draggableBackground = [[DraggableViewBackground alloc]initWithFrame:self.view.frame];
-    //2 [self.view addSubview:draggableBackground];
-    // Do any additional setup after loading the view, typically from a nib.
+ 
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:48/255.0 green:204/255.0 blue:113/255.0 alpha:1]];
-    // [super layoutSubviews];
-    // UIImage *image2 = [UIImage imageNamed:@"ligue.png"];
-    //[self.navigationController.navigationBar setBackgroundImage:image2 forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
     
     UIButton* tryAgain = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -121,7 +127,6 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     [image setImage:[UIImage imageNamed:@"ligue.png"]];
     
     // [self.navigationController.navigationBar.topItem setTitleView:image];
-    
     
     //self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ligue.png"]];
     
@@ -153,14 +158,11 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     
     [self setupView];
-    //exampleCardLabels = [[NSArray alloc]initWithObjects:@"Diego",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
     loadedCards = [[NSMutableArray alloc] init];
     allCards = [[NSMutableArray alloc] init];
     cardsLoadedIndex = 0;
     [self getAddress];
-    //verde 48,204, 113
-    //modaro 116, 94,197
-    //226,226,226
+    
     
     
 }
@@ -177,7 +179,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     loading.backgroundColor=[UIColor blackColor];
     [loading startAnimating];
     [loading.layer setCornerRadius:loading.frame.size.width / 2];
-    loading.layer.cornerRadius = loading.frame.size.width / 2;
+    loading.layer.cornerRadius = 5;
     loading.layer.masksToBounds = YES;
     
     [self.view addSubview:loading];
@@ -201,10 +203,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     vista=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     vista.backgroundColor=[UIColor clearColor];
-    
-    
-    // [self addSubview:menuButton];
-    // [self addSubview:messageButton];
+   
     [vista addSubview:xButton];
     [vista addSubview:checkButton];
     [self.view addSubview:vista];
@@ -216,6 +215,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 // to get rid of it (eg: if you are building cards from data from the internet)
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index
 {
+    [loading stopAnimating];
      loading.hidden=TRUE;
     current=index;
     //   DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake((self.frame.size.width - CARD_WIDTH)/2, (self.frame.size.height - CARD_HEIGHT)/2, CARD_WIDTH, CARD_HEIGHT)];
@@ -374,27 +374,16 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@.json",delegate.country];
     }
     url =[NSString stringWithFormat:@"http://liguepolitico-staging.herokuapp.com/countries/1/states/1/cities/1.json"];
- 
+   
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
         loading.hidden=TRUE;
+         working=FALSE;
         NSMutableArray *positions =[[NSMutableArray alloc]init];
         territory= [responseObject objectForKey:@"name"];
         for (NSDictionary *item in [responseObject objectForKey:@"positions"]) {
             // debo obtener todas las posiciones y luego juntarlas
             [positions addObject:item];
        
-            
-            /*if ([[item objectForKey:@"entidadFederativa"]isEqualToString:delegate.country])
-             {
-             
-             if ([item objectForKey:@"twitter"]!=NULL) {
-             [conFoto addObject:item];
-             }
-             else{
-             [sinFoto addObject:item];
-             }
-             
-             }*/
             
         }
         
@@ -413,8 +402,8 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         }
         
         
-        [candidatos addObjectsFromArray:conFoto];
-        [candidatos addObjectsFromArray:sinFoto];
+     //   [candidatos addObjectsFromArray:conFoto];
+       // [candidatos addObjectsFromArray:sinFoto];
         if ([candidatos count]) {
             exampleCardLabels=candidatos;
             //   NSLog(@"si hay ");
@@ -424,18 +413,64 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         else{
             // No Success
             //   NSLog(@"no hay ");
-            UIAlertView * alert=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"No encontramos candidatos en tu zona" delegate:self cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
-            [alert show];
-             loading.hidden=TRUE;
+            UIAlertView *a =[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"No encontramos, candidatos cerca de tu ubicación actual, te dejamos unos ejemplos" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
+            [a show];
+            [loading stopAnimating];
+            [self loadExample];
             
         }
         
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         working=FALSE;
         NSLog(@"Error %@", error);
+        UIAlertView *a =[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"No encontramos, candidatos cerca de tu ubicación actual, te dejamos unos ejemplos" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
+        [a show];
+        [loading stopAnimating];
+        [self loadExample];
         
         
     }];
+}
+
+-(void)loadExample{
+    
+   
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"ejemplo" ofType:@"txt"];
+     NSData *data = [NSData dataWithContentsOfFile:filePath];
+    NSError *error;
+    
+    NSMutableDictionary *datas=[[NSMutableDictionary alloc]init];
+    datas= [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    
+   // exampleCardLabels=[datas objectForKey:@"candidates"];
+    //   NSLog(@"si hay ");
+    
+    NSMutableArray *positions =[[NSMutableArray alloc]init];
+    territory= [datas objectForKey:@"name"];
+    for (NSDictionary *item in [datas objectForKey:@"positions"]) {
+        // debo obtener todas las posiciones y luego juntarlas
+        [positions addObject:item];
+        
+        
+    }
+    
+    for (int a=0; a<positions.count; a++) {
+        NSLog(@"%@",[[positions objectAtIndex:a]objectForKey:@"title"]);
+        
+        NSMutableArray *candis=[[NSMutableArray alloc]initWithArray:[[positions objectAtIndex:a]objectForKey:@"candidates"]];
+        //recorro todos los candidato de este cargo politico
+        for (int b =0 ; b<candis.count; b++) {
+            NSMutableDictionary *aux=[NSMutableDictionary dictionaryWithDictionary:[[[positions objectAtIndex:a]objectForKey:@"candidates"] objectAtIndex:b]];
+            
+            [aux setObject:[[positions objectAtIndex:a]objectForKey:@"title"] forKey:@"position"];
+            [aux setObject:[[positions objectAtIndex:a]objectForKey:@"territory"] forKey:@"territory"];
+            [exampleCardLabels addObject:aux];
+        }
+    }
+    candidatos=exampleCardLabels;
+    [self loadCards];
+
 }
 //%%% loads all the cards and puts the first x in the "loaded cards" array
 -(void)loadCards
@@ -534,18 +569,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 
     }
     [self detailView:card.tag];
-    
-    /*if ([[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"patrimonial"]==NULL || [[candidatos objectAtIndex:card.tag]objectForKey:@"fiscal"]==NULL) {
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona no te corresponde por que no tiene su 3 de 3 ¿Quiere solicitarselo?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
-        [a show];
-    }
-    else{
-        UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona si cumple con su 3 de 3 ¿Quieres mandarle un twett?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
-        [a show];
-        
-    }*/
-    
+
 }
 
 -(void)detailView: (int ) index{
@@ -726,7 +750,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 -(UIImage *)descargarImg:(NSString *)url {
     UIImage *tmp;
     NSLog(@"%@",url);
-    if([[url substringWithRange:NSMakeRange(0, 4)] isEqualToString:@"http"]){
+    if ([url isEqualToString:@"ejemplo"]) {
+           tmp=[UIImage imageNamed:@"iosiconliguepolitico.jpg"];
+    }
+    else if([[url substringWithRange:NSMakeRange(0, 4)] isEqualToString:@"http"]){
         
         tmp =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString: url]]];
         if (tmp !=nil)
@@ -772,10 +799,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
         NSString *tw;
         if (goodPerson) {
-            tw=[NSString stringWithFormat:@"Oye %@ Gracias por ser responsable @liguepolítico", tuiter];
+            tw=[NSString stringWithFormat:@"Oye @%@, te enconré en @LiguePolitico y vi que ya presentaste todos tus decelaraciones.¡Bien hecho!", tuiter];
         }
         else
-        tw=[NSString stringWithFormat:@"Oye %@ , te encontré  en @LiguePolitico y no has presentado todas tus declaraciones, ¿qué esperas?", tuiter];
+        tw=[NSString stringWithFormat:@"Oye @%@, te encontré  en @LiguePolitico y no has presentado todas tus declaraciones, ¿qué esperas? www.liguepolitico.com", tuiter];
         
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
@@ -792,7 +819,13 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
 }
 -(IBAction)reload:(id)sender{
-    [self viewDidLoad];
+    working=TRUE;
+    if (working) {
+        
+    }
+    else{
+     loading.hidden=FALSE;
+        [self getAddress];}
 }
 
 -(void)getAddress{
@@ -814,7 +847,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error %@", error);
-        
+        [self getAddress];
         
     }];
     
@@ -826,12 +859,8 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
                                     [UIFont fontWithName:@"GothamRounded-Bold" size:19],NSFontAttributeName,nil];
     self.navigationController.navigationBar.titleTextAttributes =textAttributes;
     
-    
-    //[[[ self.tabBarController navigationController] navigationBar] setBarStyle:UIBarStyleBlackTranslucent];
-    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    //[self setUpNavbar];
     self.navigationController.topViewController.navigationItem.title=@"Ligue Político";
     
 }
