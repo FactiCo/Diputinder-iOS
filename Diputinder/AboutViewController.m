@@ -25,17 +25,19 @@
     img.image=[UIImage imageNamed:@"iosiconliguepolitico.png"];
     [_scroll addSubview: img];
     
-    self.view.backgroundColor=[UIColor colorWithRed:249/255.0 green:248/255.0 blue:247/255.0 alpha:1];
+    self.view.backgroundColor=[UIColor whiteColor];
     UITextView *text=[[UITextView alloc]initWithFrame:CGRectMake(20, img.frame.size.height+img.frame.origin.y+20, self.view.frame.size.width-40, 200) ];
     text.backgroundColor=[UIColor clearColor];
     text.editable=false;
     text.delegate=self;
    // [text setFont:[UIFont fontWithName:@"OpenSans-Bold" size:16]];
     
-    NSString *t=@"<p>Primer medio móvil en América Latina diseñado para geolocalizar información. Abierto. Útil. Independiente. Aquí es noticia.</p><p>Equipo:</p><p>&nbsp;</p><p>Diego Mendiburu</p><p> <a href='http://twitter.com/dmendiburu'>@dmendiburu</a></p><p>Director General</p><p>&nbsp;</p><p>Jordy Mel&eacute;ndez </p><p><a href='http://twitter.com/jordy_my'>@jordy_my</a></p><p>Director Editorial y de Alianzas Estrat&eacute;gicas</p><p>&nbsp;</p><p>Carlos Castellanos&nbsp;</p><p> <a href='http://twitter.com/rockarloz'>@rockarloz</a></p><p>Director Tecnol&oacute;gico</p><p>&nbsp;</p><p>Edgar Zavala </p><p><a href='http://twitter.com/zace3d'>@zace3d</a></p><p>Desarrollador Android</p><p>&nbsp;</p><p>Nattan Guzm&aacute;n </p><p><a href='http://twitter.com/galloninja'> @galloninja</a></p><p>Dise&ntilde;o</p><p>&nbsp;</p><p>Erick Caballero </p><p><a href='http://twitter.com/ErickPotro'> @ErickPotro</a></p><p>Dise&ntilde;o</p><p>&nbsp;</p><p>Juan Carlos S&aacute;nchez </p><p><a href='http://twitter.com/gojcs'> @gojcs</a></p><p>Desarrollador </p><p>&nbsp;</p>";
+    NSString *t=@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas. \n Ligue Político es una iniciativa ciudadana, abierta y colaborativa, promovida y apoyada por: Factual, Hivos, Chequeado, Yo Quiero Saber, El Tiempo, y Fáctico) \n Si un candidato te atrae, desliza a la derecha. ¡Pero cuidado! Si no ha presentado su declaración patrimonial o jurada, ¡exígela! \n \n www.liguepolitico.com";
+    
     text.text=t;
-   
+     [text setFont:[UIFont fontWithName:@"GothamRounded-Book" size:14]];
     text.scrollEnabled=FALSE;
+     text.dataDetectorTypes = UIDataDetectorTypeAll;
   //  text.attributedText =attrib;
     [text sizeToFit];
     

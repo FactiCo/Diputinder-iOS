@@ -52,6 +52,10 @@
 		F3EEF9701B854DE100C662A9 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3EEF96F1B854DE100C662A9 /* AboutViewController.m */; };
 		F3EEF9721B8668DD00C662A9 /* ejemplo.txt in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF9711B8668DD00C662A9 /* ejemplo.txt */; };
 		F3EEF9741B86866400C662A9 /* iosiconliguepolitico.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF9731B86866400C662A9 /* iosiconliguepolitico.png */; };
+		F3F0BA601B8B872F0077CAD4 /* bgr_tutorial_candados.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F3F0BA5F1B8B872E0077CAD4 /* bgr_tutorial_candados.jpg */; };
+		F3F0BA621B8B887E0077CAD4 /* ic_tutorial_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F3F0BA611B8B887E0077CAD4 /* ic_tutorial_1.png */; };
+		F3F0BA641B8B917E0077CAD4 /* ic_factico.png in Resources */ = {isa = PBXBuildFile; fileRef = F3F0BA631B8B917E0077CAD4 /* ic_factico.png */; };
+		F3F0BA661B8B93DB0077CAD4 /* ic_tutorial_5.png in Resources */ = {isa = PBXBuildFile; fileRef = F3F0BA651B8B93DB0077CAD4 /* ic_tutorial_5.png */; };
 		F3F5F12D1AF18B580046F8B6 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */; };
 		F3F5F12F1AF54C680046F8B6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
@@ -125,6 +129,10 @@
 		F3EEF96F1B854DE100C662A9 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		F3EEF9711B8668DD00C662A9 /* ejemplo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ejemplo.txt; sourceTree = "<group>"; };
 		F3EEF9731B86866400C662A9 /* iosiconliguepolitico.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iosiconliguepolitico.png; sourceTree = "<group>"; };
+		F3F0BA5F1B8B872E0077CAD4 /* bgr_tutorial_candados.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bgr_tutorial_candados.jpg; sourceTree = "<group>"; };
+		F3F0BA611B8B887E0077CAD4 /* ic_tutorial_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_tutorial_1.png; sourceTree = "<group>"; };
+		F3F0BA631B8B917E0077CAD4 /* ic_factico.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_factico.png; sourceTree = "<group>"; };
+		F3F0BA651B8B93DB0077CAD4 /* ic_tutorial_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_tutorial_5.png; sourceTree = "<group>"; };
 		F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		F3F5F12E1AF54C680046F8B6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -186,6 +194,10 @@
 				074FE9DF1B83D3AB00C30C73 /* Refresh_icon.png */,
 				F3EEF9671B84FAD300C662A9 /* ic_btn_declaro.png */,
 				F3EEF9691B84FAE500C662A9 /* ic_btn_no_declaro.png */,
+				F3F0BA5F1B8B872E0077CAD4 /* bgr_tutorial_candados.jpg */,
+				F3F0BA631B8B917E0077CAD4 /* ic_factico.png */,
+				F3F0BA611B8B887E0077CAD4 /* ic_tutorial_1.png */,
+				F3F0BA651B8B93DB0077CAD4 /* ic_tutorial_5.png */,
 				F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */,
 				F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */,
 				F370BE151AF03410008974D6 /* UIKit.framework */,
@@ -374,11 +386,13 @@
 				074FE9E01B83D3AB00C30C73 /* Refresh_icon.png in Resources */,
 				F3EEF9611B82853600C662A9 /* Gotham-Rounded-Book.ttf in Resources */,
 				F3EEF9741B86866400C662A9 /* iosiconliguepolitico.png in Resources */,
+				F3F0BA641B8B917E0077CAD4 /* ic_factico.png in Resources */,
 				F3EE12371B01599200CDEC6A /* PES.png in Resources */,
 				F3EE122D1B01598000CDEC6A /* PANAL.png in Resources */,
 				F3EE12301B01598700CDEC6A /* PVEM.png in Resources */,
 				F370BE1E1AF17D42008974D6 /* h.jpg in Resources */,
 				F3EE123C1B01614100CDEC6A /* ligue.png in Resources */,
+				F3F0BA601B8B872F0077CAD4 /* bgr_tutorial_candados.jpg in Resources */,
 				F370BE0E1AF033B5008974D6 /* Diego.jpg in Resources */,
 				F3EE122B1B01598000CDEC6A /* PRD.png in Resources */,
 				F370BDEC1AF03368008974D6 /* Main.storyboard in Resources */,
@@ -397,6 +411,8 @@
 				F370BDEE1AF03368008974D6 /* Images.xcassets in Resources */,
 				F3EE12331B01598B00CDEC6A /* PT.png in Resources */,
 				F370BE1C1AF17D32008974D6 /* m.jpg in Resources */,
+				F3F0BA621B8B887E0077CAD4 /* ic_tutorial_1.png in Resources */,
+				F3F0BA661B8B93DB0077CAD4 /* ic_tutorial_5.png in Resources */,
 				F3EE12291B01598000CDEC6A /* MC.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

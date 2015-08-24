@@ -48,6 +48,13 @@
     BOOL goodPerson;
     UIView *cardContainer;
     UILabel *nocards;
+    
+    
+    UIScrollView *intro;
+    UIPageControl *page;
+    UIImageView *intro_bg;
+     NSUserDefaults *defaults;
+    
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
@@ -74,7 +81,20 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         
     }
 }
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+    // Update the page when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = intro.frame.size.width;
+    int current_page = floor((intro.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    page.currentPage = current_page;
+}
 - (void)viewDidLoad {
+    
+    defaults = [NSUserDefaults standardUserDefaults];
+ 
+    
+   
+     //  [self.view addSubview:intro];
     working= FALSE;
     nocards=[[UILabel alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 100)];
     nocards.text=@"Por el momento no hay mas candidatos que ver.";
@@ -157,11 +177,93 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     self.navigationController.topViewController.navigationItem.leftBarButtonItem = barButton;
     
     
-    [self setupView];
+    //[self setupView];
+    //[self getAddress];
     loadedCards = [[NSMutableArray alloc] init];
     allCards = [[NSMutableArray alloc] init];
     cardsLoadedIndex = 0;
-    [self getAddress];
+    
+    if([defaults objectForKey:@"intro"]==nil){
+        [defaults setObject:@"si" forKey:@"intro"];
+        intro=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        intro.delegate=self;
+        intro.scrollEnabled=YES;
+        intro.backgroundColor=[UIColor clearColor];
+        intro.pagingEnabled=YES;
+        intro.contentSize = CGSizeMake(self.view.frame.size.width * 3,self.view.frame.size.height);
+        
+        page=[[UIPageControl alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-15, intro.frame.size.height- 80, 30, 20)];
+        page.tintColor=[UIColor colorWithRed:53/255.0 green:175/255.0 blue:202/255.0 alpha:1];
+        page.pageIndicatorTintColor =[UIColor whiteColor];
+        page.currentPageIndicatorTintColor = [UIColor purpleColor];
+        page.backgroundColor=[UIColor clearColor];
+        page.numberOfPages=3;
+        
+        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta y colaborativa, promovida y apoyada por: Factual, Hivos, Chequeado, Yo Quiero Saber, El Tiempo, y Fáctico).",@"Si un candidato te atrae, desliza a la derecha. ¡Pero cuidado! Si no ha presentado su declaración patrimonial o jurada, ¡exígela!.", nil];
+        NSArray *imgs=[[NSArray alloc]initWithObjects:@"ic_tutorial_1.png",@"ic_factico.png",@"ic_tutorial_5.png", nil];
+        
+        intro_bg=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, intro.frame.size.width, intro.frame.size.height)];
+        intro_bg.image=[UIImage imageNamed:@"bgr_tutorial_candados.jpg"];
+        [self.view addSubview:intro_bg];
+        for (int i=0; i<3; i++) {
+            
+            
+            UIImageView *logo=[[UIImageView alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+15, 40, self.view.frame.size.width-30, 90)];
+            logo.image=[UIImage imageNamed:[imgs objectAtIndex:i]];
+            [intro addSubview:logo];
+            
+            if(i==1){
+                logo.contentMode=UIViewContentModeScaleAspectFit;
+            }
+            else if (i==2){
+                
+                logo.contentMode=UIViewContentModeScaleAspectFit;
+                UIButton *go= [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                go.frame=CGRectMake(intro.frame.size.width*i, intro.frame.size.height-50, intro.frame.size.width, 50);
+                [go setTitle:@"INICIAR" forState:UIControlStateNormal];
+                go.titleLabel.textColor=[UIColor blackColor];
+                
+                go.backgroundColor=[UIColor whiteColor];
+                [go addTarget:self
+                       action:@selector(closeIntro)
+             forControlEvents:UIControlEventTouchUpInside];
+                
+                go.tintColor=[UIColor blackColor];
+                go.titleLabel.font=[UIFont fontWithName:@"GothamRounded-Bold" size:18];
+                [intro addSubview:go];
+                
+                
+            }
+            UILabel *lbl=[[UILabel alloc]initWithFrame:CGRectMake(15, logo.frame.size.height+logo.frame.origin.y+15, intro.frame.size.width-10, 150)];
+            lbl.text=@"¡Hola! Bienvenido";
+            [lbl setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:20]];
+            [lbl sizeToFit];
+            
+            lbl.textColor=[UIColor whiteColor];
+            lbl.frame=CGRectMake(self.view.frame.size.width/2-lbl.frame.size.width/2, lbl.frame.origin.y, lbl.frame.size.width, lbl.frame.size.height);
+            [intro addSubview:lbl];
+            
+            
+            UILabel *lbl2=[[UILabel alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+15, lbl.frame.size.height+lbl.frame.origin.y+15, intro.frame.size.width-30, 200)];
+            lbl2.numberOfLines=8;
+            lbl2.text=[textos objectAtIndex:i];
+            lbl2.textAlignment=NSTextAlignmentCenter;
+            [lbl2 setFont:[UIFont fontWithName:@"GothamRounded-Book" size:18]];
+            lbl2.textColor=[UIColor whiteColor];
+            [intro addSubview:lbl2];
+            
+        }
+        UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
+        [currentWindow addSubview:intro_bg];
+        [currentWindow addSubview:intro];
+        [currentWindow addSubview:page];
+        
+        
+    }
+    else{
+        [self setupView];
+        [self getAddress];
+    }
     
     
     
@@ -207,6 +309,15 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     [vista addSubview:xButton];
     [vista addSubview:checkButton];
     [self.view addSubview:vista];
+    
+}
+-(void) closeIntro{
+
+    [intro removeFromSuperview];
+    [page removeFromSuperview];
+    [intro_bg removeFromSuperview];
+    [self setupView];
+    [self getAddress];
     
 }
 
