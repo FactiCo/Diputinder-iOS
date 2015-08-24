@@ -184,7 +184,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     cardsLoadedIndex = 0;
     
     if([defaults objectForKey:@"intro"]==nil){
-        [defaults setObject:@"si" forKey:@"intro"];
+       
         intro=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
         intro.delegate=self;
         intro.scrollEnabled=YES;
@@ -312,7 +312,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
 }
 -(void) closeIntro{
-
+     [defaults setObject:@"si" forKey:@"intro"];
     [intro removeFromSuperview];
     [page removeFromSuperview];
     [intro_bg removeFromSuperview];
