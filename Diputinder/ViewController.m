@@ -338,19 +338,21 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
                 draggableView.frame= CGRectMake(10, 10, self.view.frame.size.width-20 , self.view.frame.size.width-20);
     }else{
     
-         draggableView.frame=CGRectMake(10, 10, self.view.frame.size.width-20 , self.view.frame.size.width+80);
+         draggableView.frame=CGRectMake(10, 10, self.view.frame.size.width-20 , self.view.frame.size.width+40);
     }
     draggableView.information.text = @"test";//[exampleCardLabels objectAtIndex:index]; //%%% placeholder for card-specific information
     //modificamos el frame de los botones
     
-    xButton.frame=CGRectMake((self.view.frame.size.width/2)-100, draggableView.frame.origin.y+ draggableView.frame.size.height+12, xButton.frame.size.width, xButton.frame.size.height);
+    xButton.frame=CGRectMake((self.view.frame.size.width/2)-100, draggableView.frame.origin.y+ draggableView.frame.size.height+27, xButton.frame.size.width, xButton.frame.size.height);
    
-    checkButton.frame=CGRectMake((self.view.frame.size.width/2)+20, draggableView.frame.origin.y+ draggableView.frame.size.height+12, checkButton.frame.size.width, checkButton.frame.size.height);
+    checkButton.frame=CGRectMake((self.view.frame.size.width/2)+20, draggableView.frame.origin.y+ draggableView.frame.size.height+27, checkButton.frame.size.width, checkButton.frame.size.height);
     
     
     
     UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, draggableView.frame.size.width, draggableView.frame.size.height-50)];
     img.image=[UIImage imageNamed:@"noimage.jpg"];
+    //[img setContentMode:UIViewContentModeScaleToFill];
+
     UIActivityIndicatorView *a=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(img.frame.size.width/2-25, img.frame.size.height/2-25, 50, 50)];
     [a startAnimating];
     [img addSubview: a];
@@ -401,7 +403,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         tuiter=[NSString stringWithFormat:@"#%@%@%@",[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"nombres"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
         
     }
-    name =[[UILabel alloc]initWithFrame:CGRectMake(0, draggableView.frame.size.height-50, draggableView.frame.size.width-50, 50 )];
+    name =[[UILabel alloc]initWithFrame:CGRectMake(5, draggableView.frame.size.height-60, draggableView.frame.size.width-50, 50 )];
     name.backgroundColor=[UIColor clearColor];
     name.numberOfLines=3;
     name.textColor=[UIColor whiteColor];
@@ -412,10 +414,14 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     [name setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:18]];
  
-    name.frame=CGRectMake(0, draggableView.frame.size.height- name.frame.size.height, draggableView.frame.size.width-50, name.frame.size.height );
+    name.frame=CGRectMake(5, draggableView.frame.size.height- name.frame.size.height, draggableView.frame.size.width-60, name.frame.size.height );
 
     UIImageView *partido=[[UIImageView alloc]initWithFrame:CGRectMake(draggableView.frame.size.width-50,  draggableView.frame.size.height-50, 50, 50)];
-    
+    [partido.layer setCornerRadius:partido.frame.size.width / 2];
+    partido.layer.cornerRadius = partido.frame.size.width / 2;
+    partido.layer.borderColor = [[UIColor darkGrayColor] CGColor];
+       partido.layer.masksToBounds = YES;
+    [partido setContentMode:UIViewContentModeScaleAspectFill];
     //obtener la imagen con la url del json y ponerla aqui y en cache
     
     
