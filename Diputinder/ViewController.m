@@ -295,10 +295,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     
     xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, self.view.frame.size.height-150, 80 , 80)];
-    [xButton setImage:[UIImage imageNamed:@"nobutton.png"] forState:UIControlStateNormal];
+    [xButton setImage:[UIImage imageNamed:@"nop.png"] forState:UIControlStateNormal];
     [xButton addTarget:self action:@selector(swipeLeft) forControlEvents:UIControlEventTouchUpInside];
     checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, self.view.frame.size.height-150, 80, 80)];
-    [checkButton setImage:[UIImage imageNamed:@"yesbutton.png"] forState:UIControlStateNormal];
+    [checkButton setImage:[UIImage imageNamed:@"shi.png"] forState:UIControlStateNormal];
     [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
     
     self.view.backgroundColor=[UIColor colorWithRed:226/255.0 green:226/255.0 blue:226/255.0 alpha:1];
@@ -342,8 +342,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     }
     draggableView.information.text = @"test";//[exampleCardLabels objectAtIndex:index]; //%%% placeholder for card-specific information
     //modificamos el frame de los botones
-    xButton.frame=CGRectMake((draggableView.frame.size.width/2)-100, draggableView.frame.origin.y+ draggableView.frame.size.height+12, xButton.frame.size.width, xButton.frame.size.height);
-    checkButton.frame=CGRectMake((draggableView.frame.size.width/2)+40, draggableView.frame.origin.y+ draggableView.frame.size.height+12, checkButton.frame.size.width, checkButton.frame.size.height);
+    
+    xButton.frame=CGRectMake((self.view.frame.size.width/2)-100, draggableView.frame.origin.y+ draggableView.frame.size.height+12, xButton.frame.size.width, xButton.frame.size.height);
+   
+    checkButton.frame=CGRectMake((self.view.frame.size.width/2)+20, draggableView.frame.origin.y+ draggableView.frame.size.height+12, checkButton.frame.size.width, checkButton.frame.size.height);
     
     
     

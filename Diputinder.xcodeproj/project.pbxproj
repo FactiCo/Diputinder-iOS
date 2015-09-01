@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		074FE9E01B83D3AB00C30C73 /* Refresh_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 074FE9DF1B83D3AB00C30C73 /* Refresh_icon.png */; };
 		AE806B21B3FCD7E913DBEA06 /* libPods-Diputinder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42792AD6C768141D302AE857 /* libPods-Diputinder.a */; };
+		F354C6491B94DE7E003217D2 /* nodeclarado.png in Resources */ = {isa = PBXBuildFile; fileRef = F354C6481B94DE7E003217D2 /* nodeclarado.png */; };
+		F354C64B1B94DE84003217D2 /* declarado.png in Resources */ = {isa = PBXBuildFile; fileRef = F354C64A1B94DE84003217D2 /* declarado.png */; };
+		F354C64D1B962298003217D2 /* palomita.png in Resources */ = {isa = PBXBuildFile; fileRef = F354C64C1B962298003217D2 /* palomita.png */; };
+		F354C64F1B96229E003217D2 /* tache.png in Resources */ = {isa = PBXBuildFile; fileRef = F354C64E1B96229E003217D2 /* tache.png */; };
 		F370BDE31AF03368008974D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BDE21AF03368008974D6 /* main.m */; };
 		F370BDE61AF03368008974D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BDE51AF03368008974D6 /* AppDelegate.m */; };
 		F370BDE91AF03368008974D6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F370BDE81AF03368008974D6 /* ViewController.m */; };
@@ -27,6 +31,8 @@
 		F370BE1A1AF14CC7008974D6 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F370BE191AF14CC7008974D6 /* AddressBook.framework */; };
 		F370BE1C1AF17D32008974D6 /* m.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F370BE1B1AF17D32008974D6 /* m.jpg */; };
 		F370BE1E1AF17D42008974D6 /* h.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F370BE1D1AF17D42008974D6 /* h.jpg */; };
+		F3A4D25A1B963BB5006FEE69 /* shi.png in Resources */ = {isa = PBXBuildFile; fileRef = F3A4D2581B963BB5006FEE69 /* shi.png */; };
+		F3A4D25B1B963BB5006FEE69 /* nop.png in Resources */ = {isa = PBXBuildFile; fileRef = F3A4D2591B963BB5006FEE69 /* nop.png */; };
 		F3EE12211B01562C00CDEC6A /* nobutton.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EE12201B01562C00CDEC6A /* nobutton.png */; };
 		F3EE12231B01563400CDEC6A /* yesbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EE12221B01563400CDEC6A /* yesbutton.png */; };
 		F3EE12291B01598000CDEC6A /* MC.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EE12241B01598000CDEC6A /* MC.png */; };
@@ -75,6 +81,10 @@
 		074FE9DF1B83D3AB00C30C73 /* Refresh_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Refresh_icon.png; sourceTree = "<group>"; };
 		42792AD6C768141D302AE857 /* libPods-Diputinder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Diputinder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C164BD8319FB2A4C2BB5983 /* Pods-Diputinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diputinder.release.xcconfig"; path = "Pods/Target Support Files/Pods-Diputinder/Pods-Diputinder.release.xcconfig"; sourceTree = "<group>"; };
+		F354C6481B94DE7E003217D2 /* nodeclarado.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nodeclarado.png; sourceTree = "<group>"; };
+		F354C64A1B94DE84003217D2 /* declarado.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = declarado.png; sourceTree = "<group>"; };
+		F354C64C1B962298003217D2 /* palomita.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = palomita.png; sourceTree = "<group>"; };
+		F354C64E1B96229E003217D2 /* tache.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tache.png; sourceTree = "<group>"; };
 		F370BDDD1AF03368008974D6 /* Diputinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Diputinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F370BDE11AF03368008974D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F370BDE21AF03368008974D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -102,6 +112,8 @@
 		F370BE191AF14CC7008974D6 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		F370BE1B1AF17D32008974D6 /* m.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = m.jpg; sourceTree = "<group>"; };
 		F370BE1D1AF17D42008974D6 /* h.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = h.jpg; sourceTree = "<group>"; };
+		F3A4D2581B963BB5006FEE69 /* shi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shi.png; sourceTree = "<group>"; };
+		F3A4D2591B963BB5006FEE69 /* nop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nop.png; sourceTree = "<group>"; };
 		F3EE12201B01562C00CDEC6A /* nobutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nobutton.png; sourceTree = "<group>"; };
 		F3EE12221B01563400CDEC6A /* yesbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yesbutton.png; sourceTree = "<group>"; };
 		F3EE12241B01598000CDEC6A /* MC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MC.png; sourceTree = "<group>"; };
@@ -190,6 +202,8 @@
 			children = (
 				F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */,
 				F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */,
+				F3A4D2581B963BB5006FEE69 /* shi.png */,
+				F3A4D2591B963BB5006FEE69 /* nop.png */,
 				F3EEF9621B828EF300C662A9 /* ic_twitter.png */,
 				074FE9DF1B83D3AB00C30C73 /* Refresh_icon.png */,
 				F3EEF9671B84FAD300C662A9 /* ic_btn_declaro.png */,
@@ -198,7 +212,11 @@
 				F3F0BA631B8B917E0077CAD4 /* ic_factico.png */,
 				F3F0BA611B8B887E0077CAD4 /* ic_tutorial_1.png */,
 				F3F0BA651B8B93DB0077CAD4 /* ic_tutorial_5.png */,
+				F354C64C1B962298003217D2 /* palomita.png */,
+				F354C64E1B96229E003217D2 /* tache.png */,
 				F3F5F12B1AF18B580046F8B6 /* DetailViewController.h */,
+				F354C64A1B94DE84003217D2 /* declarado.png */,
+				F354C6481B94DE7E003217D2 /* nodeclarado.png */,
 				F3F5F12C1AF18B580046F8B6 /* DetailViewController.m */,
 				F370BE151AF03410008974D6 /* UIKit.framework */,
 				F370BE131AF03408008974D6 /* CoreGraphics.framework */,
@@ -381,6 +399,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3A4D25A1B963BB5006FEE69 /* shi.png in Resources */,
 				F3EEF9721B8668DD00C662A9 /* ejemplo.txt in Resources */,
 				F3EEF9601B82853600C662A9 /* Gotham-Rounded-Bold.ttf in Resources */,
 				074FE9E01B83D3AB00C30C73 /* Refresh_icon.png in Resources */,
@@ -395,10 +414,12 @@
 				F3F0BA601B8B872F0077CAD4 /* bgr_tutorial_candados.jpg in Resources */,
 				F370BE0E1AF033B5008974D6 /* Diego.jpg in Resources */,
 				F3EE122B1B01598000CDEC6A /* PRD.png in Resources */,
+				F354C64F1B96229E003217D2 /* tache.png in Resources */,
 				F370BDEC1AF03368008974D6 /* Main.storyboard in Resources */,
 				F3EE122A1B01598000CDEC6A /* PAN.png in Resources */,
 				F3EE12361B01599200CDEC6A /* PH.png in Resources */,
 				F3EEF9681B84FAD300C662A9 /* ic_btn_declaro.png in Resources */,
+				F354C64D1B962298003217D2 /* palomita.png in Resources */,
 				F3EE12911B024A7A00CDEC6A /* noimage.jpg in Resources */,
 				F3EE12211B01562C00CDEC6A /* nobutton.png in Resources */,
 				F3EEF96A1B84FAE500C662A9 /* ic_btn_no_declaro.png in Resources */,
@@ -406,6 +427,7 @@
 				F3EEF9631B828EF300C662A9 /* ic_twitter.png in Resources */,
 				F3EE12311B01598700CDEC6A /* PRI.png in Resources */,
 				F3EE122C1B01598000CDEC6A /* MORENA.png in Resources */,
+				F354C64B1B94DE84003217D2 /* declarado.png in Resources */,
 				F3EEF94F1B7EACAB00C662A9 /* document.ico in Resources */,
 				F3EE12231B01563400CDEC6A /* yesbutton.png in Resources */,
 				F370BDEE1AF03368008974D6 /* Images.xcassets in Resources */,
@@ -413,6 +435,8 @@
 				F370BE1C1AF17D32008974D6 /* m.jpg in Resources */,
 				F3F0BA621B8B887E0077CAD4 /* ic_tutorial_1.png in Resources */,
 				F3F0BA661B8B93DB0077CAD4 /* ic_tutorial_5.png in Resources */,
+				F3A4D25B1B963BB5006FEE69 /* nop.png in Resources */,
+				F354C6491B94DE7E003217D2 /* nodeclarado.png in Resources */,
 				F3EE12291B01598000CDEC6A /* MC.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
