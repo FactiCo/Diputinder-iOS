@@ -74,7 +74,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
             
         }
     [candidatos removeAllObjects];
-    
+      goodPerson=true;
         
         [self getAddress];
         
@@ -193,14 +193,17 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         intro.contentSize = CGSizeMake(self.view.frame.size.width * 3,self.view.frame.size.height);
         
         page=[[UIPageControl alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-15, intro.frame.size.height- 80, 30, 20)];
+        if ( [[UIScreen mainScreen] bounds].size.height <=480) {
+            page.frame=CGRectMake(self.view.frame.size.width/2-15, intro.frame.size.height- 20, 30, 20);
+        }
         page.tintColor=[UIColor colorWithRed:53/255.0 green:175/255.0 blue:202/255.0 alpha:1];
         page.pageIndicatorTintColor =[UIColor whiteColor];
         page.currentPageIndicatorTintColor = [UIColor purpleColor];
         page.backgroundColor=[UIColor clearColor];
         page.numberOfPages=3;
         
-        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta y colaborativa, promovida y apoyada por: Factual, Hivos, Chequeado, Yo Quiero Saber, El Tiempo, y Fáctico).",@"Si un candidato te atrae, desliza a la derecha. ¡Pero cuidado! Si no ha presentado su declaración patrimonial o jurada, ¡exígela!.", nil];
-        NSArray *imgs=[[NSArray alloc]initWithObjects:@"ic_tutorial_1.png",@"ic_factico.png",@"ic_tutorial_5.png", nil];
+        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta, colaborativa y regional.",@"Si un candidato te atrae, desliza a la derecha. ¡Pero cuidado! Si no ha presentado su declaración patrimonial, ¡exígela!", nil];
+        NSArray *imgs=[[NSArray alloc]initWithObjects:@"logo.png",@"aliados.png",@"ic_tutorial_5.png", nil];
         
         intro_bg=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, intro.frame.size.width, intro.frame.size.height)];
         intro_bg.image=[UIImage imageNamed:@"bgr_tutorial_candados.jpg"];
@@ -208,50 +211,111 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         for (int i=0; i<3; i++) {
             
             
-            UIImageView *logo=[[UIImageView alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+15, 40, self.view.frame.size.width-30, 90)];
+            UIImageView *logo=[[UIImageView alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+15, 60, self.view.frame.size.width-30, 90)];
             logo.image=[UIImage imageNamed:[imgs objectAtIndex:i]];
             [intro addSubview:logo];
+              logo.contentMode=UIViewContentModeScaleAspectFit;
             
+            UILabel *lbl=[[UILabel alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+15, logo.frame.size.height+logo.frame.origin.y+15, intro.frame.size.width-30, 150)];
+            lbl.text=@"¡Bienvenido!";
+            [lbl setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:22]];
+            [lbl sizeToFit];
+            lbl.textAlignment=NSTextAlignmentCenter;
+            lbl.textColor=[UIColor whiteColor];
+           lbl.frame=CGRectMake((intro.frame.size.width*i)+15, lbl.frame.origin.y,  intro.frame.size.width-30, lbl.frame.size.height);
+            
+           [intro addSubview:lbl];
+            
+            
+            UILabel *lbl2=[[UILabel alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+35, lbl.frame.size.height+lbl.frame.origin.y+15, intro.frame.size.width-70, 200)];
+            lbl2.numberOfLines=20;
+             [lbl2 setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:20]];
+            lbl2.text=[textos objectAtIndex:i];
+            
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.lineHeightMultiple=1.2;
+            paragraphStyle.alignment = NSTextAlignmentCenter;
+            paragraphStyle.lineSpacing = 1.0;
+            
+            NSDictionary *nameAttributes=@{
+                                           NSParagraphStyleAttributeName : paragraphStyle,
+                                           NSBaselineOffsetAttributeName:@2.0
+                                           };
+            
+            
+            NSAttributedString *string=[[NSAttributedString alloc] initWithString:lbl2.text attributes:nameAttributes];
+            lbl2.attributedText=string;
+            
+            lbl2.textAlignment=NSTextAlignmentCenter;
+            [lbl2 sizeToFit];
+           
+            lbl2.textColor=[UIColor whiteColor];
+            
+        
+            [intro addSubview:lbl2];
+            if(i==0){
+                if ( [[UIScreen mainScreen] bounds].size.height <=480) {
+                    logo.frame=CGRectMake(logo.frame.origin.x, 30, logo.frame.size.width, logo.frame.size.height);
+                     //logo.contentMode=UIViewContentModeScaleAspectFit;
+                    lbl.frame=CGRectMake(lbl.frame.origin.x,  logo.frame.size.height+logo.frame.origin.y+3, lbl.frame.size.width, lbl.frame.size.height);
+                    //lbl.backgroundColor=[UIColor redColor];
+                    lbl2.frame=CGRectMake(lbl2.frame.origin.x, lbl.frame.size.height+lbl.frame.origin.y+10, lbl2.frame.size.width, lbl2.frame.size.height);
+                  //  lbl2.backgroundColor=[UIColor blackColor];
+                //lbl.text=@"jhjkhjkh";
+                }
+            }
             if(i==1){
-                logo.contentMode=UIViewContentModeScaleAspectFit;
+                [lbl removeFromSuperview];
+                if ( [[UIScreen mainScreen] bounds].size.height <=480) {
+                   
+                    lbl2.frame=CGRectMake((intro.frame.size.width*i)+15, 30, self.view.frame.size.width-30, lbl2.frame.size.height);
+                    [lbl2 sizeToFit];
+                    lbl2.frame=CGRectMake((intro.frame.size.width*i)+15, 30, self.view.frame.size.width-30,lbl2.frame.size.height);
+                    lbl2.backgroundColor=[UIColor clearColor];
+                    logo.frame=CGRectMake((intro.frame.size.width*i), lbl2.frame.size.height+lbl2.frame.origin.y+15, self.view.frame.size.width,  self.view.frame.size.width);
+                }
+                else{
+                lbl2.frame=CGRectMake((intro.frame.size.width*i)+15, 60, self.view.frame.size.width-30, lbl2.frame.size.height);
+                [lbl2 sizeToFit];
+                lbl2.frame=CGRectMake((intro.frame.size.width*i)+15, 60, self.view.frame.size.width-30,lbl2.frame.size.height);
+                lbl2.backgroundColor=[UIColor clearColor];
+                logo.frame=CGRectMake((intro.frame.size.width*i), lbl2.frame.size.height+lbl2.frame.origin.y+15, self.view.frame.size.width,  self.view.frame.size.width);
+               // logo.contentMode=UIViewContentModeScaleAspectFit;
+                }
             }
             else if (i==2){
-                
+                 [lbl removeFromSuperview];
                 logo.contentMode=UIViewContentModeScaleAspectFit;
                 UIButton *go= [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                go.frame=CGRectMake(intro.frame.size.width*i, intro.frame.size.height-50, intro.frame.size.width, 50);
-                [go setTitle:@"INICIAR" forState:UIControlStateNormal];
-                go.titleLabel.textColor=[UIColor blackColor];
                 
-                go.backgroundColor=[UIColor whiteColor];
+                if ( [[UIScreen mainScreen] bounds].size.height <=480) {
+                    lbl2.frame=CGRectMake((intro.frame.size.width*i)+35, lbl.frame.size.height+lbl.frame.origin.y, intro.frame.size.width-70, 200);
+                go.frame=CGRectMake(intro.frame.size.width*i+40, lbl2.frame.size.height+lbl2.frame.origin.y+0, intro.frame.size.width-80, 50);
+                }
+                else
+                    
+                     lbl2.frame=CGRectMake((intro.frame.size.width*i)+35, logo.frame.size.height+logo.frame.origin.y, intro.frame.size.width-70, 200);
+                     go.frame=CGRectMake(intro.frame.size.width*i+40, lbl2.frame.size.height+lbl2.frame.origin.y+10, intro.frame.size.width-80, 50);
+                [go setTitle:@"INICIAR" forState:UIControlStateNormal];
+                go.titleLabel.textColor=[UIColor whiteColor];
+                [go.titleLabel setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:18]];
+                go.backgroundColor=[UIColor colorWithRed:48/255.0 green:204/255.0 blue:113/255.0 alpha:1];
                 [go addTarget:self
                        action:@selector(closeIntro)
              forControlEvents:UIControlEventTouchUpInside];
                 
-                go.tintColor=[UIColor blackColor];
-                go.titleLabel.font=[UIFont fontWithName:@"GothamRounded-Bold" size:18];
+                go.tintColor=[UIColor whiteColor];
+                [go.layer setCornerRadius:4];
+                go.layer.cornerRadius = 4;
+               
+                go.layer.masksToBounds = YES;
+                
                 [intro addSubview:go];
                 
                 
             }
-            UILabel *lbl=[[UILabel alloc]initWithFrame:CGRectMake(15, logo.frame.size.height+logo.frame.origin.y+15, intro.frame.size.width-10, 150)];
-            lbl.text=@"¡Hola! Bienvenido";
-            [lbl setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:20]];
-            [lbl sizeToFit];
-            
-            lbl.textColor=[UIColor whiteColor];
-            lbl.frame=CGRectMake(self.view.frame.size.width/2-lbl.frame.size.width/2, lbl.frame.origin.y, lbl.frame.size.width, lbl.frame.size.height);
-            [intro addSubview:lbl];
-            
-            
-            UILabel *lbl2=[[UILabel alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+15, lbl.frame.size.height+lbl.frame.origin.y+15, intro.frame.size.width-30, 200)];
-            lbl2.numberOfLines=8;
-            lbl2.text=[textos objectAtIndex:i];
-            lbl2.textAlignment=NSTextAlignmentCenter;
-            [lbl2 setFont:[UIFont fontWithName:@"GothamRounded-Book" size:18]];
-            lbl2.textColor=[UIColor whiteColor];
-            [intro addSubview:lbl2];
-            
+      
+           
         }
         UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
         [currentWindow addSubview:intro_bg];
@@ -351,6 +415,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, draggableView.frame.size.width, draggableView.frame.size.height-50)];
     img.image=[UIImage imageNamed:@"noimage.jpg"];
+    UIButton *more=   [UIButton buttonWithType:UIButtonTypeInfoLight];
+    more.tintColor=[UIColor colorWithRed:48/255.0 green:204/255.0 blue:113/255.0 alpha:1];
+    more.frame=CGRectMake(img.frame.size.width-60, 0, 60, 60);
+    [img addSubview:more];
     //[img setContentMode:UIViewContentModeScaleToFill];
 
     UIActivityIndicatorView *a=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(img.frame.size.width/2-25, img.frame.size.height/2-25, 50, 50)];
@@ -485,14 +553,14 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *url ;
     if ([delegate.city isKindOfClass:[NSNull class]] || [delegate.city isEqualToString:@"(null)"]) {
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@/states/%@.json",delegate.country,delegate.state];
+        url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/states/%@.json",delegate.country,delegate.state];
     }else
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
+        url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
     
     if ([delegate.state isKindOfClass:[NSNull class]] || [delegate.state isEqualToString:@"(null)"]) {
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@.json",delegate.country];
+        url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@.json",delegate.country];
     }
-    url =[NSString stringWithFormat:@"http://liguepolitico-staging.herokuapp.com/countries/1/states/1/cities/1.json"];
+    //url =[NSString stringWithFormat:@"http://liguepolitico-staging.herokuapp.com/countries/1/states/1/cities/1.json"];
    
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
         loading.hidden=TRUE;
@@ -681,8 +749,11 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
             break;
             
             }
+        else
+             goodPerson = true;
         }
     if (goodPerson) {
+        
         UIAlertView *a=[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"Esta persona si cumple con su 3 de 3 ¿Quieres mandarle un twett?" delegate:self cancelButtonTitle:@"Si" otherButtonTitles:@"No", nil];
        // [a show];
 
@@ -692,16 +763,27 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 }
 
 -(void)detailView: (int ) index{
-   cardContainer=[[UIView alloc]initWithFrame:CGRectMake(15, 15, self.view.frame.size.width-30, self.view.frame.size.height-30)];
     
+    if ( [[UIScreen mainScreen] bounds].size.height <=480) {
+        
+        cardContainer=[[UIView alloc]initWithFrame:CGRectMake(15, 15, self.view.frame.size.width-30, self.view.frame.size.height-30)];
+        
+          }
+    else
+        cardContainer=[[UIView alloc]initWithFrame:CGRectMake(15, 50, self.view.frame.size.width-30, self.view.frame.size.height-100)];
+
     
     
  
     cardContainer.backgroundColor=[UIColor darkGrayColor];
     
-    UIImageView *img= [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, self.view.frame.size.width/3, self.view.frame.size.width/3)];
+    UIImageView *img= [[UIImageView alloc]initWithFrame:CGRectMake(10, 15, self.view.frame.size.width/3, self.view.frame.size.width/3)];
+    img.frame=CGRectMake(cardContainer.frame.size.width/2-img.frame.size.width/2, 15, img.frame.size.width, img.frame.size.height);
     [img.layer setCornerRadius:img.frame.size.width / 2];
     img.layer.cornerRadius = img.frame.size.width / 2;
+    img.layer.borderColor = [[UIColor whiteColor] CGColor];
+    img.layer.borderWidth =3.5;
+
     img.layer.masksToBounds = YES;
     if ([[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"twitter"] !=NULL ) {
         
@@ -753,45 +835,47 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     [cardContainer addSubview:img];
     
-    UILabel *candidate=[[UILabel alloc]initWithFrame:CGRectMake(img.frame.size.height+img.frame.origin.x+10, 20, cardContainer.frame.size.width-img.frame.size.width-img.frame.origin.x-10, 100)];
+    UILabel *candidate=[[UILabel alloc]initWithFrame:CGRectMake(15, img.frame.size.height+img.frame.origin.y+10, cardContainer.frame.size.width-30, 100)];
     candidate.text=[NSString stringWithFormat:@"%@ %@ %@",[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"nombres"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_paterno"],[[[candidatos objectAtIndex:index]objectForKey:@"candidate"]objectForKey:@"apellido_materno"]];
       [candidate setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:20]];
     candidate.numberOfLines=3;
+    candidate.textAlignment=NSTextAlignmentCenter;
     candidate.textColor=[UIColor whiteColor];
     [candidate sizeToFit];
+    candidate.frame=CGRectMake(15, img.frame.size.height+img.frame.origin.y+10, cardContainer.frame.size.width-30, candidate.frame.size.height);
     [cardContainer addSubview:candidate];
     [self.view addSubview: cardContainer];
     
-    UILabel *text=[[UILabel alloc]initWithFrame:CGRectMake(15, img.frame.size.height+img.frame.origin.y +15, cardContainer.frame.size.width-30, 120)];
+    UILabel *text=[[UILabel alloc]initWithFrame:CGRectMake(15, candidate.frame.size.height+candidate.frame.origin.y +10, cardContainer.frame.size.width-30, 120)];
           [text setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:17]];
     text.numberOfLines=5;
     text.textColor=[UIColor whiteColor];
-    
+    text.textAlignment=NSTextAlignmentCenter;
     if (goodPerson) {
-     text.text=@"A este candidato sí le interesas porque ya presentó sus declaraciones.";
+     text.text=@"A este candidato sí le interesas porque ya presentó su declaración patrimonial.";
     }
     else
-        text.text=@"Lo sentimos, a este candidato no le interesas porque no ha presentado sus declaraciones.";
+        text.text=@"Lo sentimos, a este candidato no le interesas porque no ha presentado su declaración patrimonial.";
     
       [cardContainer addSubview:text];
     [text sizeToFit];
     
-    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, cardContainer.frame.size.height-150, cardContainer.frame.size.width, 110)];
+    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, text.frame.size.height+text.frame.origin.y+5, cardContainer.frame.size.width, 110)];
     twitterView.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
     [cardContainer addSubview: twitterView];
     
-    UIImageView *tuiterImg=[[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
+    UIImageView *tuiterImg=[[UIImageView alloc]initWithFrame:CGRectMake(10, 25, 50, 50)];
     tuiterImg.image= [UIImage imageNamed:@"ic_twitter.png"];
      [twitterView addSubview: tuiterImg];
     
-    UILabel *msj=[[UILabel alloc]initWithFrame:CGRectMake(tuiterImg.frame.size.height+tuiterImg.frame.origin.x+20, 10, twitterView.frame.size.width-tuiterImg.frame.size.height-tuiterImg.frame.origin.x-10, 100)];
+    UILabel *msj=[[UILabel alloc]initWithFrame:CGRectMake(tuiterImg.frame.size.height+tuiterImg.frame.origin.x+20, 25, twitterView.frame.size.width-tuiterImg.frame.size.height-tuiterImg.frame.origin.x-10, 100)];
           [msj setFont:[UIFont fontWithName:@"GothamRounded-Book" size:15]];
     msj.numberOfLines=5;
     if (goodPerson) {
         msj.text=@"¡Mándale un mensaje de felicitación!";
     }
     else
-        msj.text=@"¡Mándale un  mensaje para que presente sus declaraciones!";
+        msj.text=@"¡Mándale un mensaje para que presente sus declaraciones!";
     
     [msj sizeToFit];
     [twitterView addSubview:msj];
@@ -810,7 +894,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
             action:@selector(cerrar)
   forControlEvents:UIControlEventTouchUpInside];
     [btn setTitle:@"Cerrar" forState:UIControlStateNormal];
-    btn.frame=CGRectMake(0, cardContainer.frame.size.height-40, cardContainer.frame.size.width, 40);
+    btn.frame=CGRectMake(0, twitterView.frame.size.height+twitterView.frame.origin.y, cardContainer.frame.size.width, cardContainer.frame.size.height-(twitterView.frame.size.height+twitterView.frame.origin.y)+15);
     btn.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
     
     btn.tintColor=[UIColor whiteColor];
@@ -869,8 +953,8 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 -(UIImage *)descargarImg:(NSString *)url {
     UIImage *tmp;
     NSLog(@"%@",url);
-    if ([url isEqualToString:@"ejemplo"]) {
-           tmp=[UIImage imageNamed:@"iosiconliguepolitico.jpg"];
+    if ([url isEqualToString:@"ejemplo"] || [url isEqualToString:@"https://twitter.com/Ejemplo/profile_image?size=original"]) {
+           tmp=[UIImage imageNamed:@"iosiconliguepolitico.png"];
     }
     else if([[url substringWithRange:NSMakeRange(0, 4)] isEqualToString:@"http"]){
         
@@ -918,10 +1002,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
         NSString *tw;
         if (goodPerson) {
-            tw=[NSString stringWithFormat:@"Oye @%@, te enconré en @LiguePolitico y vi que ya presentaste todos tus decelaraciones.¡Bien hecho!", tuiter];
+            tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y vi que ya presentaste  tu decelaración Patrimonial. ¡Bien hecho!", tuiter];
         }
         else
-        tw=[NSString stringWithFormat:@"Oye @%@, te encontré  en @LiguePolitico y no has presentado todas tus declaraciones, ¿qué esperas? www.liguepolitico.com", tuiter];
+        tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y no has presentado tu decelaración Patrimonial, ¿qué esperas? www.liguepolitico.com", tuiter];
         
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
@@ -952,7 +1036,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     
     //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
-    NSString *url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    NSString *url =[NSString stringWithFormat:@"http://158.85.249.218/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
     
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){

@@ -119,13 +119,13 @@
 "alliance": [
 {
 "name": "PRD",
-"image": ""
+"image": "ejemplo"
 }
 ],
 "indicators": [
 {
 "name": "Declaración de Algo",
-"document": ""
+"document": "ejemplo"
 }
 ]
 }

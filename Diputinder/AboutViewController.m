@@ -22,7 +22,7 @@
     [self.view addSubview:_scroll];
     
     UIImageView *img=[[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-50, 20, 100, 100)];
-    img.image=[UIImage imageNamed:@"iosiconliguepolitico.png"];
+    img.image=[UIImage imageNamed:@"logo.png"];
     [_scroll addSubview: img];
     
     self.view.backgroundColor=[UIColor whiteColor];
@@ -30,14 +30,19 @@
     text.backgroundColor=[UIColor clearColor];
     text.editable=false;
     text.delegate=self;
+         text.dataDetectorTypes = UIDataDetectorTypeAll;
    // [text setFont:[UIFont fontWithName:@"OpenSans-Bold" size:16]];
     
-    NSString *t=@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas. \n Ligue Político es una iniciativa ciudadana, abierta y colaborativa, promovida y apoyada por: Factual, Hivos, Chequeado, Yo Quiero Saber, El Tiempo, y Fáctico) \n Si un candidato te atrae, desliza a la derecha. ¡Pero cuidado! Si no ha presentado su declaración patrimonial o jurada, ¡exígela! \n \n www.liguepolitico.com";
+    NSString *t=@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas. \n\n Ligue Político es una iniciativa ciudadana, abierta, colaborativa y regional, promovida y apoyada por: Factual, Hivos, Chequeado, Yo Quiero Saber, y Fáctico. \n\n Si un candidato te atrae, desliza a la derecha. ¡Pero cuidado! Si no ha presentado su declaración patrimonial o jurada, ¡exígela! \n \n www.liguepolitico.com";
     
     text.text=t;
-     [text setFont:[UIFont fontWithName:@"GothamRounded-Book" size:14]];
+    [text setTintColor:[UIColor colorWithRed:116/255.0 green:94/255.0 blue:197/255.0 alpha:1]];
+     [text setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:14]];
     text.scrollEnabled=FALSE;
-     text.dataDetectorTypes = UIDataDetectorTypeAll;
+    text.textAlignment=NSTextAlignmentCenter;
+
+    
+  
   //  text.attributedText =attrib;
     [text sizeToFit];
     

@@ -337,6 +337,10 @@
 -(UIImage *)descargarImg:(NSString *)url {
     UIImage *tmp;
     NSLog(@"%@",url);
+    if ([url isEqualToString:@"ejemplo"]) {
+        tmp=[UIImage imageNamed:@"noimage.jpg"];
+    }
+    else{
     if([[url substringWithRange:NSMakeRange(0, 4)] isEqualToString:@"http"]){
         
         tmp =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString: url]]];
@@ -348,7 +352,7 @@
     else{
         tmp=[UIImage imageNamed:@"h.jpg"];
     }
-    
+    }
     return tmp;
 }
 
