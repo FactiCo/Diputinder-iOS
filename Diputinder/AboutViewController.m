@@ -94,6 +94,7 @@
 {
     return NO;
 }
+/*
 -(BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
     NSLog(@"URL: %@", URL);
@@ -109,7 +110,7 @@
     //You can do anything with the URL here (like open in other web view).
     return NO;
 }
-
+*/
 
 
 
