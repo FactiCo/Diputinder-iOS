@@ -97,7 +97,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
      //  [self.view addSubview:intro];
     working= FALSE;
     nocards=[[UILabel alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 100)];
-    nocards.text=@"Por el momento no hay mas candidatos que ver.";
+    nocards.text=@"Por el momento no hay más candidatos que ver.";
     nocards.numberOfLines=2;
     nocards.textColor=[UIColor whiteColor];
     nocards.textAlignment=NSTextAlignmentCenter;
@@ -202,7 +202,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         page.backgroundColor=[UIColor clearColor];
         page.numberOfPages=3;
         
-        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta, colaborativa y regional.",@"Si un candidato te atrae, desliza a la derecha. ¡Pero cuidado! Si no ha presentado su declaración patrimonial, ¡exígela!", nil];
+        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta, colaborativa y regional.",@"Si un candidato te atrae, desliza a la derecha. \n ¡Pero cuidado! \nSi no ha presentado su declaración patrimonial, ¡exígela!", nil];
         NSArray *imgs=[[NSArray alloc]initWithObjects:@"logo.png",@"aliados.png",@"ic_tutorial_5.png", nil];
         
         intro_bg=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, intro.frame.size.width, intro.frame.size.height)];
@@ -770,7 +770,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         
           }
     else
-        cardContainer=[[UIView alloc]initWithFrame:CGRectMake(15, 50, self.view.frame.size.width-30, self.view.frame.size.height-100)];
+        cardContainer=[[UIView alloc]initWithFrame:CGRectMake(15, 20, self.view.frame.size.width-30, self.view.frame.size.height-40)];
 
     
     
@@ -860,24 +860,26 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
       [cardContainer addSubview:text];
     [text sizeToFit];
     
-    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, text.frame.size.height+text.frame.origin.y+5, cardContainer.frame.size.width, 110)];
+    UIView *twitterView=[[UIView alloc]initWithFrame:CGRectMake(0, text.frame.size.height+text.frame.origin.y+10, cardContainer.frame.size.width, 130)];
     twitterView.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
     [cardContainer addSubview: twitterView];
     
-    UIImageView *tuiterImg=[[UIImageView alloc]initWithFrame:CGRectMake(10, 25, 50, 50)];
+    UIImageView *tuiterImg=[[UIImageView alloc]initWithFrame:CGRectMake(cardContainer.frame.size.width/2-25, 10, 50, 50)];
     tuiterImg.image= [UIImage imageNamed:@"ic_twitter.png"];
      [twitterView addSubview: tuiterImg];
     
-    UILabel *msj=[[UILabel alloc]initWithFrame:CGRectMake(tuiterImg.frame.size.height+tuiterImg.frame.origin.x+20, 25, twitterView.frame.size.width-tuiterImg.frame.size.height-tuiterImg.frame.origin.x-10, 100)];
+    UILabel *msj=[[UILabel alloc]initWithFrame:CGRectMake(15, tuiterImg.frame.size.height+tuiterImg.frame.origin.y+10,cardContainer.frame.size.width-30, 100)];
+    msj.textAlignment=NSTextAlignmentCenter;
           [msj setFont:[UIFont fontWithName:@"GothamRounded-Book" size:15]];
     msj.numberOfLines=5;
     if (goodPerson) {
         msj.text=@"¡Mándale un mensaje de felicitación!";
     }
     else
-        msj.text=@"¡Mándale un mensaje para que presente sus declaraciones!";
+        msj.text=@"¡Mándale un mensaje para que presente su declaración patrimonial!";
     
     [msj sizeToFit];
+    msj.frame=CGRectMake(15, msj.frame.origin.y, cardContainer.frame.size.width-30, msj.frame.size.height);
     [twitterView addSubview:msj];
     msj.textColor=[UIColor whiteColor];
     
@@ -888,20 +890,31 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     // prevents the scroll view from swallowing up the touch event of child buttons
     tapGesture.cancelsTouchesInView = NO;
     [twitterView addGestureRecognizer:tapGesture];
-    
+    twitterView.frame=CGRectMake(0, twitterView.frame.origin.y, twitterView.frame.size.width, cardContainer.frame.size.height- twitterView.frame.origin.y-40);
+  
+    float auxiliar=twitterView.frame.size.height-msj.frame.size.height-tuiterImg.frame.size.height;
+    if (twitterView.frame.size.height<70) {
+         auxiliar=twitterView.frame.size.height-msj.frame.size.height;
+    }
+      msj.frame=CGRectMake(msj.frame.origin.x, twitterView.frame.size.height-msj.frame.size.height-auxiliar/3, msj.frame.size.width, msj.frame.size.height);
+    tuiterImg.frame=CGRectMake(tuiterImg.frame.origin.x, auxiliar/3, tuiterImg.frame.size.width, tuiterImg.frame.size.height);
+    if (twitterView.frame.size.height<70) {
+        tuiterImg.hidden=true;
+    }
     UIButton *btn= [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [btn addTarget:self
             action:@selector(cerrar)
   forControlEvents:UIControlEventTouchUpInside];
     [btn setTitle:@"Cerrar" forState:UIControlStateNormal];
-    btn.frame=CGRectMake(0, twitterView.frame.size.height+twitterView.frame.origin.y, cardContainer.frame.size.width, cardContainer.frame.size.height-(twitterView.frame.size.height+twitterView.frame.origin.y)+15);
+    btn.frame=CGRectMake(0, cardContainer.frame.size.height-40, cardContainer.frame.size.width, 40);
+   
     btn.backgroundColor=[UIColor colorWithRed:0/255.0 green:188/255.0 blue:212/255.0 alpha:1];
     
     btn.tintColor=[UIColor whiteColor];
     //    mas.tintColor=[UIColor blackColor];
     btn.titleLabel.font=[UIFont fontWithName:@"GothamRounded-Book" size:15];
      [twitterView addSubview:msj];
-         [cardContainer addSubview:btn];
+    [cardContainer addSubview:btn];
 
 }
 -(void)cerrar{
@@ -1002,10 +1015,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
         NSString *tw;
         if (goodPerson) {
-            tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y vi que ya presentaste  tu decelaración Patrimonial. ¡Bien hecho!", tuiter];
+            tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y vi que ya presentaste tu declaración patrimonial. ¡Bien hecho!", tuiter];
         }
         else
-        tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y no has presentado tu decelaración Patrimonial, ¿qué esperas? www.liguepolitico.com", tuiter];
+        tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y no has presentado tu declaración patrimonial, ¿qué esperas? www.liguepolitico.com", tuiter];
         
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
