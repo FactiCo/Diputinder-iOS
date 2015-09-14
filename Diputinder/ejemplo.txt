@@ -29,9 +29,9 @@
 {
 "candidate": {
 "id": 8,
-"nombres": "Ejemplo",
-"apellido_paterno": "Ejemplo",
-"apellido_materno": "Ejemplo",
+"nombres": "Juan",
+"apellido_paterno": "Pérez",
+"apellido_materno": "Pérez",
 "twitter": "Ejemplo",
 "facebook": "",
 "email": "",
@@ -63,9 +63,9 @@
 },{
 "candidate": {
 "id": 8,
-"nombres": "Ejemplo",
-"apellido_paterno": "Ejemplo",
-"apellido_materno": "Ejemplo",
+"nombres": "Jordy",
+"apellido_paterno": "Pérez",
+"apellido_materno": "Pérez",
 "twitter": "Ejemplo",
 "facebook": "",
 "email": "",
@@ -97,9 +97,9 @@
 },{
 "candidate": {
 "id": 8,
-"nombres": "Ejemplo",
-"apellido_paterno": "Ejemplo",
-"apellido_materno": "Ejemplo",
+"nombres": "Rodrigo",
+"apellido_paterno": "Pérez ",
+"apellido_materno": "Pérez ",
 "twitter": "Ejemplo",
 "facebook": "",
 "email": "",
@@ -125,7 +125,7 @@
 "indicators": [
 {
 "name": "Declaración de Algo",
-"document": "ejemplo"
+"document": ""
 }
 ]
 }
