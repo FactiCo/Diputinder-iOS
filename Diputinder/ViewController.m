@@ -89,7 +89,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     page.currentPage = current_page;
 }
 - (void)viewDidLoad {
-    
+     delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
     defaults = [NSUserDefaults standardUserDefaults];
  
     
@@ -97,7 +97,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
      //  [self.view addSubview:intro];
     working= FALSE;
     nocards=[[UILabel alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 100)];
-    nocards.text=@"Por el momento no hay más candidatos que ver.";
+    nocards.text=[delegate.messages objectAtIndex:0] [@"no_candidates"];
     nocards.numberOfLines=2;
     nocards.textColor=[UIColor whiteColor];
     nocards.textAlignment=NSTextAlignmentCenter;
@@ -340,7 +340,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 //%%% sets up the extra buttons on the screen
 -(void)setupView
 {
-    delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
+   
     loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height/2-25, 50, 50)];
     loading.backgroundColor=[UIColor blackColor];
     [loading startAnimating];
@@ -852,10 +852,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     text.textColor=[UIColor whiteColor];
     text.textAlignment=NSTextAlignmentCenter;
     if (goodPerson) {
-     text.text=@"A este candidato sí le interesas porque ya presentó su declaración patrimonial.";
+     text.text=[delegate.messages objectAtIndex:0] [@"explanation_checked"];
     }
     else
-        text.text=@"Lo sentimos, a este candidato no le interesas porque no ha presentado su declaración patrimonial.";
+        text.text=[delegate.messages objectAtIndex:0][@"explanation_missing"];
     
       [cardContainer addSubview:text];
     [text sizeToFit];
@@ -873,10 +873,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
           [msj setFont:[UIFont fontWithName:@"GothamRounded-Book" size:15]];
     msj.numberOfLines=5;
     if (goodPerson) {
-        msj.text=@"¡Mándale un mensaje de felicitación!";
+        msj.text=[delegate.messages objectAtIndex:0][@"tweet_checked"];
     }
     else
-        msj.text=@"¡Mándale un mensaje para que presente su declaración patrimonial!";
+        msj.text=[delegate.messages objectAtIndex:0][@"tweet_missing"];
     
     [msj sizeToFit];
     msj.frame=CGRectMake(15, msj.frame.origin.y, cardContainer.frame.size.width-30, msj.frame.size.height);
@@ -1008,6 +1008,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         NSLog(@"Button 3 was selected.");
     }
 }
+
 -(IBAction)btnTwitterSharing_Clicked:(id)sender {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
@@ -1015,10 +1016,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
         NSString *tw;
         if (goodPerson) {
-            tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y vi que ya presentaste tu declaración patrimonial. ¡Bien hecho!", tuiter];
+            tw=[NSString stringWithFormat:@".@%@,%@", tuiter, [delegate.messages objectAtIndex:0][@"congratulation"]];
         }
         else
-        tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y no has presentado tu declaración patrimonial, ¿qué esperas? www.liguepolitico.com", tuiter];
+        tw=[NSString stringWithFormat:@".@%@,%@", tuiter, [delegate.messages objectAtIndex:0][@"demand"]];
         
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
@@ -1059,11 +1060,31 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         delegate.country=  [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]];
         delegate.state= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]];
         delegate.city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"city"]objectForKey:@"id"]];;
+        [self getMessages];
         [self getData];
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error %@", error);
         [self getAddress];
+        
+    }];
+    
+}
+-(void)getMessages{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    
+    //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    NSString *url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/messages.json",delegate.country];
+    
+    
+    [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
+        NSLog(@"%@",responseObject);
+        delegate.messages=responseObject;
+        nocards.text=[delegate.messages objectAtIndex:0] [@"no_candidates"];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error %@", error);
+        
         
     }];
     
