@@ -50,7 +50,7 @@
     
     
     //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
-       NSString *url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+       NSString *url =[NSString stringWithFormat:@"http://158.85.249.218/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
     
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
@@ -61,6 +61,7 @@
         _state= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]];
         _city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"cityx"]objectForKey:@"id"]];;
        
+        [self getMessages];
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error %@", error);
@@ -68,6 +69,24 @@
         
     }];
 
+}
+
+-(void)getMessages{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    
+    //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    NSString *url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/messages.json",_country];
+    
+    
+    [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
+        NSLog(@"%@",responseObject);
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error %@", error);
+        
+        
+    }];
+    
 }
 /*- (void)reverseGeocode:(CLLocation *)location {
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
