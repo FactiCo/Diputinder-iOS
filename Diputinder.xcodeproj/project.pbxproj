@@ -31,6 +31,7 @@
 		F370BE1A1AF14CC7008974D6 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F370BE191AF14CC7008974D6 /* AddressBook.framework */; };
 		F370BE1C1AF17D32008974D6 /* m.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F370BE1B1AF17D32008974D6 /* m.jpg */; };
 		F370BE1E1AF17D42008974D6 /* h.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F370BE1D1AF17D42008974D6 /* h.jpg */; };
+		F3A0455D1BCC7C11008C0D16 /* aliados.png in Resources */ = {isa = PBXBuildFile; fileRef = F3A0455C1BCC7C11008C0D16 /* aliados.png */; settings = {ASSET_TAGS = (); }; };
 		F3A4D25A1B963BB5006FEE69 /* shi.png in Resources */ = {isa = PBXBuildFile; fileRef = F3A4D2581B963BB5006FEE69 /* shi.png */; };
 		F3A4D25B1B963BB5006FEE69 /* nop.png in Resources */ = {isa = PBXBuildFile; fileRef = F3A4D2591B963BB5006FEE69 /* nop.png */; };
 		F3A4D25D1B976678006FEE69 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F3A4D25C1B976677006FEE69 /* logo.png */; };
@@ -38,7 +39,6 @@
 		F3EE12231B01563400CDEC6A /* yesbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EE12221B01563400CDEC6A /* yesbutton.png */; };
 		F3EE123E1B01656100CDEC6A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EE123D1B01656100CDEC6A /* Social.framework */; };
 		F3EE12911B024A7A00CDEC6A /* noimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F3EE12901B024A7A00CDEC6A /* noimage.jpg */; };
-		F3EE7F461B97CF7E00891733 /* aliados.png in Resources */ = {isa = PBXBuildFile; fileRef = F3EE7F451B97CF7E00891733 /* aliados.png */; };
 		F3EEF94F1B7EACAB00C662A9 /* document.ico in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF94E1B7EACAB00C662A9 /* document.ico */; };
 		F3EEF9601B82853600C662A9 /* Gotham-Rounded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */; };
 		F3EEF9611B82853600C662A9 /* Gotham-Rounded-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */; };
@@ -103,6 +103,7 @@
 		F370BE191AF14CC7008974D6 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		F370BE1B1AF17D32008974D6 /* m.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = m.jpg; sourceTree = "<group>"; };
 		F370BE1D1AF17D42008974D6 /* h.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = h.jpg; sourceTree = "<group>"; };
+		F3A0455C1BCC7C11008C0D16 /* aliados.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aliados.png; sourceTree = "<group>"; };
 		F3A4D2581B963BB5006FEE69 /* shi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shi.png; sourceTree = "<group>"; };
 		F3A4D2591B963BB5006FEE69 /* nop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nop.png; sourceTree = "<group>"; };
 		F3A4D25C1B976677006FEE69 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
@@ -110,7 +111,6 @@
 		F3EE12221B01563400CDEC6A /* yesbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yesbutton.png; sourceTree = "<group>"; };
 		F3EE123D1B01656100CDEC6A /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		F3EE12901B024A7A00CDEC6A /* noimage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = noimage.jpg; sourceTree = "<group>"; };
-		F3EE7F451B97CF7E00891733 /* aliados.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aliados.png; sourceTree = "<group>"; };
 		F3EEF94E1B7EACAB00C662A9 /* document.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = document.ico; sourceTree = "<group>"; };
 		F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Rounded-Bold.ttf"; sourceTree = "<group>"; };
 		F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Rounded-Book.ttf"; sourceTree = "<group>"; };
@@ -184,7 +184,7 @@
 			children = (
 				F3EEF95E1B82853600C662A9 /* Gotham-Rounded-Bold.ttf */,
 				F3EEF95F1B82853600C662A9 /* Gotham-Rounded-Book.ttf */,
-				F3EE7F451B97CF7E00891733 /* aliados.png */,
+				F3A0455C1BCC7C11008C0D16 /* aliados.png */,
 				F3A4D2581B963BB5006FEE69 /* shi.png */,
 				F3A4D2591B963BB5006FEE69 /* nop.png */,
 				F3EEF9621B828EF300C662A9 /* ic_twitter.png */,
@@ -381,10 +381,10 @@
 				F3EE12911B024A7A00CDEC6A /* noimage.jpg in Resources */,
 				F3EE12211B01562C00CDEC6A /* nobutton.png in Resources */,
 				F3EEF96A1B84FAE500C662A9 /* ic_btn_no_declaro.png in Resources */,
+				F3A0455D1BCC7C11008C0D16 /* aliados.png in Resources */,
 				F370BDF11AF03368008974D6 /* LaunchScreen.xib in Resources */,
 				F3EEF9631B828EF300C662A9 /* ic_twitter.png in Resources */,
 				F354C64B1B94DE84003217D2 /* declarado.png in Resources */,
-				F3EE7F461B97CF7E00891733 /* aliados.png in Resources */,
 				F3EEF94F1B7EACAB00C662A9 /* document.ico in Resources */,
 				F3EE12231B01563400CDEC6A /* yesbutton.png in Resources */,
 				F370BDEE1AF03368008974D6 /* Images.xcassets in Resources */,
