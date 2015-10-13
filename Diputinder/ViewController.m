@@ -47,7 +47,7 @@
     NSString *tuiter;
     BOOL goodPerson;
     UIView *cardContainer;
-    UILabel *nocards;
+    UITextView *nocards;
     
     
     UIScrollView *intro;
@@ -96,11 +96,25 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
    
      //  [self.view addSubview:intro];
     working= FALSE;
-    nocards=[[UILabel alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 100)];
+    nocards=[[UITextView alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 200)];
     nocards.text=[delegate.messages objectAtIndex:0] [@"no_candidates"];
-    nocards.numberOfLines=2;
+   
     nocards.textColor=[UIColor whiteColor];
+    nocards.backgroundColor=[UIColor clearColor];
+    nocards.editable=FALSE;
+    
     nocards.textAlignment=NSTextAlignmentCenter;
+    
+    nocards.dataDetectorTypes = UIDataDetectorTypeAll;
+    // [text setFont:[UIFont fontWithName:@"OpenSans-Bold" size:16]];
+    
+    [nocards setTintColor:[UIColor colorWithRed:116/255.0 green:94/255.0 blue:197/255.0 alpha:1]];
+    [nocards setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:14]];
+    nocards.scrollEnabled=FALSE;
+    nocards.textAlignment=NSTextAlignmentCenter;
+    
+
+   
     [self.view addSubview:nocards];
     UIButton *search =  [UIButton buttonWithType:UIButtonTypeCustom];
     search.tintColor=[UIColor whiteColor];
