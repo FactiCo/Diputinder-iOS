@@ -102,9 +102,9 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     nocards.textColor=[UIColor whiteColor];
     nocards.backgroundColor=[UIColor clearColor];
     nocards.editable=FALSE;
-    
+    nocards.delegate=self;
     nocards.textAlignment=NSTextAlignmentCenter;
-    
+    [self.view bringSubviewToFront:nocards];
     nocards.dataDetectorTypes = UIDataDetectorTypeAll;
     // [text setFont:[UIFont fontWithName:@"OpenSans-Bold" size:16]];
     
@@ -115,7 +115,6 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
 
    
-    [self.view addSubview:nocards];
     UIButton *search =  [UIButton buttonWithType:UIButtonTypeCustom];
     search.tintColor=[UIColor whiteColor];
     [search setImage:[UIImage imageNamed:@"Refresh_icon.png"] forState:UIControlStateNormal];
@@ -216,7 +215,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         page.backgroundColor=[UIColor clearColor];
         page.numberOfPages=3;
         
-        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta, colaborativa y regional.",@"Si un candidato te atrae, desliza a la derecha. \n ¡Pero cuidado! \nSi no ha presentado su declaración patrimonial, ¡exígela!", nil];
+        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta, colaborativa y regional.",@"Si un candidato te atrae, desliza a la derecha. \n ¡Pero cuidado! \nSi no ha presentado su declaración patrimonial o jurada, ¡exígela!", nil];
         NSArray *imgs=[[NSArray alloc]initWithObjects:@"logo.png",@"aliados.png",@"ic_tutorial_5.png", nil];
         
         intro_bg=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, intro.frame.size.width, intro.frame.size.height)];
@@ -231,7 +230,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
               logo.contentMode=UIViewContentModeScaleAspectFit;
             
             UILabel *lbl=[[UILabel alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+15, logo.frame.size.height+logo.frame.origin.y+15, intro.frame.size.width-30, 150)];
-            lbl.text=@"¡Bienvenido!";
+            lbl.text=@"¡Conoce a tu candidato!";
             [lbl setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:22]];
             [lbl sizeToFit];
             lbl.textAlignment=NSTextAlignmentCenter;
@@ -387,6 +386,8 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     [vista addSubview:xButton];
     [vista addSubview:checkButton];
     [self.view addSubview:vista];
+    [vista addSubview:nocards];
+
     
 }
 -(void) closeIntro{
@@ -887,10 +888,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
           [msj setFont:[UIFont fontWithName:@"GothamRounded-Book" size:15]];
     msj.numberOfLines=5;
     if (goodPerson) {
-        msj.text=[delegate.messages objectAtIndex:0][@"tweet_checked"];
+        msj.text=[delegate.messages objectAtIndex:0][@"congratulation"];
     }
     else
-        msj.text=[delegate.messages objectAtIndex:0][@"tweet_missing"];
+        msj.text=[delegate.messages objectAtIndex:0][@"demand"];
     
     [msj sizeToFit];
     msj.frame=CGRectMake(15, msj.frame.origin.y, cardContainer.frame.size.width-30, msj.frame.size.height);
@@ -1029,11 +1030,18 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         SLComposeViewController *tweetSheetOBJ = [SLComposeViewController
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
         NSString *tw;
+        
+      
+            if ([tuiter characterAtIndex:0] != '@') {
+                tuiter=[NSString stringWithFormat:@"@%@",tuiter];
+              }
+        
+        
         if (goodPerson) {
-            tw=[NSString stringWithFormat:@".@%@,%@", tuiter, [delegate.messages objectAtIndex:0][@"congratulation"]];
+            tw=[NSString stringWithFormat:@".%@,%@", tuiter, [delegate.messages objectAtIndex:0][@"tweet_cheked"]];
         }
         else
-        tw=[NSString stringWithFormat:@".@%@,%@", tuiter, [delegate.messages objectAtIndex:0][@"demand"]];
+        tw=[NSString stringWithFormat:@".%@,%@", tuiter, [delegate.messages objectAtIndex:0][@"tweet_missing"]];
         
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];

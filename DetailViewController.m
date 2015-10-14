@@ -288,7 +288,7 @@
             [scroll addSubview:doc];
             
             UILabel *indicator=[[UILabel alloc]initWithFrame:CGRectMake(15 +(aux*70), doc.frame.size.height+doc.frame.origin.y+2,70, 30)];
-            indicator.numberOfLines=3;
+            indicator.numberOfLines=5;
             indicator.text=[[[_data objectForKey:@"indicators"]objectAtIndex:i]objectForKey:@"name"];
             [indicator setFont:[UIFont fontWithName:@"GothamRounded-Book" size:10]];
             indicator.textAlignment=NSTextAlignmentCenter;
@@ -303,7 +303,7 @@
         
     }
     
-    [scroll setContentSize:CGSizeMake(self.view.frame.size.width,tope+60)];
+    [scroll setContentSize:CGSizeMake(self.view.frame.size.width,tope+70)];
     [scroll addSubview:imgPartido];
      [self.view addSubview:scroll];
     
