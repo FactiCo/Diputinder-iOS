@@ -553,12 +553,18 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *url ;
     if ([delegate.city isKindOfClass:[NSNull class]] || [delegate.city isEqualToString:@"(null)"]) {
-        url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/states/%@.json",delegate.country,delegate.state];
+       // url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/states/%@.json",delegate.country,delegate.state];
+        
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@/states/%@.json",delegate.country,delegate.state];
     }else
-        url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
+        
+        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
+        //url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
     
     if ([delegate.state isKindOfClass:[NSNull class]] || [delegate.state isEqualToString:@"(null)"]) {
-        url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@.json",delegate.country];
+       
+        //url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@.json",delegate.country];
+         url =[NSString stringWithFormat:@" http://liguepolitico.herokuapp.com/countries/%@.json",delegate.country];
     }
     //url =[NSString stringWithFormat:@"http://liguepolitico-staging.herokuapp.com/countries/1/states/1/cities/1.json"];
    
@@ -1049,17 +1055,30 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     
     //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
-    NSString *url =[NSString stringWithFormat:@"http://158.85.249.218/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    
+     NSString *url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    //NSString *url =[NSString stringWithFormat:@"http://158.85.249.218/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
     
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
         NSLog(@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]);
         NSLog(@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]);
-        
-        delegate.country=  [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]];
-        delegate.state= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]];
-        delegate.city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"city"]objectForKey:@"id"]];;
-        [self getData];
+        if ([[responseObject objectForKey:@"country"]objectForKey:@""] == nil && [[responseObject objectForKey:@"state"]objectForKey:@""] == nil && [[responseObject objectForKey:@"city"]objectForKey:@""] == nil)
+        {
+            //todo regreso nulo
+            UIAlertView *a =[[UIAlertView alloc]initWithTitle:@"Mensaje" message:@"No encontramos, candidatos cerca de tu ubicación actual, te dejamos unos ejemplos" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles:nil, nil];
+            [a show];
+            [loading stopAnimating];
+            [self loadExample];
+        }
+        else{
+            delegate.country=  [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]];
+            delegate.state= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]];
+            delegate.city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"city"]objectForKey:@"id"]];;
+            [self getData];
+            
+        }
+      
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error %@", error);

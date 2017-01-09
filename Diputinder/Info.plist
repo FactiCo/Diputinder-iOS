@@ -24,8 +24,15 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Necesitamos permiso para conocer tu ubicación; así podremos enseñarte tus candidatos.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Necesitamos permiso para conocer tu ubicación; así podremos enseñarte tus candidatos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Gotham-Rounded-Bold.ttf</string>
