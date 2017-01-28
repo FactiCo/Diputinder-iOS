@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 
-@interface ViewController : UIViewController <UIAlertViewDelegate,CLLocationManagerDelegate,UIScrollViewDelegate>
+@interface ViewController : UIViewController <UIAlertViewDelegate,CLLocationManagerDelegate,UIScrollViewDelegate,UITextViewDelegate>
 {
     
     CLLocationManager *locationManager;

@@ -16,6 +16,7 @@
 }
 @property (strong, nonatomic) NSMutableDictionary *imgCache;
 @property (strong, nonatomic) NSString *country;
+@property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSString *state;
 @property (strong, nonatomic) NSString *city;
 @property (strong, nonatomic) UIWindow *window;

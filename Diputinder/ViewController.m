@@ -47,7 +47,7 @@
     NSString *tuiter;
     BOOL goodPerson;
     UIView *cardContainer;
-    UILabel *nocards;
+    UITextView *nocards;
     
     
     UIScrollView *intro;
@@ -89,19 +89,32 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     page.currentPage = current_page;
 }
 - (void)viewDidLoad {
-    
+     delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
     defaults = [NSUserDefaults standardUserDefaults];
  
     
    
      //  [self.view addSubview:intro];
     working= FALSE;
-    nocards=[[UILabel alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 100)];
-    nocards.text=@"Por el momento no hay más candidatos que ver.";
-    nocards.numberOfLines=2;
+    nocards=[[UITextView alloc]initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 200)];
+    nocards.text=[delegate.messages objectAtIndex:0] [@"no_candidates"];
+   
     nocards.textColor=[UIColor whiteColor];
+    nocards.backgroundColor=[UIColor clearColor];
+    nocards.editable=FALSE;
+    nocards.delegate=self;
     nocards.textAlignment=NSTextAlignmentCenter;
-    [self.view addSubview:nocards];
+    [self.view bringSubviewToFront:nocards];
+    nocards.dataDetectorTypes = UIDataDetectorTypeAll;
+    // [text setFont:[UIFont fontWithName:@"OpenSans-Bold" size:16]];
+    
+    [nocards setTintColor:[UIColor colorWithRed:116/255.0 green:94/255.0 blue:197/255.0 alpha:1]];
+    [nocards setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:14]];
+    nocards.scrollEnabled=FALSE;
+    nocards.textAlignment=NSTextAlignmentCenter;
+    
+
+   
     UIButton *search =  [UIButton buttonWithType:UIButtonTypeCustom];
     search.tintColor=[UIColor whiteColor];
     [search setImage:[UIImage imageNamed:@"Refresh_icon.png"] forState:UIControlStateNormal];
@@ -202,7 +215,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         page.backgroundColor=[UIColor clearColor];
         page.numberOfPages=3;
         
-        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta, colaborativa y regional.",@"Si un candidato te atrae, desliza a la derecha. \n ¡Pero cuidado! \nSi no ha presentado su declaración patrimonial, ¡exígela!", nil];
+        NSArray *textos=[[NSArray alloc]initWithObjects:@"Con Ligue Político podrás conocer quiénes son tus candidatos a puestos de elección popular, de acuerdo a tu ubicación geográfica, para exigirles que se comprometan con la transparencia y la rendición de cuentas.",@"Ligue Político es una iniciativa ciudadana, abierta, colaborativa y regional.",@"Si un candidato te atrae, desliza a la derecha. \n ¡Pero cuidado! \nSi no ha presentado su declaración patrimonial o jurada, ¡exígela!", nil];
         NSArray *imgs=[[NSArray alloc]initWithObjects:@"logo.png",@"aliados.png",@"ic_tutorial_5.png", nil];
         
         intro_bg=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, intro.frame.size.width, intro.frame.size.height)];
@@ -217,7 +230,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
               logo.contentMode=UIViewContentModeScaleAspectFit;
             
             UILabel *lbl=[[UILabel alloc]initWithFrame:CGRectMake((intro.frame.size.width*i)+15, logo.frame.size.height+logo.frame.origin.y+15, intro.frame.size.width-30, 150)];
-            lbl.text=@"¡Bienvenido!";
+            lbl.text=@"¡Conoce a tu candidato!";
             [lbl setFont:[UIFont fontWithName:@"GothamRounded-Bold" size:22]];
             [lbl sizeToFit];
             lbl.textAlignment=NSTextAlignmentCenter;
@@ -340,7 +353,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 //%%% sets up the extra buttons on the screen
 -(void)setupView
 {
-    delegate= (AppDelegate*)[[UIApplication sharedApplication]delegate];
+   
     loading=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height/2-25, 50, 50)];
     loading.backgroundColor=[UIColor blackColor];
     [loading startAnimating];
@@ -373,6 +386,8 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     [vista addSubview:xButton];
     [vista addSubview:checkButton];
     [self.view addSubview:vista];
+    [vista addSubview:nocards];
+
     
 }
 -(void) closeIntro{
@@ -555,16 +570,16 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     if ([delegate.city isKindOfClass:[NSNull class]] || [delegate.city isEqualToString:@"(null)"]) {
        // url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/states/%@.json",delegate.country,delegate.state];
         
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@/states/%@.json",delegate.country,delegate.state];
+        url =[NSString stringWithFormat:@"https://liguepolitico-2016.herokuapp.com/countries/%@/states/%@.json",delegate.country,delegate.state];
     }else
         
-        url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
+        url =[NSString stringWithFormat:@"https://liguepolitico-2016.herokuapp.com/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
         //url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@/states/%@/cities/%@.json",delegate.country,delegate.state,delegate.city];
     
     if ([delegate.state isKindOfClass:[NSNull class]] || [delegate.state isEqualToString:@"(null)"]) {
        
         //url =[NSString stringWithFormat:@"http://158.85.249.218/countries/%@.json",delegate.country];
-         url =[NSString stringWithFormat:@" http://liguepolitico.herokuapp.com/countries/%@.json",delegate.country];
+         url =[NSString stringWithFormat:@"https://liguepolitico-2016.herokuapp.com/countries/%@.json",delegate.country];
     }
     //url =[NSString stringWithFormat:@"http://liguepolitico-staging.herokuapp.com/countries/1/states/1/cities/1.json"];
    
@@ -858,10 +873,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     text.textColor=[UIColor whiteColor];
     text.textAlignment=NSTextAlignmentCenter;
     if (goodPerson) {
-     text.text=@"A este candidato sí le interesas porque ya presentó su declaración patrimonial.";
+     text.text=[delegate.messages objectAtIndex:0] [@"explanation_checked"];
     }
     else
-        text.text=@"Lo sentimos, a este candidato no le interesas porque no ha presentado su declaración patrimonial.";
+        text.text=[delegate.messages objectAtIndex:0][@"explanation_missing"];
     
       [cardContainer addSubview:text];
     [text sizeToFit];
@@ -879,10 +894,10 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
           [msj setFont:[UIFont fontWithName:@"GothamRounded-Book" size:15]];
     msj.numberOfLines=5;
     if (goodPerson) {
-        msj.text=@"¡Mándale un mensaje de felicitación!";
+        msj.text=[delegate.messages objectAtIndex:0][@"congratulation"];
     }
     else
-        msj.text=@"¡Mándale un mensaje para que presente su declaración patrimonial!";
+        msj.text=[delegate.messages objectAtIndex:0][@"demand"];
     
     [msj sizeToFit];
     msj.frame=CGRectMake(15, msj.frame.origin.y, cardContainer.frame.size.width-30, msj.frame.size.height);
@@ -1014,17 +1029,25 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
         NSLog(@"Button 3 was selected.");
     }
 }
+
 -(IBAction)btnTwitterSharing_Clicked:(id)sender {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
         SLComposeViewController *tweetSheetOBJ = [SLComposeViewController
                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
         NSString *tw;
+        
+      
+            if ([tuiter characterAtIndex:0] != '@') {
+                tuiter=[NSString stringWithFormat:@"@%@",tuiter];
+              }
+        
+        
         if (goodPerson) {
-            tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y vi que ya presentaste tu declaración patrimonial. ¡Bien hecho!", tuiter];
+            tw=[NSString stringWithFormat:@".%@,%@", tuiter, [delegate.messages objectAtIndex:0][@"tweet_cheked"]];
         }
         else
-        tw=[NSString stringWithFormat:@"Oye @%@, te encontré en @LiguePolitico y no has presentado tu declaración patrimonial, ¿qué esperas? www.liguepolitico.com", tuiter];
+        tw=[NSString stringWithFormat:@".%@,%@", tuiter, [delegate.messages objectAtIndex:0][@"tweet_missing"]];
         
         [tweetSheetOBJ setInitialText:tw];
         [self presentViewController:tweetSheetOBJ animated:YES completion:nil];
@@ -1056,13 +1079,14 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
     
     //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
     
-     NSString *url =[NSString stringWithFormat:@"http://liguepolitico.herokuapp.com/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+     NSString *url =[NSString stringWithFormat:@"https://liguepolitico-2016.herokuapp.com/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
     //NSString *url =[NSString stringWithFormat:@"http://158.85.249.218/geocoder.json?latitude=%f&longitude=%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
     
     
     [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
         NSLog(@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]);
         NSLog(@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]);
+/*<<<<<<< HEAD
         if ([[responseObject objectForKey:@"country"]objectForKey:@""] == nil && [[responseObject objectForKey:@"state"]objectForKey:@""] == nil && [[responseObject objectForKey:@"city"]objectForKey:@""] == nil)
         {
             //todo regreso nulo
@@ -1079,10 +1103,37 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
             
         }
       
+=======*/
+        
+        delegate.country=  [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"country"]objectForKey:@"id"]];
+        delegate.state= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"state"]objectForKey:@"id"]];
+        delegate.city= [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"city"]objectForKey:@"id"]];;
+        [self getMessages];
+        [self getData];
+//>>>>>>> b8bd14589ca256d58508babb0e2d98c44cf7c625
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error %@", error);
         [self getAddress];
+        
+    }];
+    
+}
+-(void)getMessages{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    
+    //NSString *url =[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude];
+    NSString *url =[NSString stringWithFormat:@"https://liguepolitico-2016.herokuapp.com/countries/%@/messages.json",delegate.country];
+    
+    
+    [manager GET:url parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject){
+        NSLog(@"%@",responseObject);
+        delegate.messages=responseObject;
+        nocards.text=[delegate.messages objectAtIndex:0] [@"no_candidates"];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error %@", error);
+        
         
     }];
     
